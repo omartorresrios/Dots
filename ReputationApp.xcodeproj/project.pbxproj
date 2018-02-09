@@ -774,6 +774,7 @@
 			baseConfigurationReference = C96931D9602D246D384F1FBA /* Pods-ReputationApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = ReputationApp/ReputationApp.entitlements;
 				DEVELOPMENT_TEAM = W7KDN9ZT24;
 				INFOPLIST_FILE = ReputationApp/Info.plist;
@@ -791,6 +792,7 @@
 			baseConfigurationReference = 6E28B6B66614A10E560EF10A /* Pods-ReputationApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = ReputationApp/ReputationApp.entitlements;
 				DEVELOPMENT_TEAM = W7KDN9ZT24;
 				INFOPLIST_FILE = ReputationApp/Info.plist;
