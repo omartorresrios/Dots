@@ -22,7 +22,7 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
     let customLoginView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
-        view.layer.cornerRadius = 20
+        view.layer.cornerRadius = 30 / 2
         return view
     }()
     
@@ -38,6 +38,22 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
         button.setImage(#imageLiteral(resourceName: "logo_google").withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
         return button
+    }()
+    
+    let containerLoginView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 8
+        return view
+    }()
+    
+    let customLoginText: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "SFUIDisplay-Medium", size: 15)
+        label.numberOfLines = 1
+        label.text = "Ingresa con tu correo Mambo"
+        label.textColor = UIColor.mainGreen()
+        return label
     }()
     
     let termsServiceButton: UIButton = {
@@ -94,16 +110,26 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
     }
     
     func setupCustomLoginButton() {
-        view.addSubview(customLoginView)
-        customLoginView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
-        customLoginView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        customLoginView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        customLoginView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleLogin)))
         
-        customLoginView.addSubview(customLoginButton)
-        customLoginButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 25, height: 25)
-        customLoginButton.centerYAnchor.constraint(equalTo: customLoginView.centerYAnchor).isActive = true
-        customLoginButton.centerXAnchor.constraint(equalTo: customLoginView.centerXAnchor).isActive = true
+        view.addSubview(containerLoginView)
+        containerLoginView.anchor(top: nil, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 50)
+        containerLoginView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        containerLoginView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleLogin)))
+        
+//        containerLoginView.addSubview(customLoginView)
+//        customLoginView.anchor(top: nil, left: containerLoginView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 30, height: 30)
+//        customLoginView.centerYAnchor.constraint(equalTo: containerLoginView.centerYAnchor).isActive = true
+//        customLoginView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleLogin)))
+        
+        containerLoginView.addSubview(customLoginButton)
+        customLoginButton.anchor(top: nil, left: containerLoginView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 20, height: 20)
+        customLoginButton.centerYAnchor.constraint(equalTo: containerLoginView.centerYAnchor).isActive = true
+        
+        containerLoginView.addSubview(customLoginText)
+        customLoginText.anchor(top: nil, left: customLoginButton.rightAnchor, bottom: nil, right: containerLoginView.rightAnchor, paddingTop: 0, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0)
+        customLoginText.centerYAnchor.constraint(equalTo: customLoginButton.centerYAnchor).isActive = true
+        customLoginText.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleLogin)))
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -180,10 +206,12 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
             guard let email = user.profile.email else { return }
             guard let avatar = user.profile.imageURL(withDimension: 400) else { return }
             
-            let emailRegEx = "[A-Z0-9a-z._%+-]+@(mambo)+\\.pe"
-            let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
+            let gmailRegEx = "[A-Z0-9a-z._%+-]+@(gmail)+\\.com"
+            let mamboRegEx = "[A-Z0-9a-z._%+-]+@(mambo)+\\.pe"
+            let gmailTest = NSPredicate(format: "SELF MATCHES %@", gmailRegEx)
+            let mamboTest = NSPredicate(format: "SELF MATCHES %@", mamboRegEx)
             
-            if emailTest.evaluate(with: email) == true { // Valid email
+            if gmailTest.evaluate(with: email) == true || mamboTest.evaluate(with: email) == true { // Valid email
                 print("Eres mambero")
                 if let data = try? Data(contentsOf: avatar) {
                     self.imageData = data
@@ -252,7 +280,7 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
                 GIDSignIn.sharedInstance().delegate = self
                 GIDSignIn.sharedInstance().signOut()
                                 
-                self.showCustomAlertMessage(image: "✋".image(), message: "¡No eres mambero!\n\nDebes entrar con tu correo de Mambo 😉")
+                self.showCustomAlertMessage(image: "✋".image(), message: "¡Debes entrar con tu correo de Mambo 😉!")
             }
             
         } else {
