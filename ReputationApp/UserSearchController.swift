@@ -99,6 +99,8 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
         collectionView.isHidden = true
         layout.sectionHeadersPinToVisibleBounds = true
         
+        UIApplication.shared.statusBarStyle = .default
+        
         // Initialize the loader and position it
         view.addSubview(loader)
         loader.center = view.center
@@ -114,6 +116,10 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
 //                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllUsersLoaded"), object: nil)
             }
         }
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .default
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -133,9 +139,9 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
     }
     
     func loadAllUsers(completion: @escaping (Bool) -> ()) {
-        // Check for internet connection
-        if (reachability?.isReachable)! {
-            
+//        // Check for internet connection
+//        if (reachability?.isReachable)! {
+        
             // Retreieve Auth_Token from Keychain
             if let userToken = Locksmith.loadDataForUserAccount(userAccount: "AuthToken") {
                 
@@ -200,10 +206,10 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
                     }
                 }
             }
-        } else {
-            self.loader.stopAnimating()
-            self.showCustomAlertMessage(image: "😕".image(), message: "¡Revisa tu conexión de internet e intenta de nuevo!", isForTimeOut: false)
-        }
+//        } else {
+//            self.loader.stopAnimating()
+//            self.showCustomAlertMessage(image: "😕".image(), message: "¡Revisa tu conexión de internet e intenta de nuevo!", isForTimeOut: false)
+//        }
     }
     
     func wordForSearch(word: String) {

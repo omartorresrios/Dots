@@ -159,6 +159,10 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
         
     }
     
+    override var prefersStatusBarHidden : Bool {
+        return true
+    }
+    
     func reachabilityStatusChanged() {
         print("Checking connectivity...")
     }

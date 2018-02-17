@@ -71,7 +71,7 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
             layout.scrollDirection = .vertical
             layout.minimumLineSpacing = 0
             layout.minimumInteritemSpacing = 0
-            layout.sectionInset = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
+            layout.sectionInset = UIEdgeInsets(top: 30, left: 0, bottom: 0, right: 0)
         }
         
         collectionView?.register(UserReviewsCell.self, forCellWithReuseIdentifier: cellId)
@@ -96,7 +96,7 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
             if success {
                 self.loader.stopAnimating()
                 self.view.addSubview(self.closeView)
-                self.closeView.anchor(top: self.view.topAnchor, left: nil, bottom: nil, right: self.view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 30, height: 30)
+                self.closeView.anchor(top: self.view.topAnchor, left: nil, bottom: nil, right: self.view.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 30, height: 30)
                 self.closeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.closeViewController)))
                 
                 self.closeView.addSubview(self.closeButton)
@@ -113,8 +113,9 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
     }
     
     func dismissContainerView() {
-        viewGeneral.removeFromSuperview()
-        containerView.removeFromSuperview()
+//        viewGeneral.removeFromSuperview()
+//        containerView.removeFromSuperview()
+        containerView.dismiss(animated: true, completion: nil)
         view.removeGestureRecognizer(tap)
         containerView.playing = false
         AudioBot.pausePlay()
@@ -201,7 +202,7 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if (touch.view?.isDescendant(of: containerView))! || (touch.view?.isDescendant(of: customAlertMessage))! {
+        if (touch.view?.isDescendant(of: customAlertMessage))! {
             return false
         }
         return true
@@ -209,9 +210,9 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
     
     func loadUserReviews(completion: @escaping (Bool) -> ()) {
         
-        // Check for internet connection
-        if (reachability?.isReachable)! {
-            
+//        // Check for internet connection
+//        if (reachability?.isReachable)! {
+        
             // Retreieve Auth_Token from Keychain
             if let userToken = Locksmith.loadDataForUserAccount(userAccount: "AuthToken") {
                 
@@ -266,26 +267,27 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
                 }
                 
             }
-        } else {
-            self.loader.stopAnimating()
-            self.showCustomAlertMessage(image: "😕".image(), message: "¡Revisa tu conexión de internet e intenta de nuevo!", isForLoadUsers: true)
-        }
+//        } else {
+//            self.loader.stopAnimating()
+//            self.showCustomAlertMessage(image: "😕".image(), message: "¡Revisa tu conexión de internet e intenta de nuevo!", isForLoadUsers: true)
+//        }
         
     }
     
     func setupReviewInfoViews() {
-        view.addSubview(viewGeneral)
-        viewGeneral.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        viewGeneral.backgroundColor = UIColor.grayHigh()
-        
+        present(containerView, animated: false, completion: nil)
+//        view.addSubview(viewGeneral)
+//        viewGeneral.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+//        viewGeneral.backgroundColor = UIColor.grayHigh()
+//
         let tapGesture = UIPanGestureRecognizer(target: self, action: #selector(self.panGestureRecognizerHandler(_:)))
-        viewGeneral.addGestureRecognizer(tapGesture)
+        containerView.view.addGestureRecognizer(tapGesture)
         
-        viewGeneral.addSubview(containerView)
-        let height: CGFloat = 25 + 44
-        containerView.anchor(top: nil, left: viewGeneral.leftAnchor, bottom: nil, right: viewGeneral.rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: height)
-        containerView.layer.cornerRadius = 5
-        containerView.centerYAnchor.constraint(equalTo: viewGeneral.centerYAnchor).isActive = true
+//        viewGeneral.addSubview(containerView)
+//        let height: CGFloat = 25 + 44
+//        containerView.anchor(top: nil, left: viewGeneral.leftAnchor, bottom: nil, right: viewGeneral.rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: height)
+//        containerView.layer.cornerRadius = 5
+//        containerView.centerYAnchor.constraint(equalTo: viewGeneral.centerYAnchor).isActive = true
     }
     
     var sheetController = UIAlertController()
@@ -312,21 +314,20 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
     var initialTouchPoint: CGPoint = CGPoint(x: 0,y: 0)
     
     func panGestureRecognizerHandler(_ sender: UIPanGestureRecognizer) {
-        let touchPoint = sender.location(in: viewGeneral.window)
+        let touchPoint = sender.location(in: containerView.view.window)
         
         if sender.state == UIGestureRecognizerState.began {
             initialTouchPoint = touchPoint
         } else if sender.state == UIGestureRecognizerState.changed {
             if touchPoint.y - initialTouchPoint.y > 0 {
-                self.viewGeneral.frame = CGRect(x: 0, y: touchPoint.y - initialTouchPoint.y, width: self.viewGeneral.frame.size.width, height: self.viewGeneral.frame.size.height)
+                self.containerView.view.frame = CGRect(x: 0, y: touchPoint.y - initialTouchPoint.y, width: self.containerView.view.frame.size.width, height: self.containerView.view.frame.size.height)
             }
         } else if sender.state == UIGestureRecognizerState.ended || sender.state == UIGestureRecognizerState.cancelled {
             if touchPoint.y - initialTouchPoint.y > 100 {
-                self.viewGeneral.removeFromSuperview()
                 self.dismissContainerView()
             } else {
                 UIView.animate(withDuration: 0.3, animations: {
-                    self.viewGeneral.frame = CGRect(x: 0, y: 0, width: self.viewGeneral.frame.size.width, height: self.viewGeneral.frame.size.height)
+                    self.containerView.view.frame = CGRect(x: 0, y: 0, width: self.containerView.view.frame.size.width, height: self.containerView.view.frame.size.height)
                 })
             }
         }
@@ -387,8 +388,10 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
             
         cell.goToListen = {
             
-            // Check for internet connection
-            if (reachability?.isReachable)! {
+//            // Check for internet connection
+//            if (reachability?.isReachable)! {
+            
+                UIApplication.shared.isStatusBarHidden = true
             
                 self.setupReviewInfoViews()
                 
@@ -461,9 +464,9 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
                     }
                 }
                 
-            } else {
-                self.showCustomAlertMessage(image: "😕".image(), message: "¡Revisa tu conexión de internet e intenta de nuevo!", isForLoadUsers: false)
-            }
+//            } else {
+//                self.showCustomAlertMessage(image: "😕".image(), message: "¡Revisa tu conexión de internet e intenta de nuevo!", isForLoadUsers: false)
+//            }
         }
         return cell
     }

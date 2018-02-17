@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PreviewAudioContainerView: UIView {
+class PreviewAudioContainerView: UIViewController {
     
     let fullnameLabel: UILabel = {
         let label = UILabel()
@@ -84,31 +84,48 @@ class PreviewAudioContainerView: UIView {
         return label
     }()
     
-    func setupViews() {
+    let suportView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.grayLow()
+        return view
+    }()
+    
+    override var prefersStatusBarHidden : Bool {
+        return true
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
-        backgroundColor = UIColor.grayLow()
+        view.backgroundColor = UIColor.grayHigh()
         
-        addSubview(profileImageView)
-        profileImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 25, height: 25)
+        view.addSubview(suportView)
+        let height: CGFloat = 25 + 44
+        suportView.anchor(top: nil, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: height)
+        suportView.layer.cornerRadius = 5
+        suportView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         
-        addSubview(fullnameLabel)
+        suportView.addSubview(profileImageView)
+        profileImageView.anchor(top: suportView.topAnchor, left: suportView.leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 25, height: 25)
+        
+        suportView.addSubview(fullnameLabel)
         fullnameLabel.anchor(top: nil, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         fullnameLabel.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
         
-        addSubview(playButton)
+        suportView.addSubview(playButton)
         playButton.anchor(top: profileImageView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 20, height: 20)
         playButton.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor).isActive = true
         
-        addSubview(optionButton)
-        optionButton.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 15, height: 15)
+        suportView.addSubview(optionButton)
+        optionButton.anchor(top: nil, left: nil, bottom: nil, right: suportView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 15, height: 15)
         optionButton.centerYAnchor.constraint(equalTo: fullnameLabel.centerYAnchor).isActive = true
         
-        addSubview(progressView)
+        suportView.addSubview(progressView)
         progressView.anchor(top: nil, left: playButton.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         progressView.centerYAnchor.constraint(equalTo: playButton.centerYAnchor).isActive = true
         
-        addSubview(audioLengthLabel)
-        audioLengthLabel.anchor(top: nil, left: progressView.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
+        suportView.addSubview(audioLengthLabel)
+        audioLengthLabel.anchor(top: nil, left: progressView.rightAnchor, bottom: nil, right: suportView.rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
         audioLengthLabel.centerYAnchor.constraint(equalTo: playButton.centerYAnchor).isActive = true
         
     }
@@ -133,17 +150,5 @@ class PreviewAudioContainerView: UIView {
     
     func playAudio() {
         playOrPauseAudioAction?(self, progressView)
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        backgroundColor = .white
-        setupViews()
-        
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

@@ -32,8 +32,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("could not start reachability notifier")
         }
         
-        UIApplication.shared.statusBarStyle = .lightContent
-        
         logUser(forAppDelegate: true)
         
         return true
@@ -127,7 +125,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         } else {
             print("Network not reachable")
-            JDStatusBarNotification.show(withStatus: "Revisa tu conexión e intenta de nuevo", dismissAfter: 3.0, styleName: JDStatusBarStyleDark)
+            JDStatusBarNotification.show(withStatus: "Revisa tu conexión e intenta de nuevo", dismissAfter: 8.0, styleName: JDStatusBarStyleWarning)
         }
         
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ReachStatusChanged"), object: nil)

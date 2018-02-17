@@ -74,7 +74,7 @@ class MyStoriesController: UICollectionViewController, UICollectionViewDelegateF
             layout.scrollDirection = .vertical
             layout.minimumLineSpacing = 0
             layout.minimumInteritemSpacing = 0
-            layout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom:8, right: 8)
+            layout.sectionInset = UIEdgeInsets(top: 30, left: 8, bottom:8, right: 8)
         }
         
         // Register cell classes
@@ -147,7 +147,7 @@ class MyStoriesController: UICollectionViewController, UICollectionViewDelegateF
             if success {
                 self.loader.stopAnimating()
                 self.view.addSubview(self.closeView)
-                self.closeView.anchor(top: self.view.topAnchor, left: nil, bottom: nil, right: self.view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 30, height: 30)
+                self.closeView.anchor(top: self.view.topAnchor, left: nil, bottom: nil, right: self.view.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 30, height: 30)
                 self.closeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.closeViewController)))
                 
                 self.closeView.addSubview(self.closeButton)
@@ -189,9 +189,9 @@ class MyStoriesController: UICollectionViewController, UICollectionViewDelegateF
     
     func loadUserEvents(completion: @escaping (Bool) -> ()) {
         
-        // Check for internet connection
-        if (reachability?.isReachable)! {
-            
+//        // Check for internet connection
+//        if (reachability?.isReachable)! {
+        
             // Retreieve Auth_Token from Keychain
             if let userToken = Locksmith.loadDataForUserAccount(userAccount: "AuthToken") {
                 
@@ -260,10 +260,10 @@ class MyStoriesController: UICollectionViewController, UICollectionViewDelegateF
                 }
             }
             
-        } else {
-            self.loader.stopAnimating()
-            self.showCustomAlertMessage(image: "😕".image(), message: "¡Revisa tu conexión de internet e intenta de nuevo!", isForLoadUsers: true)
-        }
+//        } else {
+//            self.loader.stopAnimating()
+//            self.showCustomAlertMessage(image: "😕".image(), message: "¡Revisa tu conexión de internet e intenta de nuevo!", isForLoadUsers: true)
+//        }
         
     }
     
@@ -384,9 +384,9 @@ class MyStoriesController: UICollectionViewController, UICollectionViewDelegateF
         
         cell.goToWatch = {
             
-            // Check for internet connection
-            if (reachability?.isReachable)! {
-                
+//            // Check for internet connection
+//            if (reachability?.isReachable)! {
+            
                 self.present(self.previewVideoContainerView, animated: false, completion: nil)
                 self.previewVideoContainerView.defaultImage.image = defaultImg
                 
@@ -444,9 +444,9 @@ class MyStoriesController: UICollectionViewController, UICollectionViewDelegateF
                     }
                 })
                 
-            } else {
-                self.showCustomAlertMessage(image: "😕".image(), message: "¡Revisa tu conexión de internet e intenta de nuevo!", isForLoadUsers: false)
-            }
+//            } else {
+//                self.showCustomAlertMessage(image: "😕".image(), message: "¡Revisa tu conexión de internet e intenta de nuevo!", isForLoadUsers: false)
+//            }
         }
         
         return cell

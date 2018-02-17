@@ -44,10 +44,15 @@ class SnapContainerViewController: UIViewController, UIScrollViewDelegate {
         return container
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupVerticalScrollView()
         setupHorizontalScrollView()
+        
     }
     
     func setupVerticalScrollView() {

@@ -164,6 +164,7 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
         super.viewDidLoad()
         setupCameraOptions()
         fakeViews()
+        
         // Reachability for checking internet connection
         NotificationCenter.default.addObserver(self, selector: #selector(reachabilityStatusChanged), name: NSNotification.Name(rawValue: "ReachStatusChanged"), object: nil)
     }
@@ -370,7 +371,7 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
         swiftyCamButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         view.addSubview(flashButton)
-        flashButton.anchor(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 18, width: 25, height: 25)
+        flashButton.anchor(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 18, width: 25, height: 25)
         
     }
     

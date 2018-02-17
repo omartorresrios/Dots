@@ -85,11 +85,14 @@ class MyProfileController: UIViewController {
         present(myStoriesController, animated: true, completion: nil)
     }
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor.grayLow()
         navigationController?.navigationBar.isHidden = true
+        
         
         setupUserInfo()
         setupTopViews()
@@ -120,7 +123,7 @@ class MyProfileController: UIViewController {
     
     func setupTopViews() {
         view.addSubview(gearIcon)
-        gearIcon.anchor(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: 25, height: 25)
+        gearIcon.anchor(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: 25, height: 25)
         gearIcon.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSheetAction)))
         gearIcon.isUserInteractionEnabled = true
         

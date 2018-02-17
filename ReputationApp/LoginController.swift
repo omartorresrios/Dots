@@ -22,7 +22,7 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
     let customLoginView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
-        view.layer.cornerRadius = 30 / 2
+        view.layer.cornerRadius = 20
         return view
     }()
     
@@ -38,22 +38,6 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
         button.setImage(#imageLiteral(resourceName: "logo_google").withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
         return button
-    }()
-    
-    let containerLoginView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        view.layer.cornerRadius = 8
-        return view
-    }()
-    
-    let customLoginText: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: "SFUIDisplay-Medium", size: 15)
-        label.numberOfLines = 1
-        label.text = "Ingresa con tu correo Mambo"
-        label.textColor = UIColor.mainGreen()
-        return label
     }()
     
     let termsServiceButton: UIButton = {
@@ -109,26 +93,22 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
         termsServiceButton.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingBottom: 12, paddingRight: 20, width: 0, height: 0)
     }
     
+    override var prefersStatusBarHidden : Bool {
+        return true
+    }
+    
     func setupCustomLoginButton() {
         
-        view.addSubview(containerLoginView)
-        containerLoginView.anchor(top: nil, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 50)
-        containerLoginView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        containerLoginView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleLogin)))
-        
-//        containerLoginView.addSubview(customLoginView)
-//        customLoginView.anchor(top: nil, left: containerLoginView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 30, height: 30)
-//        customLoginView.centerYAnchor.constraint(equalTo: containerLoginView.centerYAnchor).isActive = true
-//        customLoginView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleLogin)))
-        
-        containerLoginView.addSubview(customLoginButton)
-        customLoginButton.anchor(top: nil, left: containerLoginView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 20, height: 20)
-        customLoginButton.centerYAnchor.constraint(equalTo: containerLoginView.centerYAnchor).isActive = true
-        
-        containerLoginView.addSubview(customLoginText)
-        customLoginText.anchor(top: nil, left: customLoginButton.rightAnchor, bottom: nil, right: containerLoginView.rightAnchor, paddingTop: 0, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0)
-        customLoginText.centerYAnchor.constraint(equalTo: customLoginButton.centerYAnchor).isActive = true
-        customLoginText.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleLogin)))
+        view.addSubview(customLoginView)
+        customLoginView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
+        customLoginView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        customLoginView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        customLoginView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleLogin)))
+            
+        customLoginView.addSubview(customLoginButton)
+        customLoginButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 25, height: 25)
+        customLoginButton.centerYAnchor.constraint(equalTo: customLoginView.centerYAnchor).isActive = true
+        customLoginButton.centerXAnchor.constraint(equalTo: customLoginView.centerXAnchor).isActive = true
         
     }
     

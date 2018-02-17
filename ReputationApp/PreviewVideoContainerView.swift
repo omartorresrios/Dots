@@ -57,6 +57,10 @@ class PreviewVideoContainerView: UIViewController {
         view.removeFromSuperview()
     }
     
+    override var prefersStatusBarHidden : Bool {
+        return true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
