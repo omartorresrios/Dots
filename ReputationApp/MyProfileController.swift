@@ -34,7 +34,7 @@ class MyProfileController: UIViewController {
         button.layer.borderWidth = 2
         button.layer.borderColor = UIColor.white.cgColor
         button.tintColor = .white
-        button.setTitle("Reseñas", for: .normal)
+        button.setTitle("Mis reseñas", for: .normal)
         button.titleLabel?.font = UIFont(name: "SFUIDisplay-Semibold", size: 17)
         button.addTarget(self, action: #selector(showUserReviewsView), for: .touchUpInside)
         button.layer.cornerRadius = 8
@@ -136,15 +136,18 @@ class MyProfileController: UIViewController {
     }
     
     fileprivate func setupOptionsButtons() {
-        let stackView = UIStackView(arrangedSubviews: [storiesOptionButton, reviewsOptionButton])
+        view.addSubview(reviewsOptionButton)
+        reviewsOptionButton.anchor(top: fullnameLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 60)
         
-        stackView.axis = .vertical
-        stackView.spacing = 10
-        stackView.distribution = .fillEqually
-        
-        view.addSubview(stackView)
-        stackView.anchor(top: fullnameLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 130)
-        stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+//        let stackView = UIStackView(arrangedSubviews: [/*storiesOptionButton,*/reviewsOptionButton])
+//
+//        stackView.axis = .vertical
+//        stackView.spacing = 0//10
+//        stackView.distribution = .fillEqually
+//
+//        view.addSubview(stackView)
+//        stackView.anchor(top: fullnameLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 130)
+//        stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
     
     func handleSheetAction() {

@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged),name: ReachabilityChangedNotification,object: reachability)
         do {
             try reachability.startNotifier()
-        } catch{
+        } catch {
             print("could not start reachability notifier")
         }
         
@@ -44,12 +44,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             
             let left = storyboard.instantiateViewController(withIdentifier: "left")
-            let middle = storyboard.instantiateViewController(withIdentifier: "middle")
             let right = storyboard.instantiateViewController(withIdentifier: "right")
             
-            let snapContainer = SnapContainerViewController.containerViewWith(left,
-                                                                              middleVC: middle,
-                                                                              rightVC: right)
+            let snapContainer = SnapContainerViewController.containerViewWith(left, rightVC: right)
             
             if forAppDelegate == true {
                 self.window?.rootViewController = snapContainer

@@ -388,18 +388,18 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
         searchButton.isHidden = false
     }
     
-    func showUserStoriesView() {
-        let userStoriesController = UserStoriesController(collectionViewLayout: UICollectionViewFlowLayout())
-        
-        userStoriesController.userId = userSelected.id
-        userStoriesController.userFullname = userSelected.fullname
-        userStoriesController.userImageUrl = userSelected.profileImageUrl
-        userStoriesController.currentUserDic = currentUserDic
-        
-        present(userStoriesController, animated: true) {
-            self.userContentOptionsView.removeFromSuperview()
-        }
-    }
+//    func showUserStoriesView() {
+//        let userStoriesController = UserStoriesController(collectionViewLayout: UICollectionViewFlowLayout())
+//
+//        userStoriesController.userId = userSelected.id
+//        userStoriesController.userFullname = userSelected.fullname
+//        userStoriesController.userImageUrl = userSelected.profileImageUrl
+//        userStoriesController.currentUserDic = currentUserDic
+//
+//        present(userStoriesController, animated: true) {
+//            self.userContentOptionsView.removeFromSuperview()
+//        }
+//    }
     
     func showUserReviewsView() {
         let userReviewsController = UserReviewsController(collectionViewLayout: UICollectionViewFlowLayout())
@@ -441,14 +441,14 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
             self.view.addSubview(self.userContentOptionsView)
             self.userContentOptionsView.anchor(top: self.view.topAnchor, left: self.view.leftAnchor, bottom: self.view.bottomAnchor, right: self.view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
             
-            let storiesTap = UITapGestureRecognizer(target: self, action: #selector(self.showUserStoriesView))
-            self.userContentOptionsView.storiesViewContainer.addGestureRecognizer(storiesTap)
+//            let storiesTap = UITapGestureRecognizer(target: self, action: #selector(self.showUserStoriesView))
+//            self.userContentOptionsView.storiesViewContainer.addGestureRecognizer(storiesTap)
             
             let reviewsTap = UITapGestureRecognizer(target: self, action: #selector(self.showUserReviewsView))
             self.userContentOptionsView.reviewsViewContainer.addGestureRecognizer(reviewsTap)
-            
-            self.userContentOptionsView.reviewsViewContainer.layoutIfNeeded()
-            self.userContentOptionsView.reviewsViewContainer.layer.addBorder(edge: .top, color: .gray, thickness: 1)
+//
+//            self.userContentOptionsView.reviewsViewContainer.layoutIfNeeded()
+//            self.userContentOptionsView.reviewsViewContainer.layer.addBorder(edge: .top, color: .gray, thickness: 1)
             
             self.userContentOptionsView.writeReviewViewContainer.layoutIfNeeded()
             self.userContentOptionsView.writeReviewViewContainer.layer.addBorder(edge: .top, color: .gray, thickness: 1)

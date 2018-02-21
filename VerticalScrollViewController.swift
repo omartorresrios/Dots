@@ -14,13 +14,10 @@ class VerticalScrollViewController: UIViewController, SnapContainerViewControlle
     var bottomVc: UIViewController!
     var scrollView: UIScrollView!
     
-    class func verticalScrollVcWith(middleVc: UIViewController,
-                                    topVc: UIViewController?=nil,
-                                    bottomVc: UIViewController?=nil) -> VerticalScrollViewController {
+    class func verticalScrollVcWith(topVc: UIViewController?=nil, bottomVc: UIViewController?=nil) -> VerticalScrollViewController {
         let middleScrollVc = VerticalScrollViewController()
         
         middleScrollVc.topVc = topVc
-        middleScrollVc.middleVc = middleVc
         middleScrollVc.bottomVc = bottomVc
         
         return middleScrollVc

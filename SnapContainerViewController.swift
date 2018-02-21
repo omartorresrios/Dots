@@ -26,12 +26,11 @@ class SnapContainerViewController: UIViewController, UIScrollViewDelegate {
     var veritcalViews = [UIViewController]()
     
     var initialContentOffset = CGPoint() // scrollView initial offset
-    var middleVertScrollVc: VerticalScrollViewController!
+//    var middleVertScrollVc: VerticalScrollViewController!
     var scrollView: UIScrollView!
     var delegate: SnapContainerViewControllerDelegate?
     
     class func containerViewWith(_ leftVC: UIViewController,
-                                 middleVC: UIViewController,
                                  rightVC: UIViewController,
                                  directionLockDisabled: Bool?=false) -> SnapContainerViewController {
         let container = SnapContainerViewController()
@@ -39,7 +38,6 @@ class SnapContainerViewController: UIViewController, UIScrollViewDelegate {
         container.directionLockDisabled = directionLockDisabled
         
         container.leftVc = leftVC
-        container.middleVc = middleVC
         container.rightVc = rightVC
         return container
     }
@@ -50,17 +48,15 @@ class SnapContainerViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupVerticalScrollView()
+//        setupVerticalScrollView()
         setupHorizontalScrollView()
         
     }
     
-    func setupVerticalScrollView() {
-        middleVertScrollVc = VerticalScrollViewController.verticalScrollVcWith(middleVc: middleVc,
-                                                                               topVc: topVc,
-                                                                               bottomVc: bottomVc)
-        delegate = middleVertScrollVc
-    }
+//    func setupVerticalScrollView() {
+//        middleVertScrollVc = VerticalScrollViewController.verticalScrollVcWith(topVc: topVc, bottomVc: bottomVc)
+//        delegate = middleVertScrollVc
+//    }
     
     func setupHorizontalScrollView() {
         scrollView = UIScrollView()
@@ -83,7 +79,7 @@ class SnapContainerViewController: UIViewController, UIScrollViewDelegate {
         
         self.view.addSubview(scrollView)
         
-        let scrollWidth  = 3 * view.width
+        let scrollWidth  = 2 * view.width
         let scrollHeight  = view.height
         scrollView.contentSize = CGSize(width: scrollWidth, height: scrollHeight)
         
@@ -93,31 +89,31 @@ class SnapContainerViewController: UIViewController, UIScrollViewDelegate {
                                    height: view.height
         )
         
-        middleVertScrollVc.view.frame = CGRect(x: view.width,
-                                               y: 0,
-                                               width: view.width,
-                                               height: view.height
-        )
+//        middleVertScrollVc.view.frame = CGRect(x: view.width,
+//                                               y: 0,
+//                                               width: view.width,
+//                                               height: view.height
+//        )
         
-        rightVc.view.frame = CGRect(x: 2 * view.width,
+        rightVc.view.frame = CGRect(x: 1 * view.width,
                                     y: 0,
                                     width: view.width,
                                     height: view.height
         )
         
         addChildViewController(leftVc)
-        addChildViewController(middleVertScrollVc)
+//        addChildViewController(middleVertScrollVc)
         addChildViewController(rightVc)
         
         scrollView.addSubview(leftVc.view)
-        scrollView.addSubview(middleVertScrollVc.view)
+//        scrollView.addSubview(middleVertScrollVc.view)
         scrollView.addSubview(rightVc.view)
         
         leftVc.didMove(toParentViewController: self)
-        middleVertScrollVc.didMove(toParentViewController: self)
+//        middleVertScrollVc.didMove(toParentViewController: self)
         rightVc.didMove(toParentViewController: self)
         
-        scrollView.contentOffset.x = middleVertScrollVc.view.frame.origin.x
+        scrollView.contentOffset.x = rightVc.view.frame.origin.x
         scrollView.delegate = self
     }
     
