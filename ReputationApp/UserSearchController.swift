@@ -73,6 +73,17 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
         return view
     }()
     
+    let resultLabel: UILabel = {
+        let ml = UILabel()
+        ml.text = "Busca a alguien"
+        ml.isHidden = false
+        ml.font = UIFont(name: "SFUIDisplay-Medium", size: 16)
+        ml.textColor = UIColor.grayLow()
+        ml.numberOfLines = 1
+        ml.textAlignment = .center
+        return ml
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -99,8 +110,6 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
         collectionView.isHidden = true
         layout.sectionHeadersPinToVisibleBounds = true
         
-        UIApplication.shared.statusBarStyle = .default
-        
         // Initialize the loader and position it
         view.addSubview(loader)
         loader.center = view.center
@@ -110,6 +119,9 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
         messageLabel.anchor(top: nil, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 10, paddingBottom: 0, paddingRight: 10, width: 0, height: 0)
         messageLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         
+        view.addSubview(resultLabel)
+        resultLabel.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 50, paddingLeft: 10, paddingBottom: 0, paddingRight: 10, width: 0, height: 0)
+        
         // Initialize functions
         loadAllUsers { (success) in
             if success {
@@ -118,16 +130,11 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
         }
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .default
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // General properties of the view
         navigationController?.tabBarController?.tabBar.isHidden = false
-        UIApplication.shared.isStatusBarHidden = true
     }
     
     func animateRecordButton() {
@@ -213,20 +220,26 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
     }
     
     func wordForSearch(word: String) {
+        resultLabel.isHidden = true
         filteredUsers = self.users.filter { (user) -> Bool in
             return user.fullname.lowercased().contains(word.lowercased())
         }
         
         // Check is there are results
         if filteredUsers.isEmpty {
-            messageLabel.isHidden = false
-            messageLabel.text = "🙁 No encontramos a esa persona."
-            searchButton.tintColor = UIColor.mainGreen()
-            loader.stopAnimating()
+            DispatchQueue.main.async {
+                self.messageLabel.isHidden = false
+                self.messageLabel.text = "🙁 No encontramos a esa persona."
+                self.searchButton.tintColor = UIColor.mainGreen()
+                self.loader.stopAnimating()
+            }
+            
         } else {
-            messageLabel.isHidden = true
-            loader.stopAnimating()
-            collectionView.isHidden = false
+            DispatchQueue.main.async {
+                self.messageLabel.isHidden = true
+                self.loader.stopAnimating()
+                self.collectionView.isHidden = false
+            }
         }
         collectionView?.reloadData()
     }

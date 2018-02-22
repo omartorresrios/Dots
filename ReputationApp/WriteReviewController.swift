@@ -31,6 +31,14 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
     var tap = UITapGestureRecognizer()
     let customAlertMessage = CustomAlertMessage()
     
+    var meterTimer:Timer!
+    var isAudioRecordingGranted: Bool!
+    var isRecording = false
+    var isPlaying = false
+    var audioRecorder: AVAudioRecorder!
+    var audioPlayer : AVAudioPlayer!
+    var duration: TimeInterval!
+    
     var playing: Bool = false {
         willSet {
             if newValue != playing {
@@ -157,6 +165,68 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
         
         addRecordButton()
         
+        check_record_permission()
+    }
+    
+    func check_record_permission() {
+        switch AVAudioSession.sharedInstance().recordPermission() {
+        case AVAudioSessionRecordPermission.granted:
+            isAudioRecordingGranted = true
+            break
+        case AVAudioSessionRecordPermission.denied:
+            isAudioRecordingGranted = false
+            break
+        case AVAudioSessionRecordPermission.undetermined:
+            AVAudioSession.sharedInstance().requestRecordPermission() { [unowned self] allowed in
+                DispatchQueue.main.async {
+                    if allowed {
+                        self.isAudioRecordingGranted = true
+                    } else {
+                        self.isAudioRecordingGranted = false
+                    }
+                }
+            }
+            break
+        default:
+            break
+        }
+    }
+    
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectory = paths[0]
+        return documentsDirectory
+    }
+    
+    func getFileUrl() -> URL {
+        let filename = "myRecording.m4a"
+        let filePath = getDocumentsDirectory().appendingPathComponent(filename)
+        return filePath
+    }
+    
+    func setup_recorder() {
+        if isAudioRecordingGranted {
+            let session = AVAudioSession.sharedInstance()
+            do {
+                try session.setCategory(AVAudioSessionCategoryPlayAndRecord, with: .defaultToSpeaker)
+                try session.setActive(true)
+                let settings = [
+                    AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+                    AVSampleRateKey: 44100,
+                    AVNumberOfChannelsKey: 2,
+                    AVEncoderAudioQualityKey:AVAudioQuality.high.rawValue
+                ]
+                audioRecorder = try AVAudioRecorder(url: getFileUrl(), settings: settings)
+                audioRecorder.delegate = self
+                audioRecorder.isMeteringEnabled = true
+                audioRecorder.prepareToRecord()
+            }
+            catch let error {
+                self.showCustomAlertMessage(image: "😕".image(), message: "No se pudo configurar el micrófono. Intenta de nuevo")
+            }
+        } else {
+            self.showCustomAlertMessage(image: "😕".image(), message: "No se puede acceder a tu micrófono")
+        }
     }
     
     override var prefersStatusBarHidden : Bool {
@@ -174,19 +244,30 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
         startRecordButton.adjustsImageWhenHighlighted = false
     }
     
+    func prepare_play() {
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOf: getFileUrl())
+            audioPlayer.delegate = self
+            audioPlayer.prepareToPlay()
+        }
+        catch {
+            print("Some error preparing the play")
+        }
+    }
+    
     func playAudio() {
         func tryPlay() {
             do {
                 AudioBot.reportPlayingDuration = { duration in
-                    
+
                     let ti = NSInteger(duration)
-                    
+
                     let seconds = String(format: "%02d", ti % 60)
                     let minutes = String(format: "%2d", (ti / 60) % 60)
-                    
+
                     self.audioLength.text = "\(minutes):\(seconds)"
                 }
-                
+
                 let progressPeriodicReport: AudioBot.PeriodicReport = (reportingFrequency: 10, report: { progress in
                     print("progress: \(progress)")
                     self.actualReview.progress = CGFloat(progress)
@@ -265,29 +346,25 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
             self.startRecordButton.tintColor = UIColor.mainGreen()
         }
         
-        if AudioBot.recording {
+        if isRecording {
             DispatchQueue.main.async {
                 self.startRecordButton.tintColor = .white
             }
-            AudioBot.stopRecord { [weak self] fileURL, duration, decibelSamples in
-                print("fileURL: \(fileURL)")
-                print("duration: \(duration)")
-                print("decibelSamples: \(decibelSamples)")
-                guard let newFileURL = FileManager.voicememo_audioFileURLWithName(UUID().uuidString, "m4a") else { return }
-                guard let _ = try? FileManager.default.copyItem(at: fileURL, to: newFileURL) else { return }
-                let voiceMemo = Review(fileURL: newFileURL, duration: duration)
-                
-                print("newFileURL: ", newFileURL)
-                
-                self?.actualReview = voiceMemo
-                self?.finalUrl = newFileURL
-                self?.finalDuration = duration
-                self?.addPlayerView(isShowing: true)
-            }
+            
+            finishAudioRecording(success: true)
+
+            let voiceMemo = Review(fileURL: getFileUrl(), duration: duration)
+            self.actualReview = voiceMemo
+            self.finalUrl = getFileUrl()
+            self.finalDuration = duration
+            
+            self.addPlayerView(isShowing: true)
+            isRecording = false
             
         } else {
+            setup_recorder()
             
-            startRecordButton.tintColor = UIColor.mainGreen()
+            audioRecorder.record()
             
             if self.view.subviews.contains(supportView) && self.view.subviews.contains(sendView) {
                 print("HAY ELEMENTOS")
@@ -299,16 +376,36 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
                 print("NO HAY NINGUN ELEMENTO")
             }
             
-            do {
-                let decibelSamplePeriodicReport: AudioBot.PeriodicReport = (reportingFrequency: 10, report: { decibelSample in
-                    print("decibelSample: \(decibelSample)")
-                })
-                AudioBot.mixWithOthersWhenRecording = true
-                try AudioBot.startRecordAudio(forUsage: .normal, withDecibelSamplePeriodicReport: decibelSamplePeriodicReport)
-                
-            } catch {
-                print("record error: \(error)")
+            DispatchQueue.main.async {
+                self.meterTimer = Timer.scheduledTimer(timeInterval: 0.1, target:self, selector:#selector(self.updateAudioMeter(timer:)), userInfo:nil, repeats:true)
+                self.startRecordButton.tintColor = UIColor.mainGreen()
             }
+            
+            self.addPlayerView(isShowing: false)
+            isRecording = true
+        }
+    }
+    
+    func updateAudioMeter(timer: Timer) {
+        if audioRecorder.isRecording {
+            let hr = Int((audioRecorder.currentTime / 60) / 60)
+            let min = Int(audioRecorder.currentTime / 60)
+            let sec = Int(audioRecorder.currentTime.truncatingRemainder(dividingBy: 60))
+            let totalTimeString = String(format: "%02d:%02d:%02d", hr, min, sec)
+            audioLength.text = totalTimeString
+            audioRecorder.updateMeters()
+        }
+    }
+    
+    func finishAudioRecording(success: Bool) {
+        if success {
+            duration = audioRecorder.currentTime
+            audioRecorder.stop()
+            audioRecorder = nil
+            meterTimer.invalidate()
+            print("recorded successfully.")
+        } else {
+            self.showCustomAlertMessage(image: "😕".image(), message: "Hubo un error al grabar tu reseña. Intenta de nuevo")
         }
     }
     

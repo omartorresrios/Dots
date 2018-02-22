@@ -65,6 +65,16 @@ class MyProfileController: UIViewController {
         return imageView
     }()
     
+    let dotsLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.text = "Dots v1.0.4 ✌️"
+        label.font = UIFont(name: "SFUIDisplay-Regular", size: 11)
+        label.textColor = .white
+        label.numberOfLines = 0
+        return label
+    }()
+    
     func showUserReviewsView() {
         let myReviewsController = MyReviewsController(collectionViewLayout: UICollectionViewFlowLayout())
         
@@ -85,18 +95,16 @@ class MyProfileController: UIViewController {
         present(myStoriesController, animated: true, completion: nil)
     }
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor.grayLow()
         navigationController?.navigationBar.isHidden = true
         
-        
         setupUserInfo()
         setupTopViews()
         setupOptionsButtons()
+        setupLogoImageView()
         
     }
     
@@ -148,6 +156,12 @@ class MyProfileController: UIViewController {
 //        view.addSubview(stackView)
 //        stackView.anchor(top: fullnameLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 130)
 //        stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    }
+    
+    func setupLogoImageView() {
+        view.addSubview(dotsLabel)
+        dotsLabel.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 5, paddingRight: 0, width: 0, height: 0)
+        dotsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
     
     func handleSheetAction() {
