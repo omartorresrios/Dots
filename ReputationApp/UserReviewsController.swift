@@ -382,7 +382,6 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
         dateFormatter.dateFormat = "dd-MM-yyyy HH:mm:ss"
         dateFormatter.locale = tempLocale // reset the locale
         let dateString = dateFormatter.string(from: date)
-        print("EXACT_DATE : \(dateString)")
         
         cell.timeLabel.text = date.timeAgoDisplay()
             

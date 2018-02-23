@@ -61,6 +61,14 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
         return button
     }()
     
+    let stopButton: UIButton = {
+        let button = UIButton()
+        button.setImage(#imageLiteral(resourceName: "stop").withRenderingMode(.alwaysTemplate), for: .normal)
+        button.tintColor = UIColor.mainGreen()
+        button.addTarget(self, action: #selector(stopAudioFromStopButton), for: .touchUpInside)
+        return button
+    }()
+    
     let supportAlertView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(white: 0, alpha: 0.7)
@@ -199,11 +207,18 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
                         
                         completion(true)
                         
-                        self.view.addSubview(self.searchButton)
-                        self.searchButton.anchor(top: nil, left: nil, bottom: self.view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 20, paddingRight: 0, width: 50, height: 50)
-                        self.searchButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+                        self.view.addSubview(self.stopButton)
+                        self.stopButton.anchor(top: nil, left: nil, bottom: self.view.bottomAnchor, right: self.view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 20, paddingRight: 20, width: 30, height: 30)
+                        self.stopButton.adjustsImageWhenHighlighted = false
+                        self.stopButton.isHidden = true
+                        self.stopButton.isUserInteractionEnabled = false
                         
+                        self.view.addSubview(self.searchButton)
+                        self.searchButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 50, height: 50)
+                        self.searchButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+                        self.searchButton.centerYAnchor.constraint(equalTo: self.stopButton.centerYAnchor).isActive = true
                         self.searchButton.adjustsImageWhenHighlighted = false
+                        
                         
                         self.loader.stopAnimating()
                         
@@ -221,6 +236,8 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
     
     func wordForSearch(word: String) {
         resultLabel.isHidden = true
+        stopButton.isHidden = true
+        stopButton.isUserInteractionEnabled = false
         filteredUsers = self.users.filter { (user) -> Bool in
             return user.fullname.lowercased().contains(word.lowercased())
         }
@@ -250,6 +267,7 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
             
             self.loader.stopAnimating()
             self.searchButton.isHidden = true
+            self.stopButton.isHidden = true
             
             self.customAlertMessage.transform = CGAffineTransform(translationX: 0, y: self.view.frame.height)
             
@@ -332,6 +350,7 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
                     self?.showCustomAlertMessage(image: "💩".image(), message: "¡Hubo un problema!\n\n1. Se excedió el tiempo de espera (1 min. máx.) ó\n2. Tu tono de voz fue muy bajo.", isForTimeOut: true)
                     
                     self?.searchButton.isHidden = true
+                    self?.stopButton.isHidden = true
                     
                 } else if let response = response {
                     
@@ -371,8 +390,16 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
     func recordAudio(_ sender: NSObject) {
         // Check for internet connection
         if (reachability?.isReachable)! {
-            
-            messageLabel.isHidden = true
+            DispatchQueue.main.async {
+                self.searchButton.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+                UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                    self.searchButton.transform = .identity
+                }, completion: nil)
+                
+                self.stopButton.isHidden = false
+                self.stopButton.isUserInteractionEnabled = true
+                self.messageLabel.isHidden = true
+            }
             self.animateRecordButton()
             let audioSession = AVAudioSession.sharedInstance()
             do {
@@ -391,6 +418,17 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
     }
     
     func stopAudio(_ sender: NSObject) {
+        _ = AudioController.sharedInstance.stop()
+        SpeechRecognitionService.sharedInstance.stopStreaming()
+    }
+    
+    func stopAudioFromStopButton() {
+        DispatchQueue.main.async {
+            self.stopButton.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                self.stopButton.transform = .identity
+            }, completion: nil)
+        }
         _ = AudioController.sharedInstance.stop()
         SpeechRecognitionService.sharedInstance.stopStreaming()
     }
