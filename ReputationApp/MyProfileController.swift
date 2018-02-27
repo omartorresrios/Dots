@@ -28,54 +28,22 @@ class MyProfileController: UIViewController {
         return button
     }()
     
-    let reviewsOptionButton: UIButton = {
-        let button = UIButton(type: .system)
-//        button.backgroundColor = UIColor.white
-        button.layer.borderWidth = 2
-        button.layer.borderColor = UIColor.white.cgColor
-        button.tintColor = .white
-        button.setTitle("Mis reseñas", for: .normal)
-        button.titleLabel?.font = UIFont(name: "SFUIDisplay-Semibold", size: 17)
-        button.addTarget(self, action: #selector(showUserReviewsView), for: .touchUpInside)
-        button.layer.cornerRadius = 8
-        return button
-    }()
-    
-    let fullnameLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.font = UIFont(name: "SFUIDisplay-Medium", size: 14)
-        label.textColor = .white
-        label.numberOfLines = 0
-        return label
-    }()
-    
-    let profileImageView: CustomImageView = {
-        let imageView = CustomImageView()
-        imageView.clipsToBounds = true
-        imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = 30
-        return imageView
-    }()
-    
-    let gearIcon: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = #imageLiteral(resourceName: "gear").withRenderingMode(.alwaysTemplate)
-        imageView.tintColor = .white
-        return imageView
-    }()
+    @IBOutlet weak var reviewsOptionButton: UIButton!
+    @IBOutlet weak var fullnameLabel: UILabel!
+    @IBOutlet weak var profileImageView: CustomImageView!
+    @IBOutlet weak var gearIcon: UIButton!
     
     let dotsLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.text = "Dots v1.0.4 ✌️"
+        label.text = "Dots v1.0.5 ✌️"
         label.font = UIFont(name: "SFUIDisplay-Regular", size: 11)
         label.textColor = .white
         label.numberOfLines = 0
         return label
     }()
     
-    func showUserReviewsView() {
+    @IBAction func showUserReviewsView() {
         let myReviewsController = MyReviewsController(collectionViewLayout: UICollectionViewFlowLayout())
         
         myReviewsController.userId = userSelected.id
@@ -130,32 +98,13 @@ class MyProfileController: UIViewController {
     }
     
     func setupTopViews() {
-        view.addSubview(gearIcon)
-        gearIcon.anchor(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: 25, height: 25)
-        gearIcon.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSheetAction)))
-        gearIcon.isUserInteractionEnabled = true
-        
-        view.addSubview(profileImageView)
-        profileImageView.anchor(top: gearIcon.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 50, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 160, height: 160)
-        profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        
-        view.addSubview(fullnameLabel)
-        fullnameLabel.anchor(top: profileImageView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
+        profileImageView.layer.cornerRadius = 30
     }
     
     fileprivate func setupOptionsButtons() {
-        view.addSubview(reviewsOptionButton)
-        reviewsOptionButton.anchor(top: fullnameLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 60)
-        
-//        let stackView = UIStackView(arrangedSubviews: [/*storiesOptionButton,*/reviewsOptionButton])
-//
-//        stackView.axis = .vertical
-//        stackView.spacing = 0//10
-//        stackView.distribution = .fillEqually
-//
-//        view.addSubview(stackView)
-//        stackView.anchor(top: fullnameLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 130)
-//        stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        reviewsOptionButton.layer.borderWidth = 2
+        reviewsOptionButton.layer.borderColor = UIColor.white.cgColor
+        reviewsOptionButton.layer.cornerRadius = 8
     }
     
     func setupLogoImageView() {
@@ -164,7 +113,7 @@ class MyProfileController: UIViewController {
         dotsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
     
-    func handleSheetAction() {
+    @IBAction func handleSheetAction() {
         let actionSheetController = UIAlertController()
         
         let cancelActionButton = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
