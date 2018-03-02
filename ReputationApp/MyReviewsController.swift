@@ -295,13 +295,13 @@ class MyReviewsController: UICollectionViewController, UICollectionViewDelegateF
             
             alert.addAction(UIAlertAction(title: "¡Gracias!", style: UIAlertActionStyle.default, handler: nil))
             
-            self.present(alert, animated: true, completion: nil)
+            self.containerView.present(alert, animated: true, completion: nil)
         }))
         
         sheetController.addAction(UIAlertAction(title: "Cancelar", style: .cancel, handler: nil))
         
         
-        present(sheetController, animated: true, completion: nil)
+        containerView.present(sheetController, animated: true, completion: nil)
         
     }
     

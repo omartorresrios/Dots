@@ -170,10 +170,10 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
         
     }
     
-    func sign(_ signIn: GIDSignIn!, present viewController: UIViewController!) {
-        self.present(viewController, animated: true) { () -> Void in
-        }
-    }
+//    func sign(_ signIn: GIDSignIn!, present viewController: UIViewController!) {
+//        self.present(viewController, animated: true) { () -> Void in
+//        }
+//    }
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         

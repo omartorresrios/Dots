@@ -30,7 +30,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9eF-Cs-JK3">
-                                <rect key="frame" x="334" y="92" width="25" height="25"/>
+                                <rect key="frame" x="334" y="48" width="25" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="25" id="4DN-tl-QnL"/>
                                     <constraint firstAttribute="height" constant="25" id="qXd-fB-kMe"/>
@@ -42,20 +42,20 @@
                                 </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vFl-CZ-aKk" customClass="CustomImageView" customModule="ReputationApp" customModuleProvider="target">
-                                <rect key="frame" x="107.5" y="167" width="160" height="160"/>
+                                <rect key="frame" x="107.5" y="123" width="160" height="160"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="160" id="DKN-yW-giy"/>
                                     <constraint firstAttribute="height" constant="160" id="zlo-2u-yYZ"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iQa-pV-7Vq">
-                                <rect key="frame" x="20" y="337" width="335" height="17"/>
+                                <rect key="frame" x="20" y="293" width="335" height="17"/>
                                 <fontDescription key="fontDescription" name="SFUIDisplay-Medium" family="SF UI Display" pointSize="14"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xM5-cY-wau">
-                                <rect key="frame" x="20" y="374" width="335" height="60"/>
+                                <rect key="frame" x="20" y="330" width="335" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="QjQ-Db-g8u"/>
                                 </constraints>
@@ -70,10 +70,10 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="iQa-pV-7Vq" firstAttribute="leading" secondItem="iGr-KV-pgH" secondAttribute="leading" constant="20" id="7c4-eU-U55"/>
-                            <constraint firstItem="9eF-Cs-JK3" firstAttribute="top" secondItem="Ci7-aV-PgS" secondAttribute="bottom" constant="28" id="AZ8-1U-ahd"/>
                             <constraint firstAttribute="trailing" secondItem="xM5-cY-wau" secondAttribute="trailing" constant="20" id="RyO-WH-QXP"/>
                             <constraint firstItem="vFl-CZ-aKk" firstAttribute="centerX" secondItem="iGr-KV-pgH" secondAttribute="centerX" id="bL9-fd-RiX"/>
                             <constraint firstAttribute="trailing" secondItem="9eF-Cs-JK3" secondAttribute="trailing" constant="16" id="e0N-x1-hA0"/>
+                            <constraint firstItem="9eF-Cs-JK3" firstAttribute="top" secondItem="Ci7-aV-PgS" secondAttribute="bottom" constant="28" id="eCJ-cx-u34"/>
                             <constraint firstItem="xM5-cY-wau" firstAttribute="top" secondItem="iQa-pV-7Vq" secondAttribute="bottom" constant="20" id="iAd-VH-yQa"/>
                             <constraint firstItem="iQa-pV-7Vq" firstAttribute="top" secondItem="vFl-CZ-aKk" secondAttribute="bottom" constant="10" id="ige-KC-Wr0"/>
                             <constraint firstItem="vFl-CZ-aKk" firstAttribute="top" secondItem="9eF-Cs-JK3" secondAttribute="bottom" constant="50" id="ijb-fC-aTF"/>
@@ -186,10 +186,9 @@
         <!--Navigation Controller-->
         <scene sceneID="NCr-JH-IV6">
             <objects>
-                <navigationController storyboardIdentifier="left" automaticallyAdjustsScrollViewInsets="NO" id="0Vh-dK-hO5" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="left" automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="0Vh-dK-hO5" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Zw0-5L-W7S">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>

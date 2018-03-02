@@ -194,8 +194,8 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
                         
                         completion(true)
                         
-                        self.stopButton.isHidden = false
-                        self.stopButton.isUserInteractionEnabled = true
+                        self.stopButton.isHidden = true
+                        self.stopButton.isUserInteractionEnabled = false
 
                         self.searchButton.isHidden = false
                         self.searchButton.isUserInteractionEnabled = true
@@ -442,10 +442,9 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
         userReviewsController.userFullname = userSelected.fullname
         userReviewsController.userImageUrl = userSelected.profileImageUrl
         userReviewsController.currentUserDic = currentUserDic
-
-        present(userReviewsController, animated: true) {
-            self.userContentOptionsView.removeFromSuperview()
-        }
+        
+        present(userReviewsController, animated: true, completion: nil)
+        
     }
     
     func showWriteReviewView() {
@@ -455,10 +454,8 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
         writeReviewController.userFullname = userSelected.fullname
         writeReviewController.userImageUrl = userSelected.profileImageUrl
         writeReviewController.currentUserDic = currentUserDic
-
-        present(writeReviewController, animated: true) {
-            self.userContentOptionsView.removeFromSuperview()
-        }
+        
+        present(writeReviewController, animated: true, completion: nil)
     }
     
     func blockUserView() {

@@ -36,7 +36,7 @@ class MyProfileController: UIViewController {
     let dotsLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.text = "Dots v1.0.5 ✌️"
+        label.text = "Dots v1.0.7 ✌️"
         label.font = UIFont(name: "SFUIDisplay-Regular", size: 11)
         label.textColor = .white
         label.numberOfLines = 0

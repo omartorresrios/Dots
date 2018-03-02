@@ -34,6 +34,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         logUser(forAppDelegate: true)
         
+        UIApplication.shared.statusBarStyle = .default
+        UIApplication.shared.isStatusBarHidden = false
+        
         return true
     }
     
