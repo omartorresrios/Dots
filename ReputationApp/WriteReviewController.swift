@@ -109,6 +109,20 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
         return progress
     }()
     
+    let closeView: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 15
+        view.backgroundColor = UIColor.mainGreen()
+        return view
+    }()
+    
+    let closeButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(#imageLiteral(resourceName: "down_arrow").withRenderingMode(.alwaysTemplate), for: .normal)
+        button.tintColor = .white
+        return button
+    }()
+    
     var playAudioButton: UIButton = {
         let button = UIButton(type: .system)
         button.tintColor = .white
@@ -154,11 +168,21 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
         
         view.backgroundColor = UIColor.grayHigh()
         
-        view.addSubview(titleLabel)
-        titleLabel.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
+        view.addSubview(closeView)
+        closeView.anchor(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 30, height: 30)
+        closeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(closeViewController)))
         
-        let tapGesture = UIPanGestureRecognizer(target: self, action: #selector(panGestureRecognizerHandler(_:)))
-        view.addGestureRecognizer(tapGesture)
+        closeView.addSubview(closeButton)
+        closeButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 15, height: 15)
+        closeButton.centerXAnchor.constraint(equalTo: closeView.centerXAnchor).isActive = true
+        closeButton.centerYAnchor.constraint(equalTo: closeView.centerYAnchor).isActive = true
+        closeButton.addTarget(self, action: #selector(closeViewController), for: .touchUpInside)
+        
+        view.addSubview(titleLabel)
+        titleLabel.anchor(top: closeView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
+        
+//        let tapGesture = UIPanGestureRecognizer(target: self, action: #selector(panGestureRecognizerHandler(_:)))
+//        view.addGestureRecognizer(tapGesture)
         
         // Reachability for checking internet connection
         NotificationCenter.default.addObserver(self, selector: #selector(reachabilityStatusChanged), name: NSNotification.Name(rawValue: "ReachStatusChanged"), object: nil)
@@ -166,6 +190,10 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
         addRecordButton()
         
         check_record_permission()
+    }
+    
+    func closeViewController() {
+        self.dismiss(animated: true, completion: nil)
     }
     
     func check_record_permission() {
@@ -520,28 +548,5 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
             self.showCustomAlertMessage(image: "😕".image(), message: "¡Revisa tu conexión de internet e intenta de nuevo!")
         }
         
-    }
-    
-    // define a variable to store initial touch position
-    var initialTouchPoint: CGPoint = CGPoint(x: 0,y: 0)
-    
-    func panGestureRecognizerHandler(_ sender: UIPanGestureRecognizer) {
-        let touchPoint = sender.location(in: self.view?.window)
-        
-        if sender.state == UIGestureRecognizerState.began {
-            initialTouchPoint = touchPoint
-        } else if sender.state == UIGestureRecognizerState.changed {
-            if touchPoint.y - initialTouchPoint.y > 0 {
-                self.view.frame = CGRect(x: 0, y: touchPoint.y - initialTouchPoint.y, width: self.view.frame.size.width, height: self.view.frame.size.height)
-            }
-        } else if sender.state == UIGestureRecognizerState.ended || sender.state == UIGestureRecognizerState.cancelled {
-            if touchPoint.y - initialTouchPoint.y > 100 {
-                self.dismiss(animated: true, completion: nil)
-            } else {
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
-                })
-            }
-        }
     }
 }

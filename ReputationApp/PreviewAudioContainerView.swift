@@ -74,6 +74,20 @@ class PreviewAudioContainerView: UIViewController {
         return slider
     }()
     
+    let closeView: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 15
+        view.backgroundColor = UIColor.mainGreen()
+        return view
+    }()
+    
+    let closeButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(#imageLiteral(resourceName: "down_arrow").withRenderingMode(.alwaysTemplate), for: .normal)
+        button.tintColor = .white
+        return button
+    }()
+    
     let audioLengthLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -98,6 +112,16 @@ class PreviewAudioContainerView: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor.grayHigh()
+        
+        view.addSubview(closeView)
+        closeView.anchor(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 30, height: 30)
+        closeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(closeViewController)))
+        
+        closeView.addSubview(closeButton)
+        closeButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 15, height: 15)
+        closeButton.centerXAnchor.constraint(equalTo: closeView.centerXAnchor).isActive = true
+        closeButton.centerYAnchor.constraint(equalTo: closeView.centerYAnchor).isActive = true
+        closeButton.addTarget(self, action: #selector(closeViewController), for: .touchUpInside)
         
         view.addSubview(suportView)
         let height: CGFloat = 25 + 44
@@ -128,6 +152,10 @@ class PreviewAudioContainerView: UIViewController {
         audioLengthLabel.anchor(top: nil, left: progressView.rightAnchor, bottom: nil, right: suportView.rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
         audioLengthLabel.centerYAnchor.constraint(equalTo: playButton.centerYAnchor).isActive = true
         
+    }
+    
+    func closeViewController() {
+        self.dismiss(animated: true, completion: nil)
     }
     
     //    func handleSliderChange() {

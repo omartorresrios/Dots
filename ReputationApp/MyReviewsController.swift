@@ -47,7 +47,7 @@ class MyReviewsController: UICollectionViewController, UICollectionViewDelegateF
     
     let closeButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "close").withRenderingMode(.alwaysTemplate), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "down_arrow").withRenderingMode(.alwaysTemplate), for: .normal)
         button.tintColor = .white
         return button
     }()
@@ -158,7 +158,7 @@ class MyReviewsController: UICollectionViewController, UICollectionViewDelegateF
                 self.closeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.closeViewController)))
                 
                 self.closeView.addSubview(self.closeButton)
-                self.closeButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 10, height: 10)
+                self.closeButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 15, height: 15)
                 self.closeButton.centerXAnchor.constraint(equalTo: self.closeView.centerXAnchor).isActive = true
                 self.closeButton.centerYAnchor.constraint(equalTo: self.closeView.centerYAnchor).isActive = true
                 self.closeButton.addTarget(self, action: #selector(self.closeViewController), for: .touchUpInside)
@@ -275,8 +275,8 @@ class MyReviewsController: UICollectionViewController, UICollectionViewDelegateF
     func setupReviewInfoViews() {
         self.present(containerView, animated: false, completion: nil)
 //
-        let tapGesture = UIPanGestureRecognizer(target: self, action: #selector(self.panGestureRecognizerHandler(_:)))
-        containerView.view.addGestureRecognizer(tapGesture)
+//        let tapGesture = UIPanGestureRecognizer(target: self, action: #selector(self.panGestureRecognizerHandler(_:)))
+//        containerView.view.addGestureRecognizer(tapGesture)
 //
 //        viewGeneral.addSubview(containerView)
 //        let height: CGFloat = 25 + 44
@@ -305,29 +305,29 @@ class MyReviewsController: UICollectionViewController, UICollectionViewDelegateF
         
     }
     
-    // define a variable to store initial touch position
-    var initialTouchPoint: CGPoint = CGPoint(x: 0,y: 0)
-    
-    func panGestureRecognizerHandler(_ sender: UIPanGestureRecognizer) {
-        let touchPoint = sender.location(in: containerView.view.window)
-        
-        if sender.state == UIGestureRecognizerState.began {
-            initialTouchPoint = touchPoint
-        } else if sender.state == UIGestureRecognizerState.changed {
-            if touchPoint.y - initialTouchPoint.y > 0 {
-                self.containerView.view.frame = CGRect(x: 0, y: touchPoint.y - initialTouchPoint.y, width: self.containerView.view.frame.size.width, height: self.containerView.view.frame.size.height)
-            }
-        } else if sender.state == UIGestureRecognizerState.ended || sender.state == UIGestureRecognizerState.cancelled {
-            if touchPoint.y - initialTouchPoint.y > 100 {
-//                self.viewGeneral.removeFromSuperview()
-                self.dismissContainerView()
-            } else {
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.containerView.view.frame = CGRect(x: 0, y: 0, width: self.containerView.view.frame.size.width, height: self.containerView.view.frame.size.height)
-                })
-            }
-        }
-    }
+//    // define a variable to store initial touch position
+//    var initialTouchPoint: CGPoint = CGPoint(x: 0,y: 0)
+//
+//    func panGestureRecognizerHandler(_ sender: UIPanGestureRecognizer) {
+//        let touchPoint = sender.location(in: containerView.view.window)
+//
+//        if sender.state == UIGestureRecognizerState.began {
+//            initialTouchPoint = touchPoint
+//        } else if sender.state == UIGestureRecognizerState.changed {
+//            if touchPoint.y - initialTouchPoint.y > 0 {
+//                self.containerView.view.frame = CGRect(x: 0, y: touchPoint.y - initialTouchPoint.y, width: self.containerView.view.frame.size.width, height: self.containerView.view.frame.size.height)
+//            }
+//        } else if sender.state == UIGestureRecognizerState.ended || sender.state == UIGestureRecognizerState.cancelled {
+//            if touchPoint.y - initialTouchPoint.y > 100 {
+////                self.viewGeneral.removeFromSuperview()
+//                self.dismissContainerView()
+//            } else {
+//                UIView.animate(withDuration: 0.3, animations: {
+//                    self.containerView.view.frame = CGRect(x: 0, y: 0, width: self.containerView.view.frame.size.width, height: self.containerView.view.frame.size.height)
+//                })
+//            }
+//        }
+//    }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
