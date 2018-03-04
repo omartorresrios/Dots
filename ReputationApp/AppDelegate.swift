@@ -10,6 +10,8 @@ import UIKit
 import JDStatusBarNotification
 import GoogleSignIn
 import Google
+import Mixpanel
+import Locksmith
 
 let reachability = Reachability()
 
@@ -25,6 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
+        initializeMixpanel()
+        
         NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged),name: ReachabilityChangedNotification,object: reachability)
         do {
             try reachability.startNotifier()
@@ -35,6 +39,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         logUser(forAppDelegate: true)
         
         return true
+    }
+    
+    func initializeMixpanel() {
+        Mixpanel.initialize(token: "146d9409269cd339bb2c2c9ae787d5de")
+        Mixpanel.mainInstance().flushInterval = 10
+        
+        guard let userEmail = Locksmith.loadDataForUserAccount(userAccount: "currentUserEmail") else { return }
+        guard let userAvatar = Locksmith.loadDataForUserAccount(userAccount: "currentUserAvatar") else { return }
+        guard let userName = Locksmith.loadDataForUserAccount(userAccount: "currentUserName") else { return }
+        guard let userId = Locksmith.loadDataForUserAccount(userAccount: "currentUserId") else { return }
+        
+        var mixpanelID = UserDefaults.standard.object(forKey: "MixpanelID")
+        if (mixpanelID == nil) {
+            mixpanelID = (userEmail as [String : AnyObject])["email"] as! String?
+            UserDefaults.standard.set(mixpanelID, forKey: "MixpanelID")
+        }
+        Mixpanel.mainInstance().identify(distinctId: mixpanelID as! String)
+        
+        Mixpanel.mainInstance().people.increment(property: "App Launched count", by: 1)
+        
+        Mixpanel.mainInstance().people.set(properties: ["name": (userName as [String : AnyObject])["name"] as! String!, "id": (userId as [String : AnyObject])["id"] as! Int!, "email": (userEmail as [String : AnyObject])["email"] as! String!, "avatar": (userAvatar as [String : AnyObject])["avatar"] as! String!])
+        
+        // Tracking each time users launches the app
+        Mixpanel.mainInstance().track(event: "App Launched")
+        
     }
     
     func logUser(forAppDelegate: Bool) {

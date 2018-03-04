@@ -14,5 +14,6 @@ target 'ReputationApp' do
   pod 'AudioBot'
   pod 'googleapis', :path => '.'
   pod 'Google/SignIn'
-
+  pod 'Mixpanel-swift'
+  
 end

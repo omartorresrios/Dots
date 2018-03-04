@@ -117,16 +117,18 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
         navigationController?.navigationBar.isHidden = true
     }
     
-    func saveApiTokenInKeychain(tokenString: String, idInt: Int, nameString: String, avatarString: String) {
+    func saveApiTokenInKeychain(tokenString: String, idInt: Int, nameString: String, emailString: String, avatarString: String) {
         // save API AuthToken in Keychain
         try! Locksmith.saveData(data: ["authenticationToken": tokenString], forUserAccount: "AuthToken")
         try! Locksmith.saveData(data: ["id": idInt], forUserAccount: "currentUserId")
         try! Locksmith.saveData(data: ["name": nameString], forUserAccount: "currentUserName")
+        try! Locksmith.saveData(data: ["email": emailString], forUserAccount: "currentUserEmail")
         try! Locksmith.saveData(data: ["avatar": avatarString], forUserAccount: "currentUserAvatar")
         
         print("AuthToken recién guardado: \(Locksmith.loadDataForUserAccount(userAccount: "AuthToken")!)")
         print("currentUserId recién guardado: \(Locksmith.loadDataForUserAccount(userAccount: "currentUserId")!)")
         print("currentUserName recién guardado: \(Locksmith.loadDataForUserAccount(userAccount: "currentUserName")!)")
+        print("currentUserEmail recién guardado: \(Locksmith.loadDataForUserAccount(userAccount: "currentUserEmail")!)")
         print("currentUserAvatar recién guardado: \(Locksmith.loadDataForUserAccount(userAccount: "currentUserAvatar")!)")
         
     }
@@ -245,10 +247,11 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
                                 let authToken = userJSON["authenticationToken"] as! String
                                 let userId = userJSON["id"] as! Int
                                 let userName = userJSON["fullname"] as! String
+                                let userEmail = userJSON["email"] as! String
                                 let avatarUrl = userJSON["avatarUrl"] as! String
                                 print("userJSON: \(userJSON)")
                                 print("JSON: \(JSON)")
-                                self.saveApiTokenInKeychain(tokenString: authToken, idInt: userId, nameString: userName, avatarString: avatarUrl)
+                                self.saveApiTokenInKeychain(tokenString: authToken, idInt: userId, nameString: userName, emailString: userEmail, avatarString: avatarUrl)
                                 print("authToken: \(authToken)")
                                 print("userId: \(userId)")
                                 

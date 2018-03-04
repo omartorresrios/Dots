@@ -13,6 +13,7 @@ import AudioBot
 import Locksmith
 import Alamofire
 import CoreGraphics
+import Mixpanel
 
 class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIGestureRecognizerDelegate {
     
@@ -190,6 +191,7 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
         addRecordButton()
         
         check_record_permission()
+        
     }
     
     func closeViewController() {
@@ -389,6 +391,11 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
             self.addPlayerView(isShowing: true)
             isRecording = false
             
+            // Tracking each time user tap startRecordButton (stop)
+            guard let userEmail = Locksmith.loadDataForUserAccount(userAccount: "currentUserEmail") else { return }
+            Mixpanel.mainInstance().identify(distinctId: (userEmail as [String : AnyObject])["email"] as! String!)
+            Mixpanel.mainInstance().track(event: "Pressed startRecordButton (stop)")
+            
         } else {
             setup_recorder()
             
@@ -411,7 +418,13 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
             
             self.addPlayerView(isShowing: false)
             isRecording = true
+            
+            // Tracking each time user tap startRecordButton (start)
+            guard let userEmail = Locksmith.loadDataForUserAccount(userAccount: "currentUserEmail") else { return }
+            Mixpanel.mainInstance().identify(distinctId: (userEmail as [String : AnyObject])["email"] as! String!)
+            Mixpanel.mainInstance().track(event: "Pressed startRecordButton (start)")
         }
+        
     }
     
     func updateAudioMeter(timer: Timer) {
@@ -547,6 +560,11 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
         } else {
             self.showCustomAlertMessage(image: "😕".image(), message: "¡Revisa tu conexión de internet e intenta de nuevo!")
         }
+        
+        // Tracking each time user tap sendButton
+        guard let userEmail = Locksmith.loadDataForUserAccount(userAccount: "currentUserEmail") else { return }
+        Mixpanel.mainInstance().identify(distinctId: (userEmail as [String : AnyObject])["email"] as! String!)
+        Mixpanel.mainInstance().track(event: "Pressed sendButton")
         
     }
 }

@@ -11,6 +11,7 @@ import Alamofire
 import Locksmith
 import AVFoundation
 import googleapis
+import Mixpanel
 
 let SAMPLE_RATE = 16000
 
@@ -122,6 +123,33 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
             if success {
 //                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllUsersLoaded"), object: nil)
             }
+        }
+        
+        check_record_permission()
+        
+    }
+    
+    func check_record_permission() {
+        switch AVAudioSession.sharedInstance().recordPermission() {
+        case AVAudioSessionRecordPermission.granted:
+            print("vao")
+            break
+        case AVAudioSessionRecordPermission.denied:
+            print("no vao")
+            break
+        case AVAudioSessionRecordPermission.undetermined:
+            AVAudioSession.sharedInstance().requestRecordPermission() { [unowned self] allowed in
+                DispatchQueue.main.async {
+                    if allowed {
+                        print("vao")
+                    } else {
+                        print("no vao")
+                    }
+                }
+            }
+            break
+        default:
+            break
         }
     }
     
@@ -371,6 +399,12 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
     }
     
     @IBAction func recordAudio(_ sender: NSObject) {
+        
+        // Tracking each time user tap searchButton
+        guard let userEmail = Locksmith.loadDataForUserAccount(userAccount: "currentUserEmail") else { return }
+        Mixpanel.mainInstance().identify(distinctId: (userEmail as [String : AnyObject])["email"] as! String!)
+        Mixpanel.mainInstance().track(event: "Pressed searchButton")
+        
         // Check for internet connection
         if (reachability?.isReachable)! {
             DispatchQueue.main.async {
@@ -445,6 +479,10 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
         
         present(userReviewsController, animated: true, completion: nil)
         
+        // Tracking each time user tap reviewsViewContainer
+        guard let userEmail = Locksmith.loadDataForUserAccount(userAccount: "currentUserEmail") else { return }
+        Mixpanel.mainInstance().identify(distinctId: (userEmail as [String : AnyObject])["email"] as! String!)
+        Mixpanel.mainInstance().track(event: "Pressed reviewsViewContainer")
     }
     
     func showWriteReviewView() {
@@ -456,6 +494,11 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
         writeReviewController.currentUserDic = currentUserDic
         
         present(writeReviewController, animated: true, completion: nil)
+        
+        // Tracking each time user tap writeReviewViewContainer
+        guard let userEmail = Locksmith.loadDataForUserAccount(userAccount: "currentUserEmail") else { return }
+        Mixpanel.mainInstance().identify(distinctId: (userEmail as [String : AnyObject])["email"] as! String!)
+        Mixpanel.mainInstance().track(event: "Pressed writeReviewViewContainer")
     }
     
     func blockUserView() {

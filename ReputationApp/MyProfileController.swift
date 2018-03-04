@@ -9,6 +9,7 @@
 import UIKit
 import Locksmith
 import GoogleSignIn
+import Mixpanel
 
 class MyProfileController: UIViewController {
     
@@ -36,7 +37,7 @@ class MyProfileController: UIViewController {
     let dotsLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.text = "Dots v1.0.7 ✌️"
+        label.text = "Dots v1.1.4 ✌️"
         label.font = UIFont(name: "SFUIDisplay-Regular", size: 11)
         label.textColor = .white
         label.numberOfLines = 0
@@ -51,6 +52,11 @@ class MyProfileController: UIViewController {
         myReviewsController.userImageUrl = userSelected.profileImageUrl
         
         present(myReviewsController, animated: true, completion: nil)
+        
+        // Tracking each time user tap reviewsOptionButton
+        guard let userEmail = Locksmith.loadDataForUserAccount(userAccount: "currentUserEmail") else { return }
+        Mixpanel.mainInstance().identify(distinctId: (userEmail as [String : AnyObject])["email"] as! String!)
+        Mixpanel.mainInstance().track(event: "Pressed reviewsOptionButton (mine)")
     }
     
     func showUserStoriesView() {
@@ -152,6 +158,7 @@ class MyProfileController: UIViewController {
         try! Locksmith.deleteDataForUserAccount(userAccount: "AuthToken")
         try! Locksmith.deleteDataForUserAccount(userAccount: "currentUserId")
         try! Locksmith.deleteDataForUserAccount(userAccount: "currentUserName")
+        try! Locksmith.deleteDataForUserAccount(userAccount: "currentUserEmail")
         try! Locksmith.deleteDataForUserAccount(userAccount: "currentUserAvatar")
     }
 }

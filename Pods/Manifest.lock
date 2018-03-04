@@ -76,6 +76,9 @@ PODS:
   - HanekeSwift (0.10.1)
   - JDStatusBarNotification (1.5.5)
   - Locksmith (3.0.0)
+  - Mixpanel-swift (2.3.1):
+    - Mixpanel-swift/Complete (= 2.3.1)
+  - Mixpanel-swift/Complete (2.3.1)
   - Protobuf (3.5.0)
   - SwiftyCam (2.6.0)
 
@@ -87,6 +90,7 @@ DEPENDENCIES:
   - HanekeSwift (from `https://github.com/Haneke/HanekeSwift.git`, branch `feature/swift-3`)
   - JDStatusBarNotification
   - Locksmith
+  - Mixpanel-swift
   - SwiftyCam
 
 EXTERNAL SOURCES:
@@ -123,9 +127,10 @@ SPEC CHECKSUMS:
   HanekeSwift: 4113367892828e7700d24a384027de6ebc79aad1
   JDStatusBarNotification: 2b4f29bd68a60d7aa2f190b5265f1ce59c18aaf8
   Locksmith: 310b4cc5031af5728bf4db5d4de547a5100c6a3b
+  Mixpanel-swift: 836b594b6b536544943e79e61eb34224bf6c7956
   Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
   SwiftyCam: 86c114177a1b1f5dc2c82384577d0c20b922a31b
 
-PODFILE CHECKSUM: ad4e12286c5dd910b31d8f31a3783ecaede264ad
+PODFILE CHECKSUM: 43e23de706198bc0971bfafebd6773dc05dea2f4
 
 COCOAPODS: 1.2.1

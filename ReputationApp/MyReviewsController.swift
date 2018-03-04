@@ -11,6 +11,7 @@ import Locksmith
 import Alamofire
 import AudioBot
 import MediaPlayer
+import Mixpanel
 
 private let cellId = "cellId"
 
@@ -456,8 +457,17 @@ class MyReviewsController: UICollectionViewController, UICollectionViewDelegateF
                     } else {
                         tryPlay()
                     }
+                    
+                    // Tracking each time user tap playOrPauseAudioAction
+                    guard let userEmail = Locksmith.loadDataForUserAccount(userAccount: "currentUserEmail") else { return }
+                    Mixpanel.mainInstance().identify(distinctId: (userEmail as [String : AnyObject])["email"] as! String!)
+                    Mixpanel.mainInstance().track(event: "Pressed playOrPauseAudioAction (mine)")
                 }
-                
+            
+                // Tracking each time user tap goToListen
+                guard let userEmail = Locksmith.loadDataForUserAccount(userAccount: "currentUserEmail") else { return }
+                Mixpanel.mainInstance().identify(distinctId: (userEmail as [String : AnyObject])["email"] as! String!)
+                Mixpanel.mainInstance().track(event: "Pressed goToListen (mine)")
 //            } else {
 //                self.showCustomAlertMessage(image: "😕".image(), message: "¡Revisa tu conexión de internet e intenta de nuevo!", isForLoadUsers: false)
 //            }
