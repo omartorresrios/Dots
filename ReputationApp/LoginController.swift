@@ -168,9 +168,9 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
         }
     }
     
-    func sign(_ signIn: GIDSignIn!, dismiss viewController: UIViewController!) {
-        
-    }
+//    func sign(_ signIn: GIDSignIn!, dismiss viewController: UIViewController!) {
+//        
+//    }
     
 //    func sign(_ signIn: GIDSignIn!, present viewController: UIViewController!) {
 //        self.present(viewController, animated: true) { () -> Void in
