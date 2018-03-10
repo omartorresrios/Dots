@@ -49,6 +49,18 @@ class SnapContainerViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 //        setupVerticalScrollView()
+        
+        let defaults = UserDefaults.standard
+        if defaults.object(forKey: "userLoggedIn") == nil {
+            
+            DispatchQueue.main.async {
+                let loginController = LoginController()
+                let navController = UINavigationController(rootViewController: loginController)
+                self.present(navController, animated: true, completion: nil)
+            }
+            return
+        }
+        
         setupHorizontalScrollView()
         
     }

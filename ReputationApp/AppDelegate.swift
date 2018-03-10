@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("could not start reachability notifier")
         }
         
-        logUser(forAppDelegate: true)
+        logUser()
         
         return true
     }
@@ -66,29 +66,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
     }
     
-    func logUser(forAppDelegate: Bool) {
-        let defaults = UserDefaults.standard
-        if defaults.object(forKey: "userLoggedIn") != nil {
-            
+    func logUser() {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            
+        
             let left = storyboard.instantiateViewController(withIdentifier: "left")
             let right = storyboard.instantiateViewController(withIdentifier: "right")
-            
+        
             let snapContainer = SnapContainerViewController.containerViewWith(left, rightVC: right)
-            
-            if forAppDelegate == true {
-                self.window?.rootViewController = snapContainer
-            } else {
-                showViewControllerWith(newViewController: snapContainer, usingAnimation: AnimationType.ANIMATE_UP)
-            }
-            
-            self.window?.makeKeyAndVisible()
-            
-        } else {
-            let login = LoginController()
-            self.window?.rootViewController = login
-        }
+            self.window?.rootViewController = snapContainer
     }
     
     //Declare enum
