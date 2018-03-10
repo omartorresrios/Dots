@@ -53,6 +53,19 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
         return button
     }()
     
+    let circleLoader: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.rgb(red: 30, green: 30, blue: 30)
+        view.layer.cornerRadius = 8
+        return view
+    }()
+    
+    let loader: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView.init(activityIndicatorStyle: UIActivityIndicatorViewStyle.white)
+        indicator.alpha = 1.0
+        return indicator
+    }()
+    
     func handleShowTermsOfService() {
         let termsOfServiceController = TermsOfServiceController()
         present(termsOfServiceController, animated: true, completion: nil)
@@ -171,15 +184,6 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
         }
     }
     
-//    func sign(_ signIn: GIDSignIn!, dismiss viewController: UIViewController!) {
-//        
-//    }
-    
-//    func sign(_ signIn: GIDSignIn!, present viewController: UIViewController!) {
-//        self.present(viewController, animated: true) { () -> Void in
-//        }
-//    }
-    
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         
         // Check for internet connection
@@ -189,6 +193,17 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
                 print("Some error while configuring Google login: ", error)
                 return
             }
+            
+            self.view.addSubview(self.circleLoader)
+            self.circleLoader.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 60, height: 60)
+            self.circleLoader.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+            self.circleLoader.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+            
+            self.circleLoader.addSubview(self.loader)
+            self.loader.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 20, height: 20)
+            self.loader.centerXAnchor.constraint(equalTo: self.circleLoader.centerXAnchor).isActive = true
+            self.loader.centerYAnchor.constraint(equalTo: self.circleLoader.centerYAnchor).isActive = true
+            self.loader.startAnimating()
             
             print("user id: ", GIDSignIn.sharedInstance().currentUser.userID)
             print("user name: ", user.profile.name)
@@ -258,34 +273,38 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
                                 print("authToken: \(authToken)")
                                 print("userId: \(userId)")
                                 
-                                
                                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                                //
+                                
                                 let left = storyboard.instantiateViewController(withIdentifier: "left")
                                 let right = storyboard.instantiateViewController(withIdentifier: "right")
-                                //
-                                let snapContainer = SnapContainerViewController.containerViewWith(left, rightVC: right)
                                 
-//                                var window: UIWindow?
-//                                window = UIWindow()
-//                                window?.rootViewController = snapContainer
+                                let snapContainer = SnapContainerViewController.containerViewWith(left, rightVC: right)
                                 
                                 UIApplication.shared.keyWindow?.rootViewController = snapContainer
                                 
-                                self.dismiss(animated: true, completion: nil)
-                                
-//                                let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
-//                                appDel.logUser()
+                                self.dismiss(animated: true, completion: {
+                                    DispatchQueue.main.async {
+                                        self.circleLoader.removeFromSuperview()
+                                        self.loader.stopAnimating()
+                                    }
+                                })
                                 
                             }
                         }
                         
                     case .failure(let encodingError):
+                        self.circleLoader.removeFromSuperview()
+                        self.loader.stopAnimating()
                         print("Alamofire proccess failed", encodingError)
                     }
                 })
                 
             } else {
+                
+                DispatchQueue.main.async {
+                    self.circleLoader.removeFromSuperview()
+                    self.loader.stopAnimating()
+                }
                 
                 GIDSignIn.sharedInstance().uiDelegate = self
                 GIDSignIn.sharedInstance().delegate = self
@@ -295,6 +314,10 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
             }
             
         } else {
+            DispatchQueue.main.async {
+                self.circleLoader.removeFromSuperview()
+                self.loader.stopAnimating()
+            }
             self.showCustomAlertMessage(image: "😕".image(), message: "¡Revisa tu conexión de internet e intenta de nuevo!")
         }
         
