@@ -150,7 +150,7 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
         
         let attributedMessage = NSMutableAttributedString(string: "\(self.userFullname!)", attributes: [NSFontAttributeName: boldNameFont])
 
-        attributedMessage.append(NSMutableAttributedString(string: " aún no tiene reviews 😲", attributes: [NSFontAttributeName: normalFont]))
+        attributedMessage.append(NSMutableAttributedString(string: " aún no tiene reseñas 😲", attributes: [NSFontAttributeName: normalFont]))
         
         self.messageLabel.attributedText = attributedMessage
         

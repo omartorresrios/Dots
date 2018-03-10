@@ -49,7 +49,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Nos gustaría acceder a la cámara para grabar tus momentos!</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Para grabar el audio de tus momentos!</string>
+	<string>Para usar el asistente de voz y poder dejar reseñas</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Nos gustaría acceder a tus fotos!</string>
 	<key>UIAppFonts</key>

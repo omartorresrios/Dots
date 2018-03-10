@@ -19,13 +19,6 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
     var tap = UITapGestureRecognizer()
     let customAlertMessage = CustomAlertMessage()
     
-    let customLoginView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        view.layer.cornerRadius = 20
-        return view
-    }()
-    
     let logoImageView: UIImageView = {
         let iv = UIImageView()
         iv.image = #imageLiteral(resourceName: "dots_logo")
@@ -33,11 +26,21 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
         return iv
     }()
     
-    let customLoginButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "logo_google").withRenderingMode(.alwaysOriginal), for: .normal)
-        button.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
-        return button
+    let supportView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 8
+        return view
+    }()
+    
+    let loginLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Inicia sesión con Google"
+        label.font = UIFont(name: "SFUIDisplay-Semibold", size: 20)
+        label.numberOfLines = 1
+        label.textAlignment = .center
+        label.textColor = UIColor.mainGreen()
+        return label
     }()
     
     let termsServiceButton: UIButton = {
@@ -83,14 +86,8 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().delegate = self
         
-        view.addSubview(logoImageView)
-        logoImageView.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 40, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 80, height: 80)
-        logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        
         setupCustomLoginButton()
         
-        view.addSubview(termsServiceButton)
-        termsServiceButton.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingBottom: 12, paddingRight: 20, width: 0, height: 0)
     }
     
     override var prefersStatusBarHidden : Bool {
@@ -99,16 +96,22 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
     
     func setupCustomLoginButton() {
         
-        view.addSubview(customLoginView)
-        customLoginView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
-        customLoginView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        customLoginView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        customLoginView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleLogin)))
-            
-        customLoginView.addSubview(customLoginButton)
-        customLoginButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 25, height: 25)
-        customLoginButton.centerYAnchor.constraint(equalTo: customLoginView.centerYAnchor).isActive = true
-        customLoginButton.centerXAnchor.constraint(equalTo: customLoginView.centerXAnchor).isActive = true
+        view.addSubview(termsServiceButton)
+        termsServiceButton.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingBottom: 8, paddingRight: 20, width: 0, height: 0)
+        
+        view.addSubview(supportView)
+        supportView.anchor(top: nil, left: view.leftAnchor, bottom: termsServiceButton.topAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingBottom: 40, paddingRight: 20, width: 0, height: 50)
+        supportView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleLogin)))
+        
+        supportView.addSubview(loginLabel)
+        loginLabel.anchor(top: nil, left: supportView.leftAnchor, bottom: nil, right: supportView.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
+        loginLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleLogin)))
+        loginLabel.centerYAnchor.constraint(equalTo: supportView.centerYAnchor).isActive = true
+        loginLabel.centerXAnchor.constraint(equalTo: supportView.centerXAnchor).isActive = true
+        
+        view.addSubview(logoImageView)
+        logoImageView.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 120, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 80, height: 80)
+        logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
     }
     
@@ -255,8 +258,24 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
                                 print("authToken: \(authToken)")
                                 print("userId: \(userId)")
                                 
-                                let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
-                                appDel.logUser(forAppDelegate: true)
+                                
+                                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                //
+                                let left = storyboard.instantiateViewController(withIdentifier: "left")
+                                let right = storyboard.instantiateViewController(withIdentifier: "right")
+                                //
+                                let snapContainer = SnapContainerViewController.containerViewWith(left, rightVC: right)
+                                
+//                                var window: UIWindow?
+//                                window = UIWindow()
+//                                window?.rootViewController = snapContainer
+                                
+                                UIApplication.shared.keyWindow?.rootViewController = snapContainer
+                                
+                                self.dismiss(animated: true, completion: nil)
+                                
+//                                let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
+//                                appDel.logUser()
                                 
                             }
                         }
