@@ -53,6 +53,12 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
         return button
     }()
     
+    let supportLoaderView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(white: 0, alpha: 0.6)
+        return view
+    }()
+    
     let circleLoader: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.rgb(red: 30, green: 30, blue: 30)
@@ -194,10 +200,13 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
                 return
             }
             
-            self.view.addSubview(self.circleLoader)
+            self.view.addSubview(self.supportLoaderView)
+            self.supportLoaderView.anchor(top: self.view.topAnchor, left: self.view.leftAnchor, bottom: self.view.bottomAnchor, right: self.view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+            
+            self.supportLoaderView.addSubview(self.circleLoader)
             self.circleLoader.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 60, height: 60)
-            self.circleLoader.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-            self.circleLoader.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+            self.circleLoader.centerXAnchor.constraint(equalTo: self.supportLoaderView.centerXAnchor).isActive = true
+            self.circleLoader.centerYAnchor.constraint(equalTo: self.supportLoaderView.centerYAnchor).isActive = true
             
             self.circleLoader.addSubview(self.loader)
             self.loader.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 20, height: 20)
@@ -284,6 +293,7 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
                                 
                                 self.dismiss(animated: true, completion: {
                                     DispatchQueue.main.async {
+                                        self.supportLoaderView.removeFromSuperview()
                                         self.circleLoader.removeFromSuperview()
                                         self.loader.stopAnimating()
                                     }
@@ -293,6 +303,7 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
                         }
                         
                     case .failure(let encodingError):
+                        self.supportLoaderView.removeFromSuperview()
                         self.circleLoader.removeFromSuperview()
                         self.loader.stopAnimating()
                         print("Alamofire proccess failed", encodingError)
@@ -302,6 +313,7 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
             } else {
                 
                 DispatchQueue.main.async {
+                    self.supportLoaderView.removeFromSuperview()
                     self.circleLoader.removeFromSuperview()
                     self.loader.stopAnimating()
                 }
@@ -315,14 +327,12 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
             
         } else {
             DispatchQueue.main.async {
+                self.supportLoaderView.removeFromSuperview()
                 self.circleLoader.removeFromSuperview()
                 self.loader.stopAnimating()
             }
             self.showCustomAlertMessage(image: "😕".image(), message: "¡Revisa tu conexión de internet e intenta de nuevo!")
         }
-        
-        
-        
     }
     
 }
