@@ -58,6 +58,16 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
         return indicator
     }()
     
+    let searchingReviewsLabel: UILabel = {
+        let ml = UILabel()
+        ml.text = "buscando reseñas..."
+        ml.font = UIFont(name: "SFUIDisplay-Regular", size: 14)
+        ml.textColor = UIColor.grayLow()
+        ml.numberOfLines = 1
+        ml.textAlignment = .center
+        return ml
+    }()
+    
     let blurConnectionView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(white: 0, alpha: 0.8)
@@ -83,6 +93,10 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
         loader.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         loader.startAnimating()
         
+        view.addSubview(searchingReviewsLabel)
+        searchingReviewsLabel.anchor(top: loader.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 4, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
+        searchingReviewsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
         AudioBot.prepareForNormalRecord()
         
         tap = UITapGestureRecognizer(target: self, action: #selector(dismissContainerView))
@@ -96,6 +110,7 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
         loadUserReviews { (success) in
             if success {
                 self.loader.stopAnimating()
+                self.searchingReviewsLabel.removeFromSuperview()
                 self.view.addSubview(self.closeView)
                 self.closeView.anchor(top: self.view.topAnchor, left: nil, bottom: nil, right: self.view.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 30, height: 30)
                 self.closeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.closeViewController)))

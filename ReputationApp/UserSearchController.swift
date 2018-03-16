@@ -72,7 +72,6 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
     let resultLabel: UILabel = {
         let ml = UILabel()
         ml.text = "Busca a alguien"
-        ml.isHidden = false
         ml.font = UIFont(name: "SFUIDisplay-Medium", size: 16)
         ml.textColor = UIColor.grayLow()
         ml.numberOfLines = 1
@@ -80,19 +79,60 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
         return ml
     }()
     
+    let searchingPeopleLabel: UILabel = {
+        let ml = UILabel()
+        ml.text = "buscando mamberos..."
+        ml.font = UIFont(name: "SFUIDisplay-Regular", size: 14)
+        ml.textColor = UIColor.grayLow()
+        ml.numberOfLines = 1
+        ml.textAlignment = .center
+        return ml
+    }()
+    
+    let userFeedControllerImage: UIImageView = {
+        let iv = UIImageView()
+        iv.image = #imageLiteral(resourceName: "dots_logo_feed")
+        iv.contentMode = .scaleAspectFill
+        return iv
+    }()
+    
+    let divideView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .gray
+        return view
+    }()
+    
+    @IBAction func goToUserFeedFromUserSearch(_ sender: Any) {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "GoToUserFeedControllerFromUserSearchController"), object: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 30, left: 10, bottom: 10, right: 10)
-        layout.itemSize = CGSize(width: 90, height: 120)
+        view.addSubview(userFeedControllerImage)
+        userFeedControllerImage.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 28, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 25, height: 25)
+        userFeedControllerImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(goToUserFeedFromUserSearch)))
+        userFeedControllerImage.isUserInteractionEnabled = true
         
-        collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
+        view.addSubview(divideView)
+        divideView.anchor(top: userFeedControllerImage.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
+        
+        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        let width = (view.frame.width - 32) / 3
+        layout.itemSize = CGSize(width: width, height: width + 40)
+        layout.minimumInteritemSpacing = 8
+        layout.minimumLineSpacing = 8
+        
+        self.automaticallyAdjustsScrollViewInsets = false
+        
+        collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(UserSearchCell.self, forCellWithReuseIdentifier: cellId)
         collectionView.backgroundColor = .white
         self.view.addSubview(collectionView)
+        collectionView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 62, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         AudioController.sharedInstance.delegate = self
         
@@ -110,13 +150,14 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
         view.addSubview(loader)
         loader.center = view.center
         
+        view.addSubview(searchingPeopleLabel)
+        searchingPeopleLabel.anchor(top: loader.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 4, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
+        searchingPeopleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
         // Position the messageLabel
         view.addSubview(messageLabel)
         messageLabel.anchor(top: nil, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 10, paddingBottom: 0, paddingRight: 10, width: 0, height: 0)
         messageLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        
-        view.addSubview(resultLabel)
-        resultLabel.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 50, paddingLeft: 10, paddingBottom: 0, paddingRight: 10, width: 0, height: 0)
         
         // Initialize functions
         loadAllUsers { (success) in
@@ -228,7 +269,13 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
                         self.searchButton.isHidden = false
                         self.searchButton.isUserInteractionEnabled = true
                         
+                        self.view.addSubview(self.resultLabel)
+                        self.resultLabel.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                        self.resultLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+                        self.resultLabel.centerYAnchor.constraint(equalTo: self.userFeedControllerImage.centerYAnchor).isActive = true
+                        
                         self.loader.stopAnimating()
+                        self.searchingPeopleLabel.removeFromSuperview()
                         
                     case .failure(let error):
                         print(error)
@@ -243,7 +290,6 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
     }
     
     func wordForSearch(word: String) {
-        resultLabel.isHidden = true
         stopButton.isHidden = true
         stopButton.isUserInteractionEnabled = false
         
@@ -565,19 +611,6 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
         cell.user = filteredUsers[indexPath.item]
         
         return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 8
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 8
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = (view.frame.width - 32) / 3
-        return CGSize(width: width, height: width + 20)
     }
     
 }

@@ -37,11 +37,18 @@ class MyProfileController: UIViewController {
     let dotsLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.text = "Dots v1.1.5 ✌️"
+        label.text = "Dots v1.1.6 ✌️"
         label.font = UIFont(name: "SFUIDisplay-Regular", size: 11)
         label.textColor = .white
         label.numberOfLines = 0
         return label
+    }()
+    
+    let userFeedControllerImage: UIImageView = {
+        let iv = UIImageView()
+        iv.image = #imageLiteral(resourceName: "dots_logo_profile")
+        iv.contentMode = .scaleAspectFill
+        return iv
     }()
     
     @IBAction func showUserReviewsView() {
@@ -80,6 +87,10 @@ class MyProfileController: UIViewController {
         setupOptionsButtons()
         setupLogoImageView()
         
+    }
+    
+    @IBAction func goToUserFeedFromMyProfile(_ sender: Any) {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "GoToUserFeedControllerFromMyProfileController"), object: nil)
     }
     
     func setupUserInfo() {

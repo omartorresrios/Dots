@@ -285,9 +285,10 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
                                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                                 
                                 let left = storyboard.instantiateViewController(withIdentifier: "left")
+                                let middle = storyboard.instantiateViewController(withIdentifier: "middle")
                                 let right = storyboard.instantiateViewController(withIdentifier: "right")
                                 
-                                let snapContainer = SnapContainerViewController.containerViewWith(left, rightVC: right)
+                                let snapContainer = SnapContainerViewController.containerViewWith(left, middleVC: middle, rightVC: right)
                                 
                                 UIApplication.shared.keyWindow?.rootViewController = snapContainer
                                 

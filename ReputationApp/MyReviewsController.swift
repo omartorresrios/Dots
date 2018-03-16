@@ -59,6 +59,16 @@ class MyReviewsController: UICollectionViewController, UICollectionViewDelegateF
         return indicator
     }()
     
+    let searchingReviewsLabel: UILabel = {
+        let ml = UILabel()
+        ml.text = "buscando reseñas..."
+        ml.font = UIFont(name: "SFUIDisplay-Regular", size: 14)
+        ml.textColor = UIColor.grayLow()
+        ml.numberOfLines = 1
+        ml.textAlignment = .center
+        return ml
+    }()
+    
     let blurConnectionView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(white: 0, alpha: 0.8)
@@ -83,6 +93,10 @@ class MyReviewsController: UICollectionViewController, UICollectionViewDelegateF
         loader.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 60, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 20, height: 20)
         loader.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         loader.startAnimating()
+        
+        view.addSubview(searchingReviewsLabel)
+        searchingReviewsLabel.anchor(top: loader.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 4, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
+        searchingReviewsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         tap = UITapGestureRecognizer(target: self, action: #selector(dismissContainerView))
         view.addGestureRecognizer(tap)
@@ -154,6 +168,7 @@ class MyReviewsController: UICollectionViewController, UICollectionViewDelegateF
         loadUserReviews { (success) in
             if success {
                 self.loader.stopAnimating()
+                self.searchingReviewsLabel.removeFromSuperview()
                 self.view.addSubview(self.closeView)
                 self.closeView.anchor(top: self.view.topAnchor, left: nil, bottom: nil, right: self.view.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 30, height: 30)
                 self.closeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.closeViewController)))

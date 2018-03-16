@@ -8,16 +8,16 @@
 
 import UIKit
 
-struct Review1 {
+struct ReviewAll {
     
     var progress: CGFloat = 0
     var playing: Bool = false
     
     var fileURL: URL
-    //    var createdAt: String?
+    var createdAt: String?
     var duration: TimeInterval
-    var from: Int?
-    var to: Int?
+//    var from: Int?
+//    var to: Int?
     var id: Int?
     
     var fromAvatarUrl: String?
@@ -32,12 +32,12 @@ struct Review1 {
     
     init(reviewDictionary: [String: Any]) {
         
-        //        self.createdAt = reviewDictionary["createdAt"] as? String ?? ""
+        self.createdAt = reviewDictionary["createdAt"] as? String ?? ""
         
-        self.fileURL = reviewDictionary["audio"] as! URL
-        self.from = reviewDictionary["from"] as? Int ?? 0
+        self.fileURL = URL(string: reviewDictionary["audio"] as! String)!
+//        self.from = reviewDictionary["from"] as? Int ?? 0
         self.id = reviewDictionary["id"] as? Int ?? 0
-        self.to = reviewDictionary["to"] as? Int ?? 0
+//        self.to = reviewDictionary["to"] as? Int ?? 0
         self.duration = (reviewDictionary["duration"]  as? String ?? "").toDouble
         
         var receiverData = reviewDictionary["receiver"] as! [String: Any]

@@ -67,13 +67,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func logUser() {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        
-            let left = storyboard.instantiateViewController(withIdentifier: "left")
-            let right = storyboard.instantiateViewController(withIdentifier: "right")
-        
-            let snapContainer = SnapContainerViewController.containerViewWith(left, rightVC: right)
-            self.window?.rootViewController = snapContainer
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+    
+        let left = storyboard.instantiateViewController(withIdentifier: "left")
+        let middle = storyboard.instantiateViewController(withIdentifier: "middle")
+        let right = storyboard.instantiateViewController(withIdentifier: "right")
+    
+        let snapContainer = SnapContainerViewController.containerViewWith(left, middleVC: middle, rightVC: right)
+        self.window?.rootViewController = snapContainer
     }
     
     //Declare enum

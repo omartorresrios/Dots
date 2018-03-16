@@ -46,7 +46,7 @@ class UserSearchCell: UICollectionViewCell {
         super.init(frame: frame)
         
         // Shadow effect
-        self.layer.cornerRadius = 3.0
+        self.layer.cornerRadius = 8
         self.layer.masksToBounds = false
         self.layer.shadowColor = UIColor.black.withAlphaComponent(0.5).cgColor
         self.layer.shadowOffset = CGSize(width: 0, height: 2)

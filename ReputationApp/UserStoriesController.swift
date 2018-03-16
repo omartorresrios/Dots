@@ -22,7 +22,7 @@ class UserStoriesController: UICollectionViewController, UICollectionViewDelegat
     var images: [NSURL] = []
     var urls = [String]()
     var durations = [String]()
-    let userFeedCell = "userFeedCell"
+    let userStoriesCell = "userStoriesCell"
     var eventVideos = [Event]()
     var stories = [[String: Any]]()
     var finalDuration: TimeInterval?
@@ -77,7 +77,7 @@ class UserStoriesController: UICollectionViewController, UICollectionViewDelegat
         }
         
         // Register cell classes
-        collectionView?.register(UserFeedCell.self, forCellWithReuseIdentifier: userFeedCell)
+        collectionView?.register(UserStoriesCell.self, forCellWithReuseIdentifier: userStoriesCell)
         collectionView?.isPagingEnabled = false
         
         view.addSubview(loader)
@@ -327,7 +327,7 @@ class UserStoriesController: UICollectionViewController, UICollectionViewDelegat
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: userFeedCell, for: indexPath) as! UserFeedCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: userStoriesCell, for: indexPath) as! UserStoriesCell
         
 //        let image = self.images[indexPath.item].absoluteString!
 //        let url = self.urls[indexPath.item]
