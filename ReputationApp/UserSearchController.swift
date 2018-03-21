@@ -96,26 +96,37 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
         return iv
     }()
     
+    let myProfileControllerImage: CustomImageView = {
+        let iv = CustomImageView()
+        iv.contentMode = .scaleAspectFill
+        iv.clipsToBounds = true
+        iv.layer.cornerRadius = 25 / 2
+        return iv
+    }()
+    
     let divideView: UIView = {
         let view = UIView()
         view.backgroundColor = .gray
         return view
     }()
     
-    @IBAction func goToUserFeedFromUserSearch(_ sender: Any) {
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "GoToUserFeedControllerFromUserSearchController"), object: nil)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.addSubview(myProfileControllerImage)
+        myProfileControllerImage.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 28, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 25, height: 25)
+        guard let userAvatar = Locksmith.loadDataForUserAccount(userAccount: "currentUserAvatar") else { return }
+        myProfileControllerImage.loadImage(urlString: ((userAvatar as [String : AnyObject])["avatar"] as! String?)!)
+        myProfileControllerImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(goToMyProfile)))
+        myProfileControllerImage.isUserInteractionEnabled = true
+        
         view.addSubview(userFeedControllerImage)
-        userFeedControllerImage.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 28, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 25, height: 25)
-        userFeedControllerImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(goToUserFeedFromUserSearch)))
+        userFeedControllerImage.anchor(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 28, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 25, height: 25)
+        userFeedControllerImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(goToUserFeed)))
         userFeedControllerImage.isUserInteractionEnabled = true
         
         view.addSubview(divideView)
-        divideView.anchor(top: userFeedControllerImage.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
+        divideView.anchor(top: myProfileControllerImage.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
         
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
@@ -168,6 +179,14 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
         
         check_record_permission()
         
+    }
+    
+    func goToMyProfile() {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "GoToMyProfileController"), object: nil)
+    }
+    
+    func goToUserFeed() {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "GoToUserFeedController"), object: nil)
     }
     
     func check_record_permission() {

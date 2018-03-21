@@ -33,7 +33,7 @@ class UserContentOptionsView: UIView {
         let label = UILabel()
         label.font = UIFont(name: "SFUIDisplay-Medium", size: 14)
         label.textColor = UIColor.grayLow()
-        label.text = "Deja una reseña"
+        label.text = "Déjale una reseña"
         label.textAlignment = .left
         return label
     }()

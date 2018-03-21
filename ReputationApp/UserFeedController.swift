@@ -31,14 +31,6 @@ class UserFeedController: UIViewController, UICollectionViewDelegate, UICollecti
     var selectedImage: UIImage?
     let userFeedPreviewAudioContainerView = UserFeedPreviewAudioContainerView()
     
-    let myProfileControllerImage: CustomImageView = {
-        let iv = CustomImageView()
-        iv.contentMode = .scaleAspectFill
-        iv.clipsToBounds = true
-        iv.layer.cornerRadius = 25 / 2
-        return iv
-    }()
-    
     let userFeedControllerImage: UIImageView = {
         let iv = UIImageView()
         iv.image = #imageLiteral(resourceName: "dots_logo_feed")
@@ -64,7 +56,7 @@ class UserFeedController: UIViewController, UICollectionViewDelegate, UICollecti
     }()
     
     let userSearchControllerButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .custom)
         button.setImage(#imageLiteral(resourceName: "userSearch-icon").withRenderingMode(.alwaysTemplate), for: .normal)
         button.tintColor = UIColor.mainGreen()
         button.addTarget(self, action: #selector(goToUserSearch), for: .touchUpInside)
@@ -107,19 +99,12 @@ class UserFeedController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func setupNavigationTopButtons() {
-        view.addSubview(myProfileControllerImage)
-        myProfileControllerImage.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 28, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 25, height: 25)
-        guard let userAvatar = Locksmith.loadDataForUserAccount(userAccount: "currentUserAvatar") else { return }
-        myProfileControllerImage.loadImage(urlString: ((userAvatar as [String : AnyObject])["avatar"] as! String?)!)
-        myProfileControllerImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(goToMyProfile)))
-        myProfileControllerImage.isUserInteractionEnabled = true
-        
         view.addSubview(userFeedControllerImage)
         userFeedControllerImage.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 28, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 25, height: 25)
         userFeedControllerImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         view.addSubview(userSearchControllerButton)
-        userSearchControllerButton.anchor(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 28, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 25, height: 25)
+        userSearchControllerButton.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 28, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 25, height: 25)
     }
     
     func getAllReviews() {
@@ -181,12 +166,8 @@ class UserFeedController: UIViewController, UICollectionViewDelegate, UICollecti
         userFeedPreviewAudioContainerView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
     }
     
-    func goToMyProfile() {
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "GoToMyProfileController"), object: nil)
-    }
-    
     func goToUserSearch() {
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "GoToUserSearchController"), object: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "GoToUserSearchControllerFromUserFeedController"), object: nil)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

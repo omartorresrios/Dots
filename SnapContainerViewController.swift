@@ -54,11 +54,11 @@ class SnapContainerViewController: UIViewController, UIScrollViewDelegate {
         
         NotificationCenter.default.addObserver(self, selector: #selector(showMyProfile), name: NSNotification.Name(rawValue: "GoToMyProfileController"), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(showUserSearch), name: NSNotification.Name(rawValue: "GoToUserSearchController"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showUserSearchFromUserFeed), name: NSNotification.Name(rawValue: "GoToUserSearchControllerFromUserFeedController"), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(showUserFeedFromUserSearch), name: NSNotification.Name(rawValue: "GoToUserFeedControllerFromUserSearchController"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showUserFeed), name: NSNotification.Name(rawValue: "GoToUserFeedController"), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(showUserFeedFromMyProfile), name: NSNotification.Name(rawValue: "GoToUserFeedControllerFromMyProfileController"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showUserSearchFromMyProfile), name: NSNotification.Name(rawValue: "GoToUserSearchControllerFromMyProfileController"), object: nil)
         
         
         let defaults = UserDefaults.standard
@@ -81,18 +81,18 @@ class SnapContainerViewController: UIViewController, UIScrollViewDelegate {
         scrollView.setContentOffset(newOffset, animated: true)
     }
     
-    func showUserFeedFromMyProfile() {
+    func showUserSearchFromMyProfile() {
         let newOffset = CGPoint(x: view.bounds.width, y: 0)
         scrollView.setContentOffset(newOffset, animated: true)
     }
     
-    func showUserSearch() {
+    func showUserSearchFromUserFeed() {
+        let newOffset = CGPoint(x: view.bounds.width, y: 0)
+        scrollView.setContentOffset(newOffset, animated: true)
+    }
+    
+    func showUserFeed() {
         let newOffset = CGPoint(x: view.bounds.width * 2, y: 0)
-        scrollView.setContentOffset(newOffset, animated: true)
-    }
-    
-    func showUserFeedFromUserSearch() {
-        let newOffset = CGPoint(x: view.bounds.width, y: 0)
         scrollView.setContentOffset(newOffset, animated: true)
     }
     

@@ -24,23 +24,37 @@ class MyProfileController: UIViewController {
         button.tintColor = .white
         button.setTitle("Momentos", for: .normal)
         button.titleLabel?.font = UIFont(name: "SFUIDisplay-Semibold", size: 17)
-        button.addTarget(self, action: #selector(showUserStoriesView), for: .touchUpInside)
+//        button.addTarget(self, action: #selector(showUserStoriesView), for: .touchUpInside)
         button.layer.cornerRadius = 8
         return button
     }()
     
     @IBOutlet weak var reviewsOptionButton: UIButton!
-    @IBOutlet weak var fullnameLabel: UILabel!
-    @IBOutlet weak var profileImageView: CustomImageView!
-    @IBOutlet weak var gearIcon: UIButton!
+//    @IBOutlet weak var fullnameLabel: UILabel!
+    
+    let gearIcon: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(#imageLiteral(resourceName: "gear").withRenderingMode(.alwaysTemplate), for: .normal)
+        button.tintColor = .white
+        button.addTarget(self, action: #selector(handleSheetAction), for: .touchUpInside)
+        return button
+    }()
+    
+    let userSearchControllerButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(#imageLiteral(resourceName: "userSearch-icon").withRenderingMode(.alwaysTemplate), for: .normal)
+        button.tintColor = .white
+        button.addTarget(self, action: #selector(goToUserFeedFromMyProfile), for: .touchUpInside)
+        return button
+    }()
     
     let dotsLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.text = "Dots v1.1.6 ✌️"
+        label.text = "Dots v1.1.8 ✌️"
         label.font = UIFont(name: "SFUIDisplay-Regular", size: 11)
         label.textColor = .white
-        label.numberOfLines = 0
+        label.numberOfLines = 1
         return label
     }()
     
@@ -51,30 +65,67 @@ class MyProfileController: UIViewController {
         return iv
     }()
     
-    @IBAction func showUserReviewsView() {
+    let profileImageView: CustomImageView = {
+        let imageView = CustomImageView()
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 30
+        return imageView
+    }()
+    
+    let fullnameLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.font = UIFont(name: "SFUIDisplay-Medium", size: 14)
+        label.textColor = .white
+        label.text = "Tu nombre aquí"
+        label.numberOfLines = 1
+        return label
+    }()
+    
+    let reviewsOptionView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        view.layer.cornerRadius = 8
+        view.layer.borderColor = UIColor.white.cgColor
+        view.layer.borderWidth = 2
+        return view
+    }()
+    
+    let reviewsOptionLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Mis reseñas"
+        label.textAlignment = .center
+        label.font = UIFont(name: "SFUIDisplay-Semibold", size: 17)
+        label.textColor = .white
+        label.numberOfLines = 1
+        return label
+    }()
+    
+    func showUserReviewsView() {
         let myReviewsController = MyReviewsController(collectionViewLayout: UICollectionViewFlowLayout())
-        
+
         myReviewsController.userId = userSelected.id
         myReviewsController.userFullname = userSelected.fullname
         myReviewsController.userImageUrl = userSelected.profileImageUrl
-        
+
         present(myReviewsController, animated: true, completion: nil)
-        
+
         // Tracking each time user tap reviewsOptionButton
         guard let userEmail = Locksmith.loadDataForUserAccount(userAccount: "currentUserEmail") else { return }
         Mixpanel.mainInstance().identify(distinctId: (userEmail as [String : AnyObject])["email"] as! String!)
         Mixpanel.mainInstance().track(event: "Pressed reviewsOptionButton (mine)")
     }
     
-    func showUserStoriesView() {
-        let myStoriesController = MyStoriesController(collectionViewLayout: UICollectionViewFlowLayout())
-        
-        myStoriesController.userId = userSelected.id
-        myStoriesController.userFullname = userSelected.fullname
-        myStoriesController.userImageUrl = userSelected.profileImageUrl
-        
-        present(myStoriesController, animated: true, completion: nil)
-    }
+//    func showUserStoriesView() {
+//        let myStoriesController = MyStoriesController(collectionViewLayout: UICollectionViewFlowLayout())
+//
+//        myStoriesController.userId = userSelected.id
+//        myStoriesController.userFullname = userSelected.fullname
+//        myStoriesController.userImageUrl = userSelected.profileImageUrl
+//
+//        present(myStoriesController, animated: true, completion: nil)
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,55 +133,64 @@ class MyProfileController: UIViewController {
         view.backgroundColor = UIColor.grayLow()
         navigationController?.navigationBar.isHidden = true
         
-        setupUserInfo()
         setupTopViews()
-        setupOptionsButtons()
-        setupLogoImageView()
+        setupDotsLabel()
         
     }
     
-    @IBAction func goToUserFeedFromMyProfile(_ sender: Any) {
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "GoToUserFeedControllerFromMyProfileController"), object: nil)
+    func goToUserFeedFromMyProfile() {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "GoToUserSearchControllerFromMyProfileController"), object: nil)
     }
     
-    func setupUserInfo() {
+    func setupTopViews() {
+        view.addSubview(gearIcon)
+        gearIcon.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 28, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 25, height: 25)
+        
+        view.addSubview(userSearchControllerButton)
+        userSearchControllerButton.anchor(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 28, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: 25, height: 25)
+        
+        view.addSubview(profileImageView)
+        profileImageView.anchor(top: gearIcon.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 50, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 160, height: 160)
+        profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        guard let userAvatar = Locksmith.loadDataForUserAccount(userAccount: "currentUserAvatar") else { return }
+        profileImageView.loadImage(urlString: ((userAvatar as [String : AnyObject])["avatar"] as! String?)!)
+        
+        view.addSubview(fullnameLabel)
+        fullnameLabel.anchor(top: profileImageView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
         guard let userName = Locksmith.loadDataForUserAccount(userAccount: "currentUserName") else { return }
+        fullnameLabel.text = (userName as [String : AnyObject])["name"] as! String?
+        
+        view.addSubview(reviewsOptionView)
+        reviewsOptionView.anchor(top: fullnameLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 60)
+        
+        reviewsOptionView.addSubview(reviewsOptionLabel)
+        reviewsOptionLabel.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        reviewsOptionLabel.centerXAnchor.constraint(equalTo: reviewsOptionView.centerXAnchor).isActive = true
+        reviewsOptionLabel.centerYAnchor.constraint(equalTo: reviewsOptionView.centerYAnchor).isActive = true
+        reviewsOptionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showUserReviewsView)))
+        reviewsOptionView.isUserInteractionEnabled = true
+        
         guard let userEmail = Locksmith.loadDataForUserAccount(userAccount: "currentUserEmail") else { return }
         guard let userId = Locksmith.loadDataForUserAccount(userAccount: "currentUserId") else { return }
-        guard let userUsername = Locksmith.loadDataForUserAccount(userAccount: "currentUsernameName") else { return }
-        guard let userAvatar = Locksmith.loadDataForUserAccount(userAccount: "currentUserAvatar") else { return }
-        
-        fullnameLabel.text = (userName as [String : AnyObject])["name"] as! String?
-        profileImageView.loadImage(urlString: ((userAvatar as [String : AnyObject])["avatar"] as! String?)!)
         
         userDictionary.updateValue((userId as [String : AnyObject])["id"] as! Int!, forKey: "id")
         userDictionary.updateValue((userName as [String : AnyObject])["name"] as! String!, forKey: "fullname")
         userDictionary.updateValue((userEmail as [String : AnyObject])["email"] as! String!, forKey: "email")
-        userDictionary.updateValue((userUsername as [String : AnyObject])["username"] as! String!, forKey: "username")
         userDictionary.updateValue((userAvatar as [String : AnyObject])["avatar"] as! String!, forKey: "avatar")
         
         let user = User(uid: (userId as [String : AnyObject])["id"] as! Int!, dictionary: userDictionary)
         
         userSelected = user
+        
     }
     
-    func setupTopViews() {
-        profileImageView.layer.cornerRadius = 30
-    }
-    
-    fileprivate func setupOptionsButtons() {
-        reviewsOptionButton.layer.borderWidth = 2
-        reviewsOptionButton.layer.borderColor = UIColor.white.cgColor
-        reviewsOptionButton.layer.cornerRadius = 8
-    }
-    
-    func setupLogoImageView() {
+    func setupDotsLabel() {
         view.addSubview(dotsLabel)
         dotsLabel.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 5, paddingRight: 0, width: 0, height: 0)
         dotsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
     
-    @IBAction func handleSheetAction() {
+    func handleSheetAction() {
         let actionSheetController = UIAlertController()
         
         let cancelActionButton = UIAlertAction(title: "Cancel", style: .cancel) { (action) in

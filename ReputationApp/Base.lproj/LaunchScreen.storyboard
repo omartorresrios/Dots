@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -34,26 +35,59 @@
                                     <constraint firstAttribute="width" constant="50" id="9d2-GJ-TSn"/>
                                     <constraint firstAttribute="height" constant="50" id="Qdd-Wu-Jx8"/>
                                 </constraints>
-                                <color key="tintColor" white="0.59700520833333326" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" red="0.74503189325332642" green="0.7451404333114624" blue="0.74500817060470581" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="Button" image="record"/>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GiS-dD-jNc">
+                                <rect key="frame" x="0.0" y="61" width="375" height="0.5"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="0.5" id="wHf-fY-8WE"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S0t-Fp-TV7">
+                                <rect key="frame" x="342" y="28" width="25" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="25" id="8iQ-OY-7vs"/>
+                                    <constraint firstAttribute="height" constant="25" id="h8G-IG-eHJ"/>
+                                </constraints>
+                                <state key="normal" image="dots_logo_launch"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Frw-qX-mUh">
+                                <rect key="frame" x="8" y="28" width="25" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="25" id="Dwd-ZW-CqW"/>
+                                    <constraint firstAttribute="height" constant="25" id="MqU-uR-Om1"/>
+                                </constraints>
+                                <color key="tintColor" red="0.74503189325332642" green="0.7451404333114624" blue="0.74500817060470581" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" image="user_profile_launch"/>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="S0t-Fp-TV7" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="8" id="0bc-KF-oDQ"/>
+                            <constraint firstItem="GiS-dD-jNc" firstAttribute="top" secondItem="S0t-Fp-TV7" secondAttribute="bottom" constant="8" id="9pK-IG-Rd2"/>
+                            <constraint firstAttribute="trailing" secondItem="GiS-dD-jNc" secondAttribute="trailing" id="Gqq-LP-zfW"/>
+                            <constraint firstItem="Frw-qX-mUh" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" constant="28" id="K6i-pD-BqW"/>
                             <constraint firstItem="lM3-pb-nLC" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="OwM-xT-sg3"/>
                             <constraint firstAttribute="bottom" secondItem="6qE-D5-sYh" secondAttribute="bottom" constant="20" id="XJU-uN-o4b"/>
+                            <constraint firstItem="S0t-Fp-TV7" firstAttribute="trailing" secondItem="Ze5-6b-2t3" secondAttribute="trailingMargin" constant="8" id="bH3-vB-VMY"/>
                             <constraint firstAttribute="trailing" secondItem="6qE-D5-sYh" secondAttribute="trailing" constant="20" id="ekh-aD-zs0"/>
+                            <constraint firstItem="GiS-dD-jNc" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="l7I-8D-GeE"/>
+                            <constraint firstItem="Frw-qX-mUh" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="8" id="lQC-UQ-GY5"/>
                             <constraint firstItem="lM3-pb-nLC" firstAttribute="centerY" secondItem="6qE-D5-sYh" secondAttribute="centerY" id="ycG-mP-MKv"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="52" y="374.66266866566718"/>
         </scene>
     </scenes>
     <resources>
+        <image name="dots_logo_launch" width="60" height="60"/>
         <image name="record" width="60" height="60"/>
         <image name="stop" width="60" height="60"/>
+        <image name="user_profile_launch" width="60" height="60"/>
     </resources>
 </document>
