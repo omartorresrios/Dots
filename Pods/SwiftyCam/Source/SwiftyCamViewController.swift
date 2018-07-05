@@ -499,7 +499,6 @@ open class SwiftyCamViewController: UIViewController {
                 DispatchQueue.main.async {
                     movieFileOutputConnection?.videoOrientation = self.getVideoOrientation()
                 }
-				
 
 				// Start recording to a temporary file.
 				let outputFileName = UUID().uuidString

@@ -42,7 +42,6 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
         return button
     }()
     
-    
     let sendLabel = UILabel()
     
     let videoFileOutput = AVCaptureMovieFileOutput()
@@ -54,7 +53,7 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
     var time: Double = 0
     var finalDuration: String?
     var videoUrl: URL?
-    var player = AVPlayer()
+    var player: AVPlayer?
     var playerLayer = AVPlayerLayer()
     let customAlertMessage = CustomAlertMessage()
     var tap = UITapGestureRecognizer()
@@ -429,19 +428,19 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
         swiftyCamButton.isUserInteractionEnabled = true
     }
 
-//    func update() {
-//        DispatchQueue.main.async {
-//            if self.counter > 0 {
-//                print("\(self.counter) seconds to the end of the world")
-//                self.counter -= 1
-//            }
-//            self.time = Date().timeIntervalSinceReferenceDate - self.startTime
-//
-//            let timeString = String(format: "%.11f", self.time)
-//
-//            self.finalDuration = timeString
-//        }
-//    }
+    @objc func update() {
+        DispatchQueue.main.async {
+            if self.counter > 0 {
+                print("\(self.counter) seconds to the end of the world")
+                self.counter -= 1
+            }
+            self.time = Date().timeIntervalSinceReferenceDate - self.startTime
+
+            let timeString = String(format: "%.11f", self.time)
+
+            self.finalDuration = timeString
+        }
+    }
 
     func setupViews() {
         DispatchQueue.main.async {
@@ -465,13 +464,13 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
         }
     }
     
-//    func invalidateTimerAndCircleView() {
-//        FileManager.default.clearTmpDirectory()
-//        DispatchQueue.main.async {
-//            self.timerTest?.invalidate()
-//            self.timerTest = nil
-//        }
-//    }
+    @objc func invalidateTimerAndCircleView() {
+        FileManager.default.clearTmpDirectory()
+        DispatchQueue.main.async {
+            self.timerTest?.invalidate()
+            self.timerTest = nil
+        }
+    }
 
     @objc func handleSave() {
         DataService.instance.saveVideo(url: self.videoUrl!, view: self.view)
@@ -485,30 +484,37 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
         DispatchQueue.main.async {
             self.userSearchControllerButton.isHidden = false
             self.userSearchControllerButton.isUserInteractionEnabled = true
+            self.swiftyCamButton.layer.borderColor = UIColor.white.cgColor
+            
+            self.player!.pause()
+            self.player = nil
             self.playerLayer.removeFromSuperlayer()
-            self.player.pause()
+            
             self.cancelButton.removeFromSuperview()
             self.saveButton.removeFromSuperview()
             self.sendView.removeFromSuperview()
         }
-
     }
 
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didBeginRecordingVideo camera: SwiftyCamViewController.CameraSelection) {
         print("recording video")
         
-        //        NotificationCenter.default.addObserver(self, selector: #selector(invalidateTimerAndCircleView), name: NSNotification.Name(rawValue: "ErrorWhileRecording"), object: nil)
-        //
-        //        startTime = Date().timeIntervalSinceReferenceDate
-        //        timerTest = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(update), userInfo: nil, repeats: true)
+        DispatchQueue.main.async {
+            self.swiftyCamButton.layer.borderColor = UIColor.red.cgColor
+        }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(invalidateTimerAndCircleView), name: NSNotification.Name(rawValue: "ErrorWhileRecording"), object: nil)
+
+        startTime = Date().timeIntervalSinceReferenceDate
+        timerTest = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(update), userInfo: nil, repeats: true)
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFinishRecordingVideo camera: SwiftyCamViewController.CameraSelection) {
         print("finishing recording video")
         
         DispatchQueue.main.async {
-            //            self.timerTest?.invalidate()
-            //            self.timerTest = nil
+            self.timerTest?.invalidate()
+            self.timerTest = nil
             print("video quality was: ", self.videoQuality)
         }
     }
@@ -520,23 +526,17 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
         DispatchQueue.main.async {
             self.swiftyCamButton.removeFromSuperview()
         }
-
-//        do {
-//            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, with: AVAudioSessionCategoryOptions.mixWithOthers)
-
-            player = AVPlayer(url: secondaryUrl)
-            playerLayer = AVPlayerLayer(player: player)
-            playerLayer.frame = view.bounds
-            view.layer.addSublayer(playerLayer)
-            player.play()
-//        } catch {
-//            print("Some error to reproduce video")
-//        }
         
-        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: player.currentItem, queue: nil, using: { (_) in
+        player = AVPlayer(url: secondaryUrl)
+        playerLayer = AVPlayerLayer(player: player)
+        playerLayer.frame = view.bounds
+        view.layer.addSublayer(playerLayer)
+        player!.play()
+        
+        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: player!.currentItem, queue: nil, using: { (_) in
             DispatchQueue.main.async {
-                self.player.seek(to: kCMTimeZero)
-                self.player.play()
+                self.player!.seek(to: kCMTimeZero)
+                self.player!.play()
             }
         })
 
