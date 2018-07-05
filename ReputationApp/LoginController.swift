@@ -46,9 +46,15 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
     let termsServiceButton: UIButton = {
         let button = UIButton(type: .system)
         button.titleLabel?.numberOfLines = 0
-        let attributedTitle = NSMutableAttributedString(string: "Continuando, aceptas nuestros Términos de Servicio.", attributes: [NSFontAttributeName: UIFont(name: "SFUIDisplay-Regular", size: 12)!, NSForegroundColorAttributeName: UIColor.white])
+        
+        let attributedTitle = [NSAttributedStringKey.font:  UIFont(name: "SFUIDisplay-Regular", size: 12)!, NSAttributedStringKey.foregroundColor: UIColor.white]
+
+        let attString = NSMutableAttributedString()
+        attString.append(NSAttributedString(string: "jaja", attributes: attributedTitle))
+        
+//            NSMutableAttributedString(string: "Continuando, aceptas nuestros Términos de Servicio.", attributes: [NSFontAttributeName: UIFont(name: "SFUIDisplay-Regular", size: 12)!, NSForegroundColorAttributeName: UIColor.white])
         button.titleLabel?.textAlignment = .center
-        button.setAttributedTitle(attributedTitle, for: .normal)
+        button.setAttributedTitle(attString, for: .normal)
         button.addTarget(self, action: #selector(handleShowTermsOfService), for: .touchUpInside)
         return button
     }()
@@ -72,12 +78,12 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
         return indicator
     }()
     
-    func handleShowTermsOfService() {
+    @objc func handleShowTermsOfService() {
         let termsOfServiceController = TermsOfServiceController()
         present(termsOfServiceController, animated: true, completion: nil)
     }
     
-    func handleLogin() {
+    @objc func handleLogin() {
         GIDSignIn.sharedInstance().signIn()
     }
     
@@ -155,7 +161,7 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
         
     }
     
-    func dismissviewMessage() {
+    @objc func dismissviewMessage() {
         customAlertMessage.removeFromSuperview()
         view.removeGestureRecognizer(tap)
     }

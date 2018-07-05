@@ -114,7 +114,7 @@ class VideoLibraryViewController: UICollectionViewController, UICollectionViewDe
         let player = AVPlayer(url: videoURL!)
         let playerLayer = AVPlayerLayer(player: player)
         playerLayer.frame = header.contentView.bounds
-        playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+        playerLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
         header.layer.addSublayer(playerLayer)
         player.play()
         
@@ -198,11 +198,11 @@ class VideoLibraryViewController: UICollectionViewController, UICollectionViewDe
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(handleNext))
     }
     
-    func handleCancel() {
+    @objc func handleCancel() {
         dismiss(animated: true, completion: nil)
     }
     
-    func handleNext() {
+    @objc func handleNext() {
         view.addSubview(photoCaption)
         photoCaption.anchor(top: topLayoutGuide.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 8, paddingLeft: 4, paddingBottom: 0, paddingRight: 4, width: 0, height: 100)
         photoCaption.alpha = 0
@@ -227,7 +227,7 @@ class VideoLibraryViewController: UICollectionViewController, UICollectionViewDe
     
     var videoUrl: URL?
     
-    func sendEvent() {
+    @objc func sendEvent() {
         // Retreieve Auth_Token from Keychain
         if let userToken = Locksmith.loadDataForUserAccount(userAccount: "AuthToken") {
             

@@ -57,7 +57,7 @@ class TermsOfServiceController: UIViewController {
         
     }
     
-    func goBackView() {
+    @objc func goBackView() {
         self.dismiss(animated: true, completion: nil)
     }
 }

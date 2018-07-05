@@ -154,7 +154,7 @@ class PreviewAudioContainerView: UIViewController {
         
     }
     
-    func closeViewController() {
+    @objc func closeViewController() {
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -176,7 +176,7 @@ class PreviewAudioContainerView: UIViewController {
     
     var playOrPauseAudioAction : ((_ view: PreviewAudioContainerView, _ progressView: UIProgressView) -> Void)?
     
-    func playAudio() {
+    @objc func playAudio() {
         playOrPauseAudioAction?(self, progressView)
     }
 }

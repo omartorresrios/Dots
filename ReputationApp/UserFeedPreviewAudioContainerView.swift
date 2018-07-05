@@ -178,7 +178,7 @@ class UserFeedPreviewAudioContainerView: UIView, UIGestureRecognizerDelegate {
         return true
     }
     
-    func dismissView() {
+    @objc func dismissView() {
         viewTappedForDismiss!()
     }
     
@@ -186,11 +186,11 @@ class UserFeedPreviewAudioContainerView: UIView, UIGestureRecognizerDelegate {
     var optionButtonTapped : (() -> Void)?
     var viewTappedForDismiss : (() -> Void)?
     
-    func playAudio() {
+    @objc func playAudio() {
         playOrPauseAudioAction?(self, progressView)
     }
     
-    func previewOptionButton() {
+    @objc func previewOptionButton() {
         optionButtonTapped!()
     }
 

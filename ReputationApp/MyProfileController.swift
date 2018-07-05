@@ -102,7 +102,7 @@ class MyProfileController: UIViewController {
         return label
     }()
     
-    func showUserReviewsView() {
+    @objc func showUserReviewsView() {
         let myReviewsController = MyReviewsController(collectionViewLayout: UICollectionViewFlowLayout())
 
         myReviewsController.userId = userSelected.id
@@ -138,7 +138,7 @@ class MyProfileController: UIViewController {
         
     }
     
-    func goToUserFeedFromMyProfile() {
+    @objc func goToUserFeedFromMyProfile() {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "GoToUserSearchControllerFromMyProfileController"), object: nil)
     }
     
@@ -190,7 +190,7 @@ class MyProfileController: UIViewController {
         dotsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
     
-    func handleSheetAction() {
+    @objc func handleSheetAction() {
         let actionSheetController = UIAlertController()
         
         let cancelActionButton = UIAlertAction(title: "Cancel", style: .cancel) { (action) in

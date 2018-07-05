@@ -49,7 +49,7 @@ extension String {
         UIColor.white.set()
         let rect = CGRect(origin: CGPoint.zero, size: size)
         UIRectFill(CGRect(origin: CGPoint.zero, size: size))
-        (self as NSString).draw(in: rect, withAttributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 30)])
+        (self as NSString).draw(in: rect, withAttributes: [kCTFontAttributeName as NSAttributedStringKey: UIFont.systemFont(ofSize: 30)])
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return image!

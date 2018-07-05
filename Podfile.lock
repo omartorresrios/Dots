@@ -4,8 +4,8 @@ PODS:
   - "!ProtoCompiler-gRPCPlugin (1.0.2)":
     - "!ProtoCompiler (= 3.0.2)"
     - gRPC-ProtoRPC (= 1.0.2)
-  - Alamofire (4.5.0)
-  - AudioBot (1.1.1)
+  - Alamofire (4.7.2)
+  - AudioBot (1.2.0)
   - BoringSSL (7.0):
     - BoringSSL/Implementation (= 7.0)
     - BoringSSL/Interface (= 7.0)
@@ -36,21 +36,21 @@ PODS:
     - "!ProtoCompiler-gRPCPlugin (~> 1.0.0-pre1.1)"
     - googleapis/Messages
     - gRPC-ProtoRPC
-  - GoogleSignIn (4.1.1):
+  - GoogleSignIn (4.1.2):
     - GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)
     - GoogleToolboxForMac/NSString+URLArguments (~> 2.1)
     - GTMOAuth2 (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - GoogleToolboxForMac/DebugUtils (2.1.3):
-    - GoogleToolboxForMac/Defines (= 2.1.3)
-  - GoogleToolboxForMac/Defines (2.1.3)
-  - GoogleToolboxForMac/NSData+zlib (2.1.3):
-    - GoogleToolboxForMac/Defines (= 2.1.3)
-  - GoogleToolboxForMac/NSDictionary+URLArguments (2.1.3):
-    - GoogleToolboxForMac/DebugUtils (= 2.1.3)
-    - GoogleToolboxForMac/Defines (= 2.1.3)
-    - GoogleToolboxForMac/NSString+URLArguments (= 2.1.3)
-  - GoogleToolboxForMac/NSString+URLArguments (2.1.3)
+  - GoogleToolboxForMac/DebugUtils (2.1.4):
+    - GoogleToolboxForMac/Defines (= 2.1.4)
+  - GoogleToolboxForMac/Defines (2.1.4)
+  - GoogleToolboxForMac/NSData+zlib (2.1.4):
+    - GoogleToolboxForMac/Defines (= 2.1.4)
+  - GoogleToolboxForMac/NSDictionary+URLArguments (2.1.4):
+    - GoogleToolboxForMac/DebugUtils (= 2.1.4)
+    - GoogleToolboxForMac/Defines (= 2.1.4)
+    - GoogleToolboxForMac/NSString+URLArguments (= 2.1.4)
+  - GoogleToolboxForMac/NSString+URLArguments (2.1.4)
   - gRPC (1.0.2):
     - gRPC-Core (= 1.0.2)
     - gRPC-RxLibrary (= 1.0.2)
@@ -68,18 +68,18 @@ PODS:
   - gRPC-RxLibrary (1.0.2)
   - GTMOAuth2 (1.1.6):
     - GTMSessionFetcher (~> 1.1)
-  - GTMSessionFetcher (1.1.12):
-    - GTMSessionFetcher/Full (= 1.1.12)
-  - GTMSessionFetcher/Core (1.1.12)
-  - GTMSessionFetcher/Full (1.1.12):
-    - GTMSessionFetcher/Core (= 1.1.12)
+  - GTMSessionFetcher (1.1.15):
+    - GTMSessionFetcher/Full (= 1.1.15)
+  - GTMSessionFetcher/Core (1.1.15)
+  - GTMSessionFetcher/Full (1.1.15):
+    - GTMSessionFetcher/Core (= 1.1.15)
   - HanekeSwift (0.10.1)
-  - JDStatusBarNotification (1.5.5)
-  - Locksmith (3.0.0)
-  - Mixpanel-swift (2.3.1):
-    - Mixpanel-swift/Complete (= 2.3.1)
-  - Mixpanel-swift/Complete (2.3.1)
-  - Protobuf (3.5.0)
+  - JDStatusBarNotification (1.5.6)
+  - Locksmith (4.0.0)
+  - Mixpanel-swift (2.4.4):
+    - Mixpanel-swift/Complete (= 2.4.4)
+  - Mixpanel-swift/Complete (2.4.4)
+  - Protobuf (3.6.0)
   - SwiftyCam (2.6.0)
 
 DEPENDENCIES:
@@ -108,27 +108,27 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   "!ProtoCompiler": cfad9cbe5299a4923b1c3c8f150818c91efd0b6d
   "!ProtoCompiler-gRPCPlugin": ee00d28bb35b26e2657f239833b8f2aa66724f96
-  Alamofire: f28cdffd29de33a7bfa022cbd63ae95a27fae140
-  AudioBot: b7bcf3b18dc2cdccba14d798400c708908ad203d
+  Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
+  AudioBot: b72041204f06841bda0325b701f7918564cb4bb6
   BoringSSL: 50035b9d9eeff5529587311782fc57c00ebf13ae
   FirebaseAnalytics: e5fe8486efc01bec33f6bf82e2fa9fce4b124052
   FirebaseCore: 9691ee2ade70c098d7cf92440f4303f16d83ca75
   FirebaseInstanceID: b9eedd6846fb5e1f0f7279e1deaa7a7e4cf8392e
   Google: 98da4b1a60ed0beb80a290387a28333406a1eb90
   googleapis: daa20dca7a0097c6c3316fdfd888e0ba1b7c8921
-  GoogleSignIn: 3fdaa34a2ba04dbd7a25d7db39aecb0da98d5bdc
-  GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
+  GoogleSignIn: d9ef55b10f0aa401a5de2747f59b725e4b9732ac
+  GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
   gRPC: dd3a91e0fb770b9fc4f43d1292fb19f2a2e04158
   gRPC-Core: cc4a7613190ff0bc60a0c1e702ef07cd3f868ae6
   gRPC-ProtoRPC: 11533510522a5e9627883a597a796cfe6bef05f3
   gRPC-RxLibrary: 02cc70b76bc0c5bc622ba27595cca2598d9fe528
   GTMOAuth2: c77fe325e4acd453837e72d91e3b5f13116857b2
-  GTMSessionFetcher: ebaa1f79a5366922c1735f1566901f50beba23b7
+  GTMSessionFetcher: 5fa5b80fd20e439ef5f545fb2cb3ca6c6714caa2
   HanekeSwift: 4113367892828e7700d24a384027de6ebc79aad1
-  JDStatusBarNotification: 2b4f29bd68a60d7aa2f190b5265f1ce59c18aaf8
-  Locksmith: 310b4cc5031af5728bf4db5d4de547a5100c6a3b
-  Mixpanel-swift: 836b594b6b536544943e79e61eb34224bf6c7956
-  Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
+  JDStatusBarNotification: d5829a8f2f291b23b8a54b87fac8bf2549945a2f
+  Locksmith: e9bebbaaa4cee3c511bc358a44f843c3fe00e21f
+  Mixpanel-swift: 1908db7a972b362fcab1a0c3b37ec6087b95d8d9
+  Protobuf: 0fc0ad8bec688b2a3017a139953e01374fedbd5f
   SwiftyCam: 86c114177a1b1f5dc2c82384577d0c20b922a31b
 
 PODFILE CHECKSUM: 43e23de706198bc0971bfafebd6773dc05dea2f4

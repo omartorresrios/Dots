@@ -105,7 +105,7 @@ class UserStoriesController: UICollectionViewController, UICollectionViewDelegat
         }
     }
     
-    func closeViewController() {
+    @objc func closeViewController() {
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -133,9 +133,9 @@ class UserStoriesController: UICollectionViewController, UICollectionViewDelegat
         guard let boldNameFont = UIFont(name: "SFUIDisplay-Semibold", size: 15) else { return }
         guard let normalFont = UIFont(name: "SFUIDisplay-Regular", size: 15) else { return }
         
-        let attributedMessage = NSMutableAttributedString(string: "\(self.userFullname!)", attributes: [NSFontAttributeName: boldNameFont])
+        let attributedMessage = NSMutableAttributedString(string: "\(self.userFullname!)", attributes: [kCTFontAttributeName as NSAttributedStringKey: boldNameFont])
         
-        attributedMessage.append(NSMutableAttributedString(string: " aún no tiene momentos 😒", attributes: [NSFontAttributeName: normalFont]))
+        attributedMessage.append(NSMutableAttributedString(string: " aún no tiene momentos 😒", attributes: [kCTFontAttributeName as NSAttributedStringKey: normalFont]))
         
         self.messageLabel.attributedText = attributedMessage
         
@@ -174,13 +174,13 @@ class UserStoriesController: UICollectionViewController, UICollectionViewDelegat
         }
     }
     
-    func dismissGoToListenviewMessage() {
+    @objc func dismissGoToListenviewMessage() {
         self.blurConnectionView.removeFromSuperview()
         self.blurConnectionView.removeGestureRecognizer(self.goToListenTap)
         
     }
     
-    func dismissviewMessage() {
+    @objc func dismissviewMessage() {
         self.dismiss(animated: true) {
             self.blurConnectionView.removeFromSuperview()
             self.blurConnectionView.removeGestureRecognizer(self.connectionTap)
@@ -278,7 +278,7 @@ class UserStoriesController: UICollectionViewController, UICollectionViewDelegat
     // define a variable to store initial touch position
     var initialTouchPoint: CGPoint = CGPoint(x: 0,y: 0)
 
-    func panGestureRecognizerHandler(_ sender: UIPanGestureRecognizer) {
+    @objc func panGestureRecognizerHandler(_ sender: UIPanGestureRecognizer) {
         let touchPoint = sender.location(in: self.previewVideoContainerView.view?.window)
 
         if sender.state == UIGestureRecognizerState.began {
@@ -309,7 +309,7 @@ class UserStoriesController: UICollectionViewController, UICollectionViewDelegat
     var playerLayer = AVPlayerLayer()
     var sheetController = UIAlertController()
     
-    func handleReportContentoptions () {
+    @objc func handleReportContentoptions () {
         sheetController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         sheetController.addAction(UIAlertAction(title: "Reportar", style: .destructive, handler: { (_) in

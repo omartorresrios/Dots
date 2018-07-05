@@ -194,7 +194,7 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
         
     }
     
-    func closeViewController() {
+    @objc func closeViewController() {
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -263,7 +263,7 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
         return true
     }
     
-    func reachabilityStatusChanged() {
+    @objc func reachabilityStatusChanged() {
         print("Checking connectivity...")
     }
     
@@ -285,7 +285,7 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
         }
     }
     
-    func playAudio() {
+    @objc func playAudio() {
         func tryPlay() {
             do {
                 AudioBot.reportPlayingDuration = { duration in
@@ -314,7 +314,7 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
                 print("play error: \(error)")
             }
         }
-        if AudioBot.playing {
+        if AudioBot.isPlaying {
             AudioBot.pausePlay()
             playing = false
             actualReview.playing = false
@@ -371,7 +371,7 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
         }
     }
     
-    func startRecord() {
+    @objc func startRecord() {
         DispatchQueue.main.async {
             self.startRecordButton.tintColor = UIColor.mainGreen()
         }
@@ -427,7 +427,7 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
         
     }
     
-    func updateAudioMeter(timer: Timer) {
+    @objc func updateAudioMeter(timer: Timer) {
         if audioRecorder.isRecording {
             let hr = Int((audioRecorder.currentTime / 60) / 60)
             let min = Int(audioRecorder.currentTime / 60)
@@ -516,7 +516,7 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
         }
     }
     
-    func dismissviewMessage() {
+    @objc func dismissviewMessage() {
         self.blurConnectionView.removeFromSuperview()
         self.blurConnectionView.removeGestureRecognizer(tap)
     }
@@ -528,7 +528,7 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
         return true
     }
     
-    func sendAudio() {
+    @objc func sendAudio() {
         
         // Check for internet connection
         if (reachability?.isReachable)! {

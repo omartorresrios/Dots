@@ -52,7 +52,7 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
     // define a variable to store initial touch position
     var initialTouchPoint: CGPoint = CGPoint(x: 0,y: 0)
     
-    func panGestureRecognizerHandler(_ sender: UIPanGestureRecognizer) {
+    @objc func panGestureRecognizerHandler(_ sender: UIPanGestureRecognizer) {
         let touchPoint = sender.location(in: self.view?.window)
         
         if sender.state == UIGestureRecognizerState.began {

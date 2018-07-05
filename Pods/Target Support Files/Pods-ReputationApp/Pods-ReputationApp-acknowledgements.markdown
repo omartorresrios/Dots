@@ -81,7 +81,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ## Alamofire
 
-Copyright (c) 2014-2016 Alamofire Software Foundation (http://alamofire.org/)
+Copyright (c) 2014-2018 Alamofire Software Foundation (http://alamofire.org/)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -106,7 +106,7 @@ THE SOFTWARE.
 
 The MIT License (MIT)
 
-Copyright (c) 2015-2016 nixzhu
+Copyright (c) 2015-2018 nixzhu
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -753,7 +753,7 @@ Copyright 2016 Google Inc.
 
 ## GoogleSignIn
 
-Copyright 2017 Google
+Copyright 2018 Google
 
 ## GoogleToolboxForMac
 
@@ -1436,17 +1436,7 @@ limitations under the License.
 
 ## Protobuf
 
-This license applies to all parts of Protocol Buffers except the following:
-
-  - Atomicops support for generic gcc, located in
-    src/google/protobuf/stubs/atomicops_internals_generic_gcc.h.
-    This file is copyrighted by Red Hat Inc.
-
-  - Atomicops support for AIX/POWER, located in
-    src/google/protobuf/stubs/atomicops_internals_power.h.
-    This file is copyrighted by Bloomberg Finance LP.
-
-Copyright 2014, Google Inc.  All rights reserved.
+Copyright 2008 Google Inc.  All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are

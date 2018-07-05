@@ -144,13 +144,13 @@ class MyReviewsController: UICollectionViewController, UICollectionViewDelegateF
         }
     }
     
-    func dismissGoToListenviewMessage() {
+    @objc func dismissGoToListenviewMessage() {
         self.blurConnectionView.removeFromSuperview()
         self.blurConnectionView.removeGestureRecognizer(self.goToListenTap)
         
     }
     
-    func dismissviewMessage() {
+    @objc func dismissviewMessage() {
         self.dismiss(animated: true) {
             self.blurConnectionView.removeFromSuperview()
             self.blurConnectionView.removeGestureRecognizer(self.connectionTap)
@@ -182,11 +182,11 @@ class MyReviewsController: UICollectionViewController, UICollectionViewDelegateF
         }
     }
     
-    func closeViewController() {
+    @objc func closeViewController() {
         self.dismiss(animated: true, completion: nil)
     }
     
-    func dismissContainerView() {
+    @objc func dismissContainerView() {
 //        viewGeneral.removeFromSuperview()
 //        containerView.removeFromSuperview()
         containerView.dismiss(animated: false, completion: nil)
@@ -303,7 +303,7 @@ class MyReviewsController: UICollectionViewController, UICollectionViewDelegateF
     
     var sheetController = UIAlertController()
     
-    func handleReportContentoptions () {
+    @objc func handleReportContentoptions () {
         sheetController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         sheetController.addAction(UIAlertAction(title: "Reportar", style: .destructive, handler: { (_) in
@@ -445,7 +445,7 @@ class MyReviewsController: UICollectionViewController, UICollectionViewDelegateF
                             print("play error: \(error)")
                         }
                     }
-                    if AudioBot.playing {
+                    if AudioBot.isPlaying {
                         AudioBot.pausePlay()
                         audioReview.playing = false
                         cell.playing = false

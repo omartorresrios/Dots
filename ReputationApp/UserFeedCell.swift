@@ -161,11 +161,11 @@ class UserFeedCell: UICollectionViewCell {
     var goToListen : (() -> Void)?
     var optionButtonTapped : (() -> Void)?
     
-    func previewAudio() {
+    @objc func previewAudio() {
         goToListen!()    
     }
     
-    func previewOptionButton() {
+    @objc func previewOptionButton() {
         optionButtonTapped!()
     }
 

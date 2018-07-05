@@ -170,7 +170,7 @@ class UserReviewsCell: UICollectionViewCell {
     
     
     
-    func previewAudio() {
+    @objc func previewAudio() {
         goToListen!()
         
     }

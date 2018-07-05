@@ -74,7 +74,7 @@ class UserStoriesCell: UICollectionViewCell {
         
     }
     
-    func watchVideo() {
+    @objc func watchVideo() {
         goToWatch!()
     }
     

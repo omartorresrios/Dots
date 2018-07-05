@@ -55,11 +55,11 @@ class UserFeedController: UIViewController, UICollectionViewDelegate, UICollecti
         return indicator
     }()
     
-    let userSearchControllerButton: UIButton = {
+    let cameraViewButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(#imageLiteral(resourceName: "userSearch-icon").withRenderingMode(.alwaysTemplate), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "camera").withRenderingMode(.alwaysTemplate), for: .normal)
         button.tintColor = UIColor.mainGreen()
-        button.addTarget(self, action: #selector(goToUserSearch), for: .touchUpInside)
+        button.addTarget(self, action: #selector(goToCamera), for: .touchUpInside)
         return button
     }()
     
@@ -103,8 +103,8 @@ class UserFeedController: UIViewController, UICollectionViewDelegate, UICollecti
         userFeedControllerImage.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 28, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 25, height: 25)
         userFeedControllerImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
-        view.addSubview(userSearchControllerButton)
-        userSearchControllerButton.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 28, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 25, height: 25)
+        view.addSubview(cameraViewButton)
+        cameraViewButton.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 28, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 25, height: 25)
     }
     
     func getAllReviews() {
@@ -166,8 +166,8 @@ class UserFeedController: UIViewController, UICollectionViewDelegate, UICollecti
         userFeedPreviewAudioContainerView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
     }
     
-    func goToUserSearch() {
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "GoToUserSearchControllerFromUserFeedController"), object: nil)
+    @objc func goToCamera() {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "GoToCameraViewFromUserFeedController"), object: nil)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -192,7 +192,7 @@ class UserFeedController: UIViewController, UICollectionViewDelegate, UICollecti
         
     }
     
-    func showFromUserProfile(sender: UIGestureRecognizer) {
+    @objc func showFromUserProfile(sender: UIGestureRecognizer) {
         isFrom = true
         let position = sender.location(in: collectionView)
         guard let index = collectionView.indexPathForItem(at: position) else {
@@ -210,7 +210,7 @@ class UserFeedController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
     
-    func showToUserProfile(sender: UIGestureRecognizer) {
+    @objc func showToUserProfile(sender: UIGestureRecognizer) {
         isFrom = false
         let position = sender.location(in: collectionView)
         guard let index = collectionView.indexPathForItem(at: position) else {
@@ -228,7 +228,7 @@ class UserFeedController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
     
-    func showUserReviewsView() {
+    @objc func showUserReviewsView() {
         let userReviewsController = UserReviewsController(collectionViewLayout: UICollectionViewFlowLayout())
         
         if isFrom == true {
@@ -249,7 +249,7 @@ class UserFeedController: UIViewController, UICollectionViewDelegate, UICollecti
 //        Mixpanel.mainInstance().track(event: "Pressed reviewsViewContainer")
     }
     
-    func showWriteReviewView() {
+    @objc func showWriteReviewView() {
         let writeReviewController = WriteReviewController()
         
         if isFrom == true {
@@ -270,7 +270,7 @@ class UserFeedController: UIViewController, UICollectionViewDelegate, UICollecti
 //        Mixpanel.mainInstance().track(event: "Pressed writeReviewViewContainer")
     }
     
-    func blockUserView() {
+    @objc func blockUserView() {
         if isFrom == true {
             userFullnameSelected = reviewSelected.fromFullname
         } else {
@@ -282,7 +282,7 @@ class UserFeedController: UIViewController, UICollectionViewDelegate, UICollecti
         present(alert, animated: true, completion: nil)
     }
     
-    func dismissContainerView() {
+    @objc func dismissContainerView() {
         userContentOptionsView.removeFromSuperview()
         userContentOptionsView.viewGeneral.removeGestureRecognizer(tap)
     }
@@ -406,7 +406,7 @@ class UserFeedController: UIViewController, UICollectionViewDelegate, UICollecti
                         print("play error: \(error)")
                     }
                 }
-                if AudioBot.playing {
+                if AudioBot.isPlaying {
                     AudioBot.pausePlay()
                     audioReview.playing = false
                     cell.playing = false

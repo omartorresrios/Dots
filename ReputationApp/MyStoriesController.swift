@@ -122,13 +122,13 @@ class MyStoriesController: UICollectionViewController, UICollectionViewDelegateF
         }
     }
     
-    func dismissGoToListenviewMessage() {
+    @objc func dismissGoToListenviewMessage() {
         self.blurConnectionView.removeFromSuperview()
         self.blurConnectionView.removeGestureRecognizer(self.goToListenTap)
         
     }
     
-    func dismissviewMessage() {
+    @objc func dismissviewMessage() {
         self.dismiss(animated: true) {
             self.blurConnectionView.removeFromSuperview()
             self.blurConnectionView.removeGestureRecognizer(self.connectionTap)
@@ -159,7 +159,7 @@ class MyStoriesController: UICollectionViewController, UICollectionViewDelegateF
         }
     }
     
-    func closeViewController() {
+    @objc func closeViewController() {
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -270,7 +270,7 @@ class MyStoriesController: UICollectionViewController, UICollectionViewDelegateF
     // define a variable to store initial touch position
     var initialTouchPoint: CGPoint = CGPoint(x: 0,y: 0)
     
-    func panGestureRecognizerHandler(_ sender: UIPanGestureRecognizer) {
+    @objc func panGestureRecognizerHandler(_ sender: UIPanGestureRecognizer) {
         let touchPoint = sender.location(in: self.previewVideoContainerView.view?.window)
         
         if sender.state == UIGestureRecognizerState.began {
@@ -301,7 +301,7 @@ class MyStoriesController: UICollectionViewController, UICollectionViewDelegateF
     var playerLayer = AVPlayerLayer()
     var sheetController = UIAlertController()
     
-    func handleReportContentoptions () {
+    @objc func handleReportContentoptions () {
         sheetController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         sheetController.addAction(UIAlertAction(title: "Reportar", style: .destructive, handler: { (_) in

@@ -89,18 +89,11 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
         return ml
     }()
     
-    let userFeedControllerImage: UIImageView = {
+    let cameraViewImage: UIImageView = {
         let iv = UIImageView()
-        iv.image = #imageLiteral(resourceName: "dots_logo_feed")
+        iv.image = #imageLiteral(resourceName: "camera").withRenderingMode(.alwaysTemplate)
+        iv.tintColor = UIColor.mainGreen()
         iv.contentMode = .scaleAspectFill
-        return iv
-    }()
-    
-    let myProfileControllerImage: CustomImageView = {
-        let iv = CustomImageView()
-        iv.contentMode = .scaleAspectFill
-        iv.clipsToBounds = true
-        iv.layer.cornerRadius = 25 / 2
         return iv
     }()
     
@@ -113,20 +106,13 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.addSubview(myProfileControllerImage)
-        myProfileControllerImage.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 28, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 25, height: 25)
-        guard let userAvatar = Locksmith.loadDataForUserAccount(userAccount: "currentUserAvatar") else { return }
-        myProfileControllerImage.loadImage(urlString: ((userAvatar as [String : AnyObject])["avatar"] as! String?)!)
-        myProfileControllerImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(goToMyProfile)))
-        myProfileControllerImage.isUserInteractionEnabled = true
-        
-        view.addSubview(userFeedControllerImage)
-        userFeedControllerImage.anchor(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 28, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 25, height: 25)
-        userFeedControllerImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(goToUserFeed)))
-        userFeedControllerImage.isUserInteractionEnabled = true
+        view.addSubview(cameraViewImage)
+        cameraViewImage.anchor(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 28, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 25, height: 25)
+        cameraViewImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(goToCamera)))
+        cameraViewImage.isUserInteractionEnabled = true
         
         view.addSubview(divideView)
-        divideView.anchor(top: myProfileControllerImage.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
+        divideView.anchor(top: cameraViewImage.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
         
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
@@ -185,8 +171,8 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "GoToMyProfileController"), object: nil)
     }
     
-    func goToUserFeed() {
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "GoToUserFeedController"), object: nil)
+    @objc func goToCamera() {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "GoToCameraViewFromUserSearchController"), object: nil)
     }
     
     func check_record_permission() {
@@ -291,7 +277,7 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
                         self.view.addSubview(self.resultLabel)
                         self.resultLabel.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
                         self.resultLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-                        self.resultLabel.centerYAnchor.constraint(equalTo: self.userFeedControllerImage.centerYAnchor).isActive = true
+                        self.resultLabel.centerYAnchor.constraint(equalTo: self.cameraViewImage.centerYAnchor).isActive = true
                         
                         self.loader.stopAnimating()
                         self.searchingPeopleLabel.removeFromSuperview()
@@ -376,18 +362,18 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
         }
     }
     
-    func dismissConnectionviewMessage() {
+    @objc func dismissConnectionviewMessage() {
         supportAlertView.removeFromSuperview()
         self.searchButton.isHidden = false
         supportAlertView.removeGestureRecognizer(self.connectionTap)
     }
     
-    func dismissContainerView() {
+    @objc func dismissContainerView() {
         userContentOptionsView.removeFromSuperview()
         userContentOptionsView.viewGeneral.removeGestureRecognizer(tap)
     }
     
-    func dismissAlertMessage() {
+    @objc func dismissAlertMessage() {
         supportAlertView.removeFromSuperview()
         resetAudio()
         searchButton.tintColor = UIColor.mainGreen()
@@ -534,7 +520,7 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
 //        }
 //    }
     
-    func showUserReviewsView() {
+    @objc func showUserReviewsView() {
         let userReviewsController = UserReviewsController(collectionViewLayout: UICollectionViewFlowLayout())
 
         userReviewsController.userId = userSelected.id
@@ -550,7 +536,7 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
         Mixpanel.mainInstance().track(event: "Pressed reviewsViewContainer")
     }
     
-    func showWriteReviewView() {
+    @objc func showWriteReviewView() {
         let writeReviewController = WriteReviewController()
 
         writeReviewController.userId = userSelected.id
@@ -566,7 +552,7 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
         Mixpanel.mainInstance().track(event: "Pressed writeReviewViewContainer")
     }
     
-    func blockUserView() {
+    @objc func blockUserView() {
         let alert = UIAlertController(title: "", message: "Bloqueaste a \(self.userFullnameSelected!)", preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
         present(alert, animated: true, completion: nil)
@@ -608,7 +594,7 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
         
     }
     
-    func reachabilityStatusChanged() {
+    @objc func reachabilityStatusChanged() {
         print("Checking connectivity...")
     }
     

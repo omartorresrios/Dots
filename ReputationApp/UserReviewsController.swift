@@ -124,11 +124,11 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
         }
     }
     
-    func closeViewController() {
+    @objc func closeViewController() {
         self.dismiss(animated: true, completion: nil)
     }
     
-    func dismissContainerView() {
+    @objc func dismissContainerView() {
 //        viewGeneral.removeFromSuperview()
 //        containerView.removeFromSuperview()
         containerView.dismiss(animated: true, completion: nil)
@@ -163,9 +163,9 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
         guard let boldNameFont = UIFont(name: "SFUIDisplay-Semibold", size: 15) else { return }
         guard let normalFont = UIFont(name: "SFUIDisplay-Regular", size: 15) else { return }
         
-        let attributedMessage = NSMutableAttributedString(string: "\(self.userFullname!)", attributes: [NSFontAttributeName: boldNameFont])
+        let attributedMessage = NSMutableAttributedString(string: "\(self.userFullname!)", attributes: [kCTFontAttributeName as NSAttributedStringKey: boldNameFont])
 
-        attributedMessage.append(NSMutableAttributedString(string: " aún no tiene reseñas 😲", attributes: [NSFontAttributeName: normalFont]))
+        attributedMessage.append(NSMutableAttributedString(string: " aún no tiene reseñas 😲", attributes: [kCTFontAttributeName as NSAttributedStringKey: normalFont]))
         
         self.messageLabel.attributedText = attributedMessage
         
@@ -204,13 +204,13 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
         }
     }
     
-    func dismissGoToListenviewMessage() {
+    @objc func dismissGoToListenviewMessage() {
         self.blurConnectionView.removeFromSuperview()
         self.blurConnectionView.removeGestureRecognizer(self.goToListenTap)
         
     }
     
-    func dismissviewMessage() {
+    @objc func dismissviewMessage() {
         self.dismiss(animated: true) {
             self.blurConnectionView.removeFromSuperview()
             self.blurConnectionView.removeGestureRecognizer(self.connectionTap)
@@ -308,7 +308,7 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
     
     var sheetController = UIAlertController()
     
-    func handleReportContentoptions () {
+    @objc func handleReportContentoptions () {
         sheetController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         sheetController.addAction(UIAlertAction(title: "Reportar", style: .destructive, handler: { (_) in
@@ -450,7 +450,7 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
                             print("play error: \(error)")
                         }
                     }
-                    if AudioBot.playing {
+                    if AudioBot.isPlaying {
                         AudioBot.pausePlay()
                         audioReview.playing = false
                         cell.playing = false

@@ -23,8 +23,6 @@ public final class VADSettings: NSObject {
 
 final public class AudioBot: NSObject {
 
-    public static var mixWithOthersWhenRecording: Bool = false
-
     fileprivate static let sharedBot = AudioBot()
 
     private override init() {
@@ -39,7 +37,7 @@ final public class AudioBot: NSObject {
     fileprivate var audioRecorder: AVAudioRecorder?
     fileprivate var audioPlayer: AVAudioPlayer?
 
-    public static var recording: Bool {
+    public static var isRecording: Bool {
         return sharedBot.audioRecorder?.isRecording ?? false
     }
 
@@ -47,7 +45,7 @@ final public class AudioBot: NSObject {
         return sharedBot.audioRecorder?.url
     }
 
-    public static var playing: Bool {
+    public static var isPlaying: Bool {
         return sharedBot.audioPlayer?.isPlaying ?? false
     }
 
@@ -109,25 +107,25 @@ extension AudioBot {
 
     public enum Usage {
         case normal
-        case custom(fileURL: URL?, type: String, settings: [String: AnyObject])
+        case custom(fileURL: URL?, type: String, settings: [String: Any])
 
-        public static let m4aSettings: [String: AnyObject] = [
-            AVFormatIDKey: Int(kAudioFormatMPEG4AAC) as AnyObject,
-            AVEncoderAudioQualityKey: AVAudioQuality.medium.rawValue as AnyObject,
-            AVEncoderBitRateKey: 64000 as AnyObject,
-            AVNumberOfChannelsKey: 2 as AnyObject,
-            AVSampleRateKey: 44100.0 as AnyObject
+        public static let m4aSettings: [String: Any] = [
+            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+            AVEncoderAudioQualityKey: AVAudioQuality.medium.rawValue,
+            AVEncoderBitRateKey: 64000,
+            AVNumberOfChannelsKey: 2,
+            AVSampleRateKey: 44100.0
         ]
 
-        public static let wavSettings: [String: AnyObject] = [
-            AVFormatIDKey: Int(kAudioFormatLinearPCM) as AnyObject,
-            AVEncoderAudioQualityKey : AVAudioQuality.medium.rawValue as AnyObject,
-            AVEncoderBitRateKey : 64000 as AnyObject,
-            AVNumberOfChannelsKey: 2 as AnyObject,
-            AVSampleRateKey : 44100.0 as AnyObject
+        public static let wavSettings: [String: Any] = [
+            AVFormatIDKey: Int(kAudioFormatLinearPCM),
+            AVEncoderAudioQualityKey : AVAudioQuality.medium.rawValue,
+            AVEncoderBitRateKey : 64000,
+            AVNumberOfChannelsKey: 2,
+            AVSampleRateKey : 44100.0
         ]
 
-        var settings: [String: AnyObject] {
+        var settings: [String: Any] {
             switch self {
             case .normal:
                 return Usage.m4aSettings
@@ -155,17 +153,17 @@ extension AudioBot {
         }
     }
 
-    public class func startRecordAudio(forUsage usage: Usage, withDecibelSamplePeriodicReport decibelSamplePeriodicReport: PeriodicReport) throws {
+    public class func startRecordAudio(forUsage usage: Usage, categoryOptions: AVAudioSessionCategoryOptions = [], withDecibelSamplePeriodicReport decibelSamplePeriodicReport: PeriodicReport) throws {
         do {
             let session = AVAudioSession.sharedInstance()
+            let mixWithOthersWhenRecording = categoryOptions.contains(.mixWithOthers)
             if mixWithOthersWhenRecording {
-                let categoryOptions: AVAudioSessionCategoryOptions = [.mixWithOthers, .defaultToSpeaker]
                 if session.category != AVAudioSessionCategoryPlayAndRecord || session.categoryOptions != categoryOptions {
                     try session.setCategory(AVAudioSessionCategoryPlayAndRecord, with: categoryOptions)
                 }
             } else {
                 if session.category != AVAudioSessionCategoryRecord {
-                    try session.setCategory(AVAudioSessionCategoryRecord)
+                    try session.setCategory(AVAudioSessionCategoryRecord, with: categoryOptions)
                 }
             }
             try session.setActive(true)
@@ -227,6 +225,7 @@ extension AudioBot {
         let duration = audioRecorder.currentTime
         audioRecorder.stop()
         finish?(audioRecorder.url, duration, sharedBot.decibelSamples)
+        sharedBot.deactiveAudioSessionAndNotifyOthers()
     }
 
     public class func removeAudioAtFileURL(_ fileURL: URL) {
@@ -338,27 +337,31 @@ extension AudioBot {
 
 extension AudioBot {
 
-    public class func startPlayAudioAtFileURL(_ fileURL: URL, fromTime: TimeInterval, withProgressPeriodicReport progressPeriodicReport: PeriodicReport, finish: @escaping (Bool) -> Void) throws {
+    public class func startPlayAudioAtFileURL(_ fileURL: URL, fromTime: TimeInterval, categoryOptions: AVAudioSessionCategoryOptions = [], withProgressPeriodicReport progressPeriodicReport: PeriodicReport, finish: @escaping (Bool) -> Void) throws {
         let session = AVAudioSession.sharedInstance()
-        if !session.audiobot_canPlay {
-            do {
-                try session.setCategory(AVAudioSessionCategoryPlayback)
-                try session.setActive(true)
-            } catch let error {
-                throw error
+        do {
+            if #available(iOS 10.0, *) {
+                try session.setCategory(
+                    AVAudioSessionCategoryPlayAndRecord,
+                    mode: AVAudioSessionModeDefault,
+                    options: categoryOptions
+                )
+            } else {
+                try session.setCategory(AVAudioSessionCategoryPlayAndRecord)
             }
+            try session.setActive(true)
+        } catch let error {
+            throw error
         }
         guard progressPeriodicReport.reportingFrequency > 0 else {
             throw AudioBotError.invalidReportingFrequency
         }
-        if let audioPlayer = sharedBot.audioPlayer , audioPlayer.url == fileURL {
+        if let audioPlayer = sharedBot.audioPlayer, audioPlayer.url == fileURL, abs(fromTime - audioPlayer.currentTime) < 0.2 {
             audioPlayer.play()
         } else {
             sharedBot.audioPlayer?.pause()
             do {
-                let fileURL = NSURL(string: String(describing: fileURL))
-                let soundData = NSData(contentsOf: fileURL! as URL)
-                let audioPlayer = try AVAudioPlayer(data: soundData! as Data)
+                let audioPlayer = try AVAudioPlayer(contentsOf: fileURL)
                 sharedBot.audioPlayer = audioPlayer
                 audioPlayer.delegate = sharedBot
                 audioPlayer.prepareToPlay()

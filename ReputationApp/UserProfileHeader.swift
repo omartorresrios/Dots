@@ -155,11 +155,11 @@ class UserProfileHeader: UICollectionViewCell {
         return image
     }()
     
-    func writeReview() {
+    @objc func writeReview() {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "GoToWriteCV"), object: nil)
     }
     
-    func handleReturn() {
+    @objc func handleReturn() {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "GoToSearchFromProfile"), object: nil)
     }
     

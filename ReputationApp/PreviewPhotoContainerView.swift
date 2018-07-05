@@ -52,14 +52,14 @@ class PreviewPhotoContainerView: UIView {
         return button
     }()
     
-    func handleSave() {
+    @objc func handleSave() {
         
         guard let previewImage = previewImageView.image else { return }
         
         DataService.instance.savePhoto(image: previewImage, view: self)
     }
     
-    func handleNext() {
+    @objc func handleNext() {
         
         // TODO: Mejorar la entrada de estos elementos
         
@@ -81,7 +81,7 @@ class PreviewPhotoContainerView: UIView {
         }
     }
     
-    func handleSend() {
+    @objc func handleSend() {
         // Retreieve Auth_Token from Keychain
         if let userToken = Locksmith.loadDataForUserAccount(userAccount: "AuthToken") {
             
@@ -136,7 +136,7 @@ class PreviewPhotoContainerView: UIView {
         }
     }
     
-    func handleCancel() {
+    @objc func handleCancel() {
         self.removeFromSuperview()
     }
     

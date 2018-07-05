@@ -52,13 +52,13 @@ class SnapContainerViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         setupVerticalScrollView()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(showMyProfile), name: NSNotification.Name(rawValue: "GoToMyProfileController"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showCameraViewFromUserFeed), name: NSNotification.Name(rawValue: "GoToCameraViewFromUserFeedController"), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(showUserSearchFromUserFeed), name: NSNotification.Name(rawValue: "GoToUserSearchControllerFromUserFeedController"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showCameraViewFromUserSearch), name: NSNotification.Name(rawValue: "GoToCameraViewFromUserSearchController"), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(showUserFeed), name: NSNotification.Name(rawValue: "GoToUserFeedController"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showUserSearchFromCamera), name: NSNotification.Name(rawValue: "GoToSearchFromCameraView"), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(showUserSearchFromMyProfile), name: NSNotification.Name(rawValue: "GoToUserSearchControllerFromMyProfileController"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showUserFeedFromCamera), name: NSNotification.Name(rawValue: "GoToFeedFromCameraView"), object: nil)
         
         
         let defaults = UserDefaults.standard
@@ -76,7 +76,7 @@ class SnapContainerViewController: UIViewController, UIScrollViewDelegate {
         
     }
     
-    func showMyProfile() {
+    @objc func showUserSearchFromCamera() {
         let newOffset = CGPoint(x: 0, y: 0)
         scrollView.setContentOffset(newOffset, animated: true)
     }
@@ -86,13 +86,18 @@ class SnapContainerViewController: UIViewController, UIScrollViewDelegate {
         scrollView.setContentOffset(newOffset, animated: true)
     }
     
-    func showUserSearchFromUserFeed() {
+    @objc func showUserFeedFromCamera() {
+        let newOffset = CGPoint(x: view.bounds.width * 2, y: 0)
+        scrollView.setContentOffset(newOffset, animated: true)
+    }
+    
+    @objc func showCameraViewFromUserFeed() {
         let newOffset = CGPoint(x: view.bounds.width, y: 0)
         scrollView.setContentOffset(newOffset, animated: true)
     }
     
-    func showUserFeed() {
-        let newOffset = CGPoint(x: view.bounds.width * 2, y: 0)
+    @objc func showCameraViewFromUserSearch() {
+        let newOffset = CGPoint(x: view.bounds.width, y: 0)
         scrollView.setContentOffset(newOffset, animated: true)
     }
     
