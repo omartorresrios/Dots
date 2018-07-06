@@ -47,6 +47,10 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
     let videoFileOutput = AVCaptureMovieFileOutput()
     let captureSession = AVCaptureSession()
     
+    let userContentOptionsView = UserProfileView()
+    var userSelected: User! = nil
+    var userDictionary = [String: Any]()
+    
     var timer: Timer?
     var counter = 20
     var startTime: Double = 0
@@ -174,6 +178,8 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        retrievingCurrentUser()
+        
         view.addSubview(userSearchControllerButton)
         userSearchControllerButton.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 28, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 30, height: 30)
         
@@ -182,7 +188,7 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
         myProfileControllerImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         guard let userAvatar = Locksmith.loadDataForUserAccount(userAccount: "currentUserAvatar") else { return }
         myProfileControllerImage.loadImage(urlString: ((userAvatar as [String : AnyObject])["avatar"] as! String?)!)
-//        myProfileControllerImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(goToMyProfile)))
+        myProfileControllerImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(goToMyProfile)))
         myProfileControllerImage.isUserInteractionEnabled = true
         
         view.addSubview(userFeedControllerImage)
@@ -203,6 +209,26 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
         SetupSwiftyCamButton()
     }
     
+    func retrievingCurrentUser() {
+        guard let userEmail = Locksmith.loadDataForUserAccount(userAccount: "currentUserEmail") else { return }
+        guard let userId = Locksmith.loadDataForUserAccount(userAccount: "currentUserId") else { return }
+        guard let userName = Locksmith.loadDataForUserAccount(userAccount: "currentUserName") else { return }
+        guard let userAvatar = Locksmith.loadDataForUserAccount(userAccount: "currentUserAvatar") else { return }
+        
+        userDictionary.updateValue((userId as [String : AnyObject])["id"] as! Int?, forKey: "id")
+        userDictionary.updateValue((userName as [String : AnyObject])["name"] as! String?, forKey: "fullname")
+        userDictionary.updateValue((userEmail as [String : AnyObject])["email"] as! String?, forKey: "email")
+        userDictionary.updateValue((userAvatar as [String : AnyObject])["avatar"] as! String?, forKey: "avatar")
+        
+        let user = User(uid: (userId as [String : AnyObject])["id"] as! Int!, dictionary: userDictionary)
+        
+        userSelected = user
+    }
+    
+    @objc func goToMyProfile() {
+        setupUserInfoViewsContainers()
+    }
+    
     @objc func goToFeedController() {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "GoToFeedFromCameraView"), object: nil)
     }
@@ -216,6 +242,66 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
         self.customAlertMessage.removeFromSuperview()
         self.view.removeGestureRecognizer(self.tap)
         self.blurView.removeFromSuperview()
+    }
+    
+    @objc func dismissContainerView() {
+        DispatchQueue.main.async {
+            self.userContentOptionsView.removeFromSuperview()
+            self.userContentOptionsView.viewGeneral.removeGestureRecognizer(self.tap)
+            
+            self.swiftyCamButton.isHidden = false
+            self.swiftyCamButton.isUserInteractionEnabled = true
+        }
+    }
+    
+    func setupUserInfoViewsContainers() {
+        DispatchQueue.main.async {
+            self.swiftyCamButton.isHidden = true
+            self.swiftyCamButton.isUserInteractionEnabled = false
+        }
+        
+        userContentOptionsView.viewSupport.transform = CGAffineTransform(translationX: 0, y: view.frame.height)
+        UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+            
+            self.view.addSubview(self.userContentOptionsView)
+            self.userContentOptionsView.anchor(top: self.view.topAnchor, left: self.view.leftAnchor, bottom: self.view.bottomAnchor, right: self.view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+            
+            let reviewsTap = UITapGestureRecognizer(target: self, action: #selector(self.showUserReviewsView))
+            self.userContentOptionsView.reviewsViewContainer.addGestureRecognizer(reviewsTap)
+            
+            self.userContentOptionsView.storiesViewContainer.layoutIfNeeded()
+            self.userContentOptionsView.storiesViewContainer.layer.addBorder(edge: .top, color: .gray, thickness: 1)
+            
+            let storiesTap = UITapGestureRecognizer(target: self, action: #selector(self.showStoriesView))
+            self.userContentOptionsView.storiesViewContainer.addGestureRecognizer(storiesTap)
+            
+            self.tap = UITapGestureRecognizer(target: self, action: #selector(self.dismissContainerView))
+            self.userContentOptionsView.viewGeneral.addGestureRecognizer(self.tap)
+            self.tap.delegate = self
+            
+            self.userContentOptionsView.viewSupport.transform = .identity
+            
+        }, completion: nil)
+    }
+    
+    @objc func showUserReviewsView() {
+        let myReviewsController = MyReviewsController(collectionViewLayout: UICollectionViewFlowLayout())
+        
+        myReviewsController.userId = userSelected.id
+        myReviewsController.userFullname = userSelected.fullname
+        myReviewsController.userImageUrl = userSelected.profileImageUrl
+        
+        present(myReviewsController, animated: true, completion: nil)
+    }
+    
+    @objc func showStoriesView() {
+        let myStoriesController = MyStoriesController(collectionViewLayout: UICollectionViewFlowLayout())
+
+        myStoriesController.userId = userSelected.id
+        myStoriesController.userFullname = userSelected.fullname
+        myStoriesController.userImageUrl = userSelected.profileImageUrl
+
+        present(myStoriesController, animated: true, completion: nil)
     }
 
     func showSuccesMessage() {

@@ -57,6 +57,7 @@
 		A0BD0A001F96B71D009C0CD3 /* UserFeedLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BD09FF1F96B71D009C0CD3 /* UserFeedLayout.swift */; };
 		A0D0542E1FDB6BF400C738F5 /* SnapContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D0542C1FDB6BF300C738F5 /* SnapContainerViewController.swift */; };
 		A0D0542F1FDB6BF400C738F5 /* VerticalScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D0542D1FDB6BF300C738F5 /* VerticalScrollViewController.swift */; };
+		A0D287C320EF2721005CCF56 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D287C220EF2720005CCF56 /* UserProfileView.swift */; };
 		A0DD9D751FE189450080FA91 /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DD9D741FE189450080FA91 /* CacheManager.swift */; };
 		A0EC6BF81FA11F52005384D7 /* VideoLibraryContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0EC6BF71FA11F52005384D7 /* VideoLibraryContentCell.swift */; };
 		A0EF64111EC40757006609F7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0EF64101EC40757006609F7 /* AppDelegate.swift */; };
@@ -136,6 +137,7 @@
 		A0BD09FF1F96B71D009C0CD3 /* UserFeedLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserFeedLayout.swift; sourceTree = "<group>"; };
 		A0D0542C1FDB6BF300C738F5 /* SnapContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapContainerViewController.swift; sourceTree = "<group>"; };
 		A0D0542D1FDB6BF300C738F5 /* VerticalScrollViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalScrollViewController.swift; sourceTree = "<group>"; };
+		A0D287C220EF2720005CCF56 /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 		A0DD9D741FE189450080FA91 /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
 		A0EC6BF71FA11F52005384D7 /* VideoLibraryContentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoLibraryContentCell.swift; sourceTree = "<group>"; };
 		A0EF640D1EC40757006609F7 /* ReputationApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReputationApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -437,6 +439,7 @@
 				A02B378F200BC1CC0062CF4F /* Signin-Bridging-Header.h */,
 				A025EDBD201FAFEB00594000 /* CustomAlertMessage.swift */,
 				A030BAA32020CA3900D9BD73 /* UserContentOptionsView.swift */,
+				A0D287C220EF2720005CCF56 /* UserProfileView.swift */,
 			);
 			name = "Supporting files";
 			sourceTree = "<group>";
@@ -656,6 +659,7 @@
 				A07B3C371ED91DCC00F10657 /* UserSearchController.swift in Sources */,
 				A07B95921F2E90B5008E9EA0 /* Review.swift in Sources */,
 				A0F872AC1FF98EB700EAF27A /* AudioController.swift in Sources */,
+				A0D287C320EF2721005CCF56 /* UserProfileView.swift in Sources */,
 				A0BD0A001F96B71D009C0CD3 /* UserFeedLayout.swift in Sources */,
 				A04443891FDE0ECC003DD7A6 /* WriteReviewController.swift in Sources */,
 				A0F36A421ECA154F0072B5DD /* AESCrypt.m in Sources */,
