@@ -52,7 +52,6 @@
 		A09EEB851F8729D1009836DC /* SegueFromBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09EEB841F8729D1009836DC /* SegueFromBottom.swift */; };
 		A0BD09FB1F955E56009C0CD3 /* VideoLibraryContentHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BD09FA1F955E56009C0CD3 /* VideoLibraryContentHeader.swift */; };
 		A0BD09FE1F96A7E0009C0CD3 /* UserFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BD09FD1F96A7E0009C0CD3 /* UserFeedController.swift */; };
-		A0BD0A001F96B71D009C0CD3 /* UserFeedLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BD09FF1F96B71D009C0CD3 /* UserFeedLayout.swift */; };
 		A0D0542E1FDB6BF400C738F5 /* SnapContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D0542C1FDB6BF300C738F5 /* SnapContainerViewController.swift */; };
 		A0D0542F1FDB6BF400C738F5 /* VerticalScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D0542D1FDB6BF300C738F5 /* VerticalScrollViewController.swift */; };
 		A0D287C320EF2721005CCF56 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D287C220EF2720005CCF56 /* UserProfileView.swift */; };
@@ -130,7 +129,6 @@
 		A09EEB841F8729D1009836DC /* SegueFromBottom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueFromBottom.swift; sourceTree = "<group>"; };
 		A0BD09FA1F955E56009C0CD3 /* VideoLibraryContentHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoLibraryContentHeader.swift; sourceTree = "<group>"; };
 		A0BD09FD1F96A7E0009C0CD3 /* UserFeedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserFeedController.swift; sourceTree = "<group>"; };
-		A0BD09FF1F96B71D009C0CD3 /* UserFeedLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserFeedLayout.swift; sourceTree = "<group>"; };
 		A0D0542C1FDB6BF300C738F5 /* SnapContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapContainerViewController.swift; sourceTree = "<group>"; };
 		A0D0542D1FDB6BF300C738F5 /* VerticalScrollViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalScrollViewController.swift; sourceTree = "<group>"; };
 		A0D287C220EF2720005CCF56 /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
@@ -349,7 +347,6 @@
 			children = (
 				A0BD09FD1F96A7E0009C0CD3 /* UserFeedController.swift */,
 				A04A82472056296200A86FE2 /* UserFeedCell.swift */,
-				A0BD09FF1F96B71D009C0CD3 /* UserFeedLayout.swift */,
 				A04A82492058796600A86FE2 /* UserFeedPreviewAudioContainerView.swift */,
 			);
 			name = UserFeed;
@@ -653,7 +650,6 @@
 				A07B95921F2E90B5008E9EA0 /* Review.swift in Sources */,
 				A0F872AC1FF98EB700EAF27A /* AudioController.swift in Sources */,
 				A0D287C320EF2721005CCF56 /* UserProfileView.swift in Sources */,
-				A0BD0A001F96B71D009C0CD3 /* UserFeedLayout.swift in Sources */,
 				A04443891FDE0ECC003DD7A6 /* WriteReviewController.swift in Sources */,
 				A0F36A421ECA154F0072B5DD /* AESCrypt.m in Sources */,
 				A0EF64111EC40757006609F7 /* AppDelegate.swift in Sources */,

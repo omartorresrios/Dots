@@ -164,9 +164,7 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
         return view
     }()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+    fileprivate func uiElements() {
         view.backgroundColor = UIColor.grayHigh()
         
         view.addSubview(closeView)
@@ -181,6 +179,12 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
         
         view.addSubview(titleLabel)
         titleLabel.anchor(top: closeView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        uiElements()
         
 //        let tapGesture = UIPanGestureRecognizer(target: self, action: #selector(panGestureRecognizerHandler(_:)))
 //        view.addGestureRecognizer(tapGesture)

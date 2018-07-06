@@ -66,7 +66,24 @@ class UserFeedController: UIViewController, UICollectionViewDelegate, UICollecti
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationTopButtons()
+        collectionViewAndLayoutSetup()
+        loaderContentElements()
+        navigationController?.navigationBar.isHidden = true
+        getAllReviews()
+    }
+    
+    func loaderContentElements() {
+        collectionView.addSubview(loader)
+        loader.anchor(top: collectionView.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        loader.startAnimating()
+        loader.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor).isActive = true
         
+        collectionView.addSubview(searchingReviewsLabel)
+        searchingReviewsLabel.anchor(top: loader.bottomAnchor, left: collectionView.leftAnchor, bottom: nil, right: collectionView.rightAnchor, paddingTop: 4, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
+        searchingReviewsLabel.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor).isActive = true
+    }
+    
+    func collectionViewAndLayoutSetup() {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         layout.itemSize = CGSize(width: view.frame.width - 16, height: 162)
@@ -82,20 +99,6 @@ class UserFeedController: UIViewController, UICollectionViewDelegate, UICollecti
         collectionView.backgroundColor = UIColor.rgb(red: 238, green: 238, blue: 238)
         view.addSubview(collectionView)
         collectionView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 61, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        
-        navigationController?.navigationBar.isHidden = true
-        
-        collectionView.addSubview(loader)
-        loader.anchor(top: collectionView.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        loader.startAnimating()
-        loader.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor).isActive = true
-        
-        collectionView.addSubview(searchingReviewsLabel)
-        searchingReviewsLabel.anchor(top: loader.bottomAnchor, left: collectionView.leftAnchor, bottom: nil, right: collectionView.rightAnchor, paddingTop: 4, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
-        searchingReviewsLabel.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor).isActive = true
-        
-        getAllReviews()
-        
     }
     
     func setupNavigationTopButtons() {

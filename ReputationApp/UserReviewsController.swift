@@ -27,6 +27,7 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
     var connectionTap = UITapGestureRecognizer()
     var goToListenTap = UITapGestureRecognizer()
     let customAlertMessage = CustomAlertMessage()
+    let containerView = PreviewAudioContainerView()
     
     let viewGeneral = UIView()
     
@@ -76,6 +77,30 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        collectionViewAndLayoutSetup()
+        loaderContentElements()
+        AudioBot.prepareForNormalRecord()
+        
+        tap = UITapGestureRecognizer(target: self, action: #selector(dismissContainerView))
+        view.addGestureRecognizer(tap)
+        tap.delegate = self
+        
+        loadUserReviewsWithCloseButton()
+    }
+    
+    func loaderContentElements() {
+        view.addSubview(loader)
+        loader.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 60, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 20, height: 20)
+        loader.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        loader.startAnimating()
+        
+        view.addSubview(searchingReviewsLabel)
+        searchingReviewsLabel.anchor(top: loader.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 4, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
+        searchingReviewsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    }
+    
+    func collectionViewAndLayoutSetup() {
         collectionView?.backgroundColor = .white
         
         if let layout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
@@ -87,23 +112,6 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
         
         collectionView?.register(UserReviewsCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.isPagingEnabled = false
-        
-        view.addSubview(loader)
-        loader.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 60, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 20, height: 20)
-        loader.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        loader.startAnimating()
-        
-        view.addSubview(searchingReviewsLabel)
-        searchingReviewsLabel.anchor(top: loader.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 4, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
-        searchingReviewsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        
-        AudioBot.prepareForNormalRecord()
-        
-        tap = UITapGestureRecognizer(target: self, action: #selector(dismissContainerView))
-        view.addGestureRecognizer(tap)
-        tap.delegate = self
-        
-        loadUserReviewsWithCloseButton()
     }
     
     func loadUserReviewsWithCloseButton() {
@@ -356,8 +364,6 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return reviews.count
     }
-    
-    let containerView = PreviewAudioContainerView()
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! UserReviewsCell

@@ -31,6 +31,11 @@ class MyStoriesController: UICollectionViewController, UICollectionViewDelegateF
     var goToListenTap = UITapGestureRecognizer()
     let customAlertMessage = CustomAlertMessage()
     
+    let previewVideoContainerView = PreviewVideoContainerView()
+    var player = AVPlayer()
+    var playerLayer = AVPlayerLayer()
+    var sheetController = UIAlertController()
+    
     let closeView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 15
@@ -68,6 +73,19 @@ class MyStoriesController: UICollectionViewController, UICollectionViewDelegateF
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        collectionViewSetup()
+        loaderElement()
+        loadUserEventsWithCloseButton()
+    }
+    
+    func loaderElement() {
+        view.addSubview(loader)
+        loader.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 60, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 20, height: 20)
+        loader.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        loader.startAnimating()
+    }
+    
+    func collectionViewSetup() {
         collectionView?.backgroundColor = .white
         
         if let layout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
@@ -80,13 +98,6 @@ class MyStoriesController: UICollectionViewController, UICollectionViewDelegateF
         // Register cell classes
         collectionView?.register(UserStoriesCell.self, forCellWithReuseIdentifier: userStoriesCell)
         collectionView?.isPagingEnabled = false
-        
-        view.addSubview(loader)
-        loader.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 60, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 20, height: 20)
-        loader.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        loader.startAnimating()
-        
-        loadUserEventsWithCloseButton()
     }
     
     func showCustomAlertMessage(image: UIImage, message: String, isForLoadUsers: Bool) {
@@ -295,11 +306,6 @@ class MyStoriesController: UICollectionViewController, UICollectionViewDelegateF
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return eventVideos.count//images.count
     }
-    
-    let previewVideoContainerView = PreviewVideoContainerView()
-    var player = AVPlayer()
-    var playerLayer = AVPlayerLayer()
-    var sheetController = UIAlertController()
     
     @objc func handleReportContentoptions () {
         sheetController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)

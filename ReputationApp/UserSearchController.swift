@@ -106,6 +106,27 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        topElements()
+        collectionViewAndLayoutSetup()
+        navigationController?.navigationBar.isHidden = true
+        AudioController.sharedInstance.delegate = self
+        
+        // Reachability for checking internet connection
+        NotificationCenter.default.addObserver(self, selector: #selector(reachabilityStatusChanged), name: NSNotification.Name(rawValue: "ReachStatusChanged"), object: nil)
+        
+        loaderContentElements()
+        
+        // Initialize functions
+        loadAllUsers { (success) in
+            if success {
+//                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllUsersLoaded"), object: nil)
+            }
+        }
+        check_record_permission()
+        
+    }
+    
+    func topElements() {
         view.addSubview(cameraViewImage)
         cameraViewImage.anchor(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 28, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 25, height: 25)
         cameraViewImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(goToCamera)))
@@ -113,7 +134,9 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
         
         view.addSubview(divideView)
         divideView.anchor(top: cameraViewImage.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
-        
+    }
+    
+    func collectionViewAndLayoutSetup() {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         let width = (view.frame.width - 32) / 3
@@ -131,18 +154,14 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
         self.view.addSubview(collectionView)
         collectionView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 62, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        AudioController.sharedInstance.delegate = self
-        
-        // Reachability for checking internet connection
-        NotificationCenter.default.addObserver(self, selector: #selector(reachabilityStatusChanged), name: NSNotification.Name(rawValue: "ReachStatusChanged"), object: nil)
-        
-        navigationController?.navigationBar.isHidden = true
         collectionView.alwaysBounceVertical = true
         collectionView.keyboardDismissMode = .onDrag
         
         collectionView.isHidden = true
         layout.sectionHeadersPinToVisibleBounds = true
-        
+    }
+    
+    func loaderContentElements() {
         // Initialize the loader and position it
         view.addSubview(loader)
         loader.center = view.center
@@ -155,16 +174,6 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
         view.addSubview(messageLabel)
         messageLabel.anchor(top: nil, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 10, paddingBottom: 0, paddingRight: 10, width: 0, height: 0)
         messageLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        
-        // Initialize functions
-        loadAllUsers { (success) in
-            if success {
-//                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllUsersLoaded"), object: nil)
-            }
-        }
-        
-        check_record_permission()
-        
     }
     
     @objc func goToCamera() {

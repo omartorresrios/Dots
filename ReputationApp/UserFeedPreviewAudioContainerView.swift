@@ -11,6 +11,9 @@ import UIKit
 class UserFeedPreviewAudioContainerView: UIView, UIGestureRecognizerDelegate {
 
     var tap = UITapGestureRecognizer()
+    var playOrPauseAudioAction : ((_ view: UserFeedPreviewAudioContainerView, _ progressView: UIProgressView) -> Void)?
+    var optionButtonTapped : (() -> Void)?
+    var viewTappedForDismiss : (() -> Void)?
     
     let fromProfileImageView: CustomImageView = {
         let iv = CustomImageView()
@@ -181,10 +184,6 @@ class UserFeedPreviewAudioContainerView: UIView, UIGestureRecognizerDelegate {
     @objc func dismissView() {
         viewTappedForDismiss!()
     }
-    
-    var playOrPauseAudioAction : ((_ view: UserFeedPreviewAudioContainerView, _ progressView: UIProgressView) -> Void)?
-    var optionButtonTapped : (() -> Void)?
-    var viewTappedForDismiss : (() -> Void)?
     
     @objc func playAudio() {
         playOrPauseAudioAction?(self, progressView)
