@@ -162,28 +162,6 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
         return label
     }()
     
-//
-//    let flashButton: UIButton = {
-//        let button = UIButton(type: .system)
-//        button.tintColor = UIColor.white
-//        button.setImage(#imageLiteral(resourceName: "flash_off").withRenderingMode(.alwaysTemplate), for: .normal)
-//        button.addTarget(self, action: #selector(handleFlash), for: .touchUpInside)
-//        return button
-//    }()
-//    
-//    var flashing = false
-//    
-//    func handleFlash() {
-//        if flashing {
-//            flashButton.setImage(#imageLiteral(resourceName: "flash_on").withRenderingMode(.alwaysTemplate), for: .normal)
-//            flashEnabled = true
-//        } else {
-//            flashButton.setImage(#imageLiteral(resourceName: "flash_off").withRenderingMode(.alwaysTemplate), for: .normal)
-//            flashEnabled = false
-//        }
-//        flashing = !flashing
-//    }
-//    
     func setupCameraOptions() {
         cameraDelegate = self
         defaultCamera = .rear
@@ -214,9 +192,9 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
         
         setupCameraOptions()
         fakeViews()
-//
-//        // Reachability for checking internet connection
-//        NotificationCenter.default.addObserver(self, selector: #selector(reachabilityStatusChanged), name: NSNotification.Name(rawValue: "ReachStatusChanged"), object: nil)
+
+        // Reachability for checking internet connection
+        NotificationCenter.default.addObserver(self, selector: #selector(reachabilityStatusChanged), name: NSNotification.Name(rawValue: "ReachStatusChanged"), object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -233,7 +211,7 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "GoToSearchFromCameraView"), object: nil)
     }
 
-    func reachabilityStatusChanged() {
+    @objc func reachabilityStatusChanged() {
         print("Checking connectivity...")
         self.customAlertMessage.removeFromSuperview()
         self.view.removeGestureRecognizer(self.tap)
@@ -241,178 +219,181 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
     }
 
     func showSuccesMessage() {
-//        DispatchQueue.main.async {
-//
-//            self.loader.removeFromSuperview()
-//
-//            self.sendSuccesView.layer.transform = CATransform3DMakeScale(0, 0, 0)
-//
-//            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
-//                self.blurView.addSubview(self.sendSuccesView)
-//                self.sendSuccesView.layer.transform = CATransform3DMakeScale(1, 1, 1)
-//
-//                self.sendSuccesView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 50, height: 50)
-//                self.sendSuccesView.centerXAnchor.constraint(equalTo: self.blurView.centerXAnchor).isActive = true
-//                self.sendSuccesView.centerYAnchor.constraint(equalTo: self.blurView.centerYAnchor).isActive = true
-//
-//                self.sendSuccesView.addSubview(self.sendSuccesIconImageView)
-//                self.sendSuccesIconImageView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 25, height: 25)
-//                self.sendSuccesIconImageView.centerXAnchor.constraint(equalTo: self.sendSuccesView.centerXAnchor).isActive = true
-//                self.sendSuccesIconImageView.centerYAnchor.constraint(equalTo: self.sendSuccesView.centerYAnchor).isActive = true
-//
-//            }, completion: { (completed) in
-//
-//                UIView.animate(withDuration: 1.0, delay: 0.75, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
-//
-//                    self.sendSuccesView.layer.transform = CATransform3DMakeScale(0.1, 0.1, 0.1)
-//                    self.sendSuccesView.removeFromSuperview()
-//
-//                }, completion: { (_) in
-//
-//                    self.swiftyCamButton.delegate = self
-//                    self.swiftyButton()
-//
-//                    DispatchQueue.main.async {
-//                        self.blurView.removeFromSuperview()
-//                        self.playerLayer.removeFromSuperlayer()
-//                        self.player.pause()
-//                        self.swiftyCamButton.transform = .identity
-//                    }
-//                })
-//            })
-//        }
+        DispatchQueue.main.async {
+            self.loader.removeFromSuperview()
+            self.sendSuccesView.layer.transform = CATransform3DMakeScale(0, 0, 0)
+            
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+                self.blurView.addSubview(self.sendSuccesView)
+                self.sendSuccesView.layer.transform = CATransform3DMakeScale(1, 1, 1)
+
+                self.sendSuccesView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 50, height: 50)
+                self.sendSuccesView.centerXAnchor.constraint(equalTo: self.blurView.centerXAnchor).isActive = true
+                self.sendSuccesView.centerYAnchor.constraint(equalTo: self.blurView.centerYAnchor).isActive = true
+
+                self.sendSuccesView.addSubview(self.sendSuccesIconImageView)
+                self.sendSuccesIconImageView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 25, height: 25)
+                self.sendSuccesIconImageView.centerXAnchor.constraint(equalTo: self.sendSuccesView.centerXAnchor).isActive = true
+                self.sendSuccesIconImageView.centerYAnchor.constraint(equalTo: self.sendSuccesView.centerYAnchor).isActive = true
+
+            }, completion: { (completed) in
+
+                UIView.animate(withDuration: 1.0, delay: 0.75, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+
+                    self.sendSuccesView.layer.transform = CATransform3DMakeScale(0.1, 0.1, 0.1)
+                    self.sendSuccesView.removeFromSuperview()
+
+                }, completion: { (_) in
+
+                    self.swiftyCamButton.delegate = self
+                    self.swiftyButton()
+
+                    DispatchQueue.main.async {
+                        self.blurView.removeFromSuperview()
+                        self.userSearchControllerButton.isHidden = false
+                        self.userSearchControllerButton.isUserInteractionEnabled = true
+                        self.swiftyCamButton.layer.borderColor = UIColor.white.cgColor
+                        
+                        self.counterLabel.removeFromSuperview()
+                        self.counterLabel.text = ""
+                        self.counterLabel.textColor = .white
+                        
+                        self.player!.pause()
+                        self.player = nil
+                        self.playerLayer.removeFromSuperlayer()
+                        
+                        self.swiftyCamButton.transform = .identity
+                    }
+                })
+            })
+        }
     }
-//
+
     @objc func handleSend() {
-//
-//        if (reachability?.isReachable)! {
-//
-//            DispatchQueue.main.async {
-//                self.cancelButton.removeFromSuperview()
-//                self.saveButton.removeFromSuperview()
-//                self.sendView.removeFromSuperview()
-//
-//
-//                self.view.addSubview(self.blurView)
-//                self.blurView.anchor(top: self.view.topAnchor, left: self.view.leftAnchor, bottom: self.view.bottomAnchor, right: self.view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-//
-//                self.blurView.addSubview(self.loader)
-//                self.loader.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-//                self.loader.centerYAnchor.constraint(equalTo: self.blurView.centerYAnchor).isActive = true
-//                self.loader.centerXAnchor.constraint(equalTo: self.blurView.centerXAnchor).isActive = true
-//
-//            }
-//
-//            print("this is the final url: ", videoUrl!)
-//            // Retreieve Auth_Token from Keychain
-//            if let userToken = Locksmith.loadDataForUserAccount(userAccount: "AuthToken") {
-//
-//                let authToken = userToken["authenticationToken"] as! String
-//                print("the current user token: \(userToken)")
-//
-//                DataService.instance.shareVideo(authToken: authToken, videoCaption: self.videoCaption, videoUrl: videoUrl!, duration: finalDuration!, completion: { (success) in
-//                    if success {
-//                        FileManager.default.clearTmpDirectory()
-//                        self.showSuccesMessage()
-//                    } else {
-//                        DispatchQueue.main.async {
-//
-//                            self.customAlertMessage.transform = CGAffineTransform(translationX: 0, y: self.view.frame.height)
-//
-//                            UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-//                                self.view.addSubview(self.customAlertMessage)
-//                                self.customAlertMessage.anchor(top: nil, left: self.view.leftAnchor, bottom: nil, right: self.view.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
-//                                self.customAlertMessage.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-//
-//                                self.customAlertMessage.iconMessage.image = "😕".image()
-//                                self.customAlertMessage.labelMessage.text = "No se pudo enviar tu momento. Intenta de nuevo.\n¡Lo sentimos!"
-//
-//                                self.customAlertMessage.transform = .identity
-//
-//                            }, completion: nil)
-//                        }
-//                        self.tap = UITapGestureRecognizer(target: self, action: #selector(self.dismissviewMessage))
-//                        self.view.addGestureRecognizer(self.tap)
-//                        self.tap.delegate = self
-//                    }
-//                })
-//
-//                guard let data = NSData(contentsOf: videoUrl!) else {
-//                    return
-//                }
-//
-//                print("Final file size: \(Double(data.length / 1048576)) mb")
-//
-//            } else {
-//                print("Impossible retrieve token")
-//            }
-//        } else {
-//
-//            DispatchQueue.main.async {
-//
-//                self.view.addSubview(self.blurView)
-//                self.blurView.anchor(top: self.view.topAnchor, left: self.view.leftAnchor, bottom: self.view.bottomAnchor, right: self.view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-//
-//                self.customAlertMessage.transform = CGAffineTransform(translationX: 0, y: self.view.frame.height)
-//
-//                UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-//                    self.blurView.addSubview(self.customAlertMessage)
-//                    self.customAlertMessage.anchor(top: nil, left: self.blurView.leftAnchor, bottom: nil, right: self.blurView.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
-//                    self.customAlertMessage.centerYAnchor.constraint(equalTo: self.blurView.centerYAnchor).isActive = true
-//
-//                    self.customAlertMessage.iconMessage.image = "😕".image()
-//                    self.customAlertMessage.labelMessage.text = "¡Revisa tu conexión de internet e intenta de nuevo!"
-//
-//                    self.customAlertMessage.transform = .identity
-//
-//                }, completion: nil)
-//            }
-//            self.tap = UITapGestureRecognizer(target: self, action: #selector(self.dismissConnectionViewMessage))
-//            self.blurView.addGestureRecognizer(self.tap)
-//            self.tap.delegate = self
-//        }
-//
+
+        if (reachability?.isReachable)! {
+
+            DispatchQueue.main.async {
+                self.cancelButton.removeFromSuperview()
+                self.saveButton.removeFromSuperview()
+                self.sendView.removeFromSuperview()
+
+                self.view.addSubview(self.blurView)
+                self.blurView.anchor(top: self.view.topAnchor, left: self.view.leftAnchor, bottom: self.view.bottomAnchor, right: self.view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+
+                self.blurView.addSubview(self.loader)
+                self.loader.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                self.loader.centerYAnchor.constraint(equalTo: self.blurView.centerYAnchor).isActive = true
+                self.loader.centerXAnchor.constraint(equalTo: self.blurView.centerXAnchor).isActive = true
+            }
+
+            print("this is the final url: ", videoUrl!)
+            // Retreieve Auth_Token from Keychain
+            if let userToken = Locksmith.loadDataForUserAccount(userAccount: "AuthToken") {
+
+                let authToken = userToken["authenticationToken"] as! String
+                print("the current user token: \(userToken)")
+
+                DataService.instance.shareVideo(authToken: authToken, videoCaption: self.videoCaption, videoUrl: videoUrl!, duration: finalDuration!, completion: { (success) in
+                    if success {
+                        self.clearTemporaryDirectory()
+                        self.showSuccesMessage()
+                    } else {
+                        DispatchQueue.main.async {
+                            self.customAlertMessage.transform = CGAffineTransform(translationX: 0, y: self.view.frame.height)
+                            
+                            UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                                self.view.addSubview(self.customAlertMessage)
+                                self.customAlertMessage.anchor(top: nil, left: self.view.leftAnchor, bottom: nil, right: self.view.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
+                                self.customAlertMessage.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+
+                                self.customAlertMessage.iconMessage.image = "😕".image()
+                                self.customAlertMessage.labelMessage.text = "No se pudo enviar tu momento. Intenta de nuevo.\n¡Lo sentimos!"
+
+                                self.customAlertMessage.transform = .identity
+
+                            }, completion: nil)
+                        }
+                        self.tap = UITapGestureRecognizer(target: self, action: #selector(self.dismissviewMessage))
+                        self.view.addGestureRecognizer(self.tap)
+                        self.tap.delegate = self
+                    }
+                })
+
+                guard let data = NSData(contentsOf: videoUrl!) else {
+                    return
+                }
+
+                print("Final file size: \(Double(data.length / 1048576)) mb")
+
+            } else {
+                print("Impossible retrieve token")
+            }
+        } else {
+
+            DispatchQueue.main.async {
+
+                self.view.addSubview(self.blurView)
+                self.blurView.anchor(top: self.view.topAnchor, left: self.view.leftAnchor, bottom: self.view.bottomAnchor, right: self.view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+
+                self.customAlertMessage.transform = CGAffineTransform(translationX: 0, y: self.view.frame.height)
+
+                UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                    self.blurView.addSubview(self.customAlertMessage)
+                    self.customAlertMessage.anchor(top: nil, left: self.blurView.leftAnchor, bottom: nil, right: self.blurView.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
+                    self.customAlertMessage.centerYAnchor.constraint(equalTo: self.blurView.centerYAnchor).isActive = true
+
+                    self.customAlertMessage.iconMessage.image = "😕".image()
+                    self.customAlertMessage.labelMessage.text = "¡Revisa tu conexión de internet e intenta de nuevo!"
+
+                    self.customAlertMessage.transform = .identity
+
+                }, completion: nil)
+            }
+            self.tap = UITapGestureRecognizer(target: self, action: #selector(self.dismissConnectionViewMessage))
+            self.blurView.addGestureRecognizer(self.tap)
+            self.tap.delegate = self
+        }
     }
-//
-//    func dismissConnectionViewMessage() {
-//        DispatchQueue.main.async {
-//            self.blurView.removeFromSuperview()
-//            self.blurView.removeGestureRecognizer(self.tap)
-//        }
-//    }
-//
-//    func dismissviewMessage() {
-//        self.swiftyCamButton.delegate = self
-//        self.swiftyButton()
-//
-//        DispatchQueue.main.async {
-//            self.customAlertMessage.removeFromSuperview()
-//            self.view.removeGestureRecognizer(self.tap)
-//            self.blurView.removeFromSuperview()
-//            self.loader.removeFromSuperview()
-//            self.playerLayer.removeFromSuperlayer()
-//            self.player.pause()
-//            self.swiftyCamButton.transform = .identity
-//        }
-//    }
-//
-//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-//        if (touch.view?.isDescendant(of: customAlertMessage))!{
-//            return false
-//        }
-//        return true
-//    }
+
+    @objc func dismissConnectionViewMessage() {
+        DispatchQueue.main.async {
+            self.blurView.removeFromSuperview()
+            self.blurView.removeGestureRecognizer(self.tap)
+        }
+    }
+
+    @objc func dismissviewMessage() {
+        self.swiftyCamButton.delegate = self
+        self.swiftyButton()
+
+        DispatchQueue.main.async {
+            self.customAlertMessage.removeFromSuperview()
+            self.view.removeGestureRecognizer(self.tap)
+            self.blurView.removeFromSuperview()
+            self.loader.removeFromSuperview()
+            
+            self.player!.pause()
+            self.player = nil
+            self.playerLayer.removeFromSuperlayer()
+            
+            self.swiftyCamButton.transform = .identity
+        }
+    }
+
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if (touch.view?.isDescendant(of: customAlertMessage))!{
+            return false
+        }
+        return true
+    }
     
     func swiftyButton() {
         view.addSubview(swiftyCamButton)
         swiftyCamButton.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 20, paddingRight: 0, width: 75, height: 75)
         swiftyCamButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-
-//        view.addSubview(flashButton)
-//        flashButton.anchor(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 18, width: 25, height: 25)
-
     }
-//
+    
     func fakeViews() {
         view.addSubview(fakeView)
         fakeView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
@@ -476,7 +457,7 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
     }
 
     @objc func handleCancel() {
-        FileManager.default.clearTmpDirectory()
+        clearTemporaryDirectory()
         self.swiftyCamButton.delegate = self
         self.swiftyButton()
 
