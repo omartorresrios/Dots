@@ -23,8 +23,6 @@
 		A044438C1FDE0F89003DD7A6 /* UserReviewsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A044438B1FDE0F88003DD7A6 /* UserReviewsController.swift */; };
 		A04A82482056296200A86FE2 /* UserFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04A82472056296200A86FE2 /* UserFeedCell.swift */; };
 		A04A824A2058796800A86FE2 /* UserFeedPreviewAudioContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04A82492058796600A86FE2 /* UserFeedPreviewAudioContainerView.swift */; };
-		A056F28D2054C7EA00E155CD /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056F28C2054C7EA00E155CD /* MainTabBarController.swift */; };
-		A070FE1D1FA11C9500488431 /* MyProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A070FE1C1FA11C9500488431 /* MyProfileController.swift */; };
 		A07B3BC21ED7800800F10657 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B3BC11ED7800800F10657 /* DataService.swift */; };
 		A07B3BC41ED780B100F10657 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B3BC31ED780B100F10657 /* AuthService.swift */; };
 		A07B3BC61ED7810E00F10657 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B3BC51ED7810E00F10657 /* Constants.swift */; };
@@ -102,8 +100,6 @@
 		A044438B1FDE0F88003DD7A6 /* UserReviewsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserReviewsController.swift; sourceTree = "<group>"; };
 		A04A82472056296200A86FE2 /* UserFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFeedCell.swift; sourceTree = "<group>"; };
 		A04A82492058796600A86FE2 /* UserFeedPreviewAudioContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFeedPreviewAudioContainerView.swift; sourceTree = "<group>"; };
-		A056F28C2054C7EA00E155CD /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
-		A070FE1C1FA11C9500488431 /* MyProfileController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyProfileController.swift; sourceTree = "<group>"; };
 		A07B3BC11ED7800800F10657 /* DataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
 		A07B3BC31ED780B100F10657 /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		A07B3BC51ED7810E00F10657 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -271,7 +267,7 @@
 		A070FE1B1FA11C1300488431 /* MyProfile */ = {
 			isa = PBXGroup;
 			children = (
-				A070FE1C1FA11C9500488431 /* MyProfileController.swift */,
+				A0D287C220EF2720005CCF56 /* UserProfileView.swift */,
 				A024935920155381006B3199 /* MyReviewsController.swift */,
 				A024935B20155DFA006B3199 /* MyStoriesController.swift */,
 			);
@@ -409,7 +405,6 @@
 				A0EF9F541F9076CA00B53FA2 /* CircleView.swift */,
 				A0DD9D741FE189450080FA91 /* CacheManager.swift */,
 				A0F872A71FF9295B00EAF27A /* FileManager+VoiceMemo.swift */,
-				A056F28C2054C7EA00E155CD /* MainTabBarController.swift */,
 			);
 			path = ReputationApp;
 			sourceTree = "<group>";
@@ -439,7 +434,6 @@
 				A02B378F200BC1CC0062CF4F /* Signin-Bridging-Header.h */,
 				A025EDBD201FAFEB00594000 /* CustomAlertMessage.swift */,
 				A030BAA32020CA3900D9BD73 /* UserContentOptionsView.swift */,
-				A0D287C220EF2720005CCF56 /* UserProfileView.swift */,
 			);
 			name = "Supporting files";
 			sourceTree = "<group>";
@@ -649,7 +643,6 @@
 				A0D0542E1FDB6BF400C738F5 /* SnapContainerViewController.swift in Sources */,
 				A03985391F8BCC000025A7AB /* CameraController.swift in Sources */,
 				A044438C1FDE0F89003DD7A6 /* UserReviewsController.swift in Sources */,
-				A070FE1D1FA11C9500488431 /* MyProfileController.swift in Sources */,
 				A0F254201F8A80B000FC234A /* CustomAnimationPresentor.swift in Sources */,
 				A04A82482056296200A86FE2 /* UserFeedCell.swift in Sources */,
 				A07B3BCC1ED8C66000F10657 /* Extensions.swift in Sources */,
@@ -666,7 +659,6 @@
 				A0EF64111EC40757006609F7 /* AppDelegate.swift in Sources */,
 				A07B3BC21ED7800800F10657 /* DataService.swift in Sources */,
 				A07B3BC61ED7810E00F10657 /* Constants.swift in Sources */,
-				A056F28D2054C7EA00E155CD /* MainTabBarController.swift in Sources */,
 				A035D7E21FF925800063706B /* UserReviewsCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

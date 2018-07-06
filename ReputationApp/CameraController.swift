@@ -18,6 +18,47 @@ import GoogleSignIn
 
 class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate, AVCapturePhotoCaptureDelegate {
     
+    let sendLabel = UILabel()
+    let videoFileOutput = AVCaptureMovieFileOutput()
+    let captureSession = AVCaptureSession()
+    let userContentOptionsView = UserProfileView()
+    var userSelected: User! = nil
+    var userDictionary = [String: Any]()
+    var timer: Timer?
+    var counter = 20
+    var startTime: Double = 0
+    var time: Double = 0
+    var finalDuration: String?
+    var videoUrl: URL?
+    var player: AVPlayer?
+    var playerLayer = AVPlayerLayer()
+    let customAlertMessage = CustomAlertMessage()
+    var tap = UITapGestureRecognizer()
+    
+    let fakeView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .black
+        return view
+    }()
+    
+    let fakeButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .clear
+        button.layer.borderWidth = 5
+        button.layer.borderColor = UIColor.gray.cgColor
+        button.layer.cornerRadius = 75 / 2
+        button.isUserInteractionEnabled = false
+        return button
+    }()
+    
+    let userSearchControllerButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(#imageLiteral(resourceName: "userSearch-icon").withRenderingMode(.alwaysTemplate), for: .normal)
+        button.tintColor = .white
+        button.addTarget(self, action: #selector(goToUserSearchFromCamera), for: .touchUpInside)
+        return button
+    }()
+    
     let myProfileControllerImage: CustomImageView = {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
@@ -33,34 +74,6 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
         iv.contentMode = .scaleAspectFill
         return iv
     }()
-    
-    let userSearchControllerButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setImage(#imageLiteral(resourceName: "userSearch-icon").withRenderingMode(.alwaysTemplate), for: .normal)
-        button.tintColor = .white
-        button.addTarget(self, action: #selector(goToUserSearchFromCamera), for: .touchUpInside)
-        return button
-    }()
-    
-    let sendLabel = UILabel()
-    
-    let videoFileOutput = AVCaptureMovieFileOutput()
-    let captureSession = AVCaptureSession()
-    
-    let userContentOptionsView = UserProfileView()
-    var userSelected: User! = nil
-    var userDictionary = [String: Any]()
-    
-    var timer: Timer?
-    var counter = 20
-    var startTime: Double = 0
-    var time: Double = 0
-    var finalDuration: String?
-    var videoUrl: URL?
-    var player: AVPlayer?
-    var playerLayer = AVPlayerLayer()
-    let customAlertMessage = CustomAlertMessage()
-    var tap = UITapGestureRecognizer()
     
     let videoCaption: UITextView = {
         let tv = UITextView()
@@ -79,22 +92,6 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
         let view = UIView()
         view.backgroundColor = UIColor(white: 0, alpha: 0.5)
         return view
-    }()
-    
-    let fakeView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .black
-        return view
-    }()
-
-    let fakeButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .clear
-        button.layer.borderWidth = 5
-        button.layer.borderColor = UIColor.gray.cgColor
-        button.layer.cornerRadius = 75 / 2
-        button.isUserInteractionEnabled = false
-        return button
     }()
     
     let swiftyCamButton: SwiftyCamButton = {
@@ -166,6 +163,24 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
         return label
     }()
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        retrievingCurrentUser()
+        topNavigationButtons()
+        setupCameraOptions()
+        fakeViews()
+
+        // Reachability for checking internet connection
+        NotificationCenter.default.addObserver(self, selector: #selector(reachabilityStatusChanged), name: NSNotification.Name(rawValue: "ReachStatusChanged"), object: nil)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+//        NotificationCenter.default.addObserver(self, selector: #selector(SetupSwiftyCamButton), name: NSNotification.Name(rawValue: "AllUsersLoaded"), object: nil)
+        SetupSwiftyCamButton()
+    }
+    
     func setupCameraOptions() {
         cameraDelegate = self
         defaultCamera = .rear
@@ -175,11 +190,23 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
         audioEnabled = true
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    func retrievingCurrentUser() {
+        guard let userEmail = Locksmith.loadDataForUserAccount(userAccount: "currentUserEmail") else { return }
+        guard let userId = Locksmith.loadDataForUserAccount(userAccount: "currentUserId") else { return }
+        guard let userName = Locksmith.loadDataForUserAccount(userAccount: "currentUserName") else { return }
+        guard let userAvatar = Locksmith.loadDataForUserAccount(userAccount: "currentUserAvatar") else { return }
         
-        retrievingCurrentUser()
+        userDictionary.updateValue((userId as [String : AnyObject])["id"] as! Int? ?? 0, forKey: "id")
+        userDictionary.updateValue((userName as [String : AnyObject])["name"] as! String? ?? "", forKey: "fullname")
+        userDictionary.updateValue((userEmail as [String : AnyObject])["email"] as! String? ?? "", forKey: "email")
+        userDictionary.updateValue((userAvatar as [String : AnyObject])["avatar"] as! String? ?? "", forKey: "avatar")
         
+        let user = User(uid: (userId as [String : AnyObject])["id"] as! Int? ?? 0, dictionary: userDictionary)
+        
+        userSelected = user
+    }
+    
+    func topNavigationButtons() {
         view.addSubview(userSearchControllerButton)
         userSearchControllerButton.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 28, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 30, height: 30)
         
@@ -195,34 +222,15 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
         userFeedControllerImage.anchor(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 28, paddingLeft: 0, paddingBottom: 0, paddingRight: 12, width: 35, height: 35)
         userFeedControllerImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(goToFeedController)))
         userFeedControllerImage.isUserInteractionEnabled = true
-        
-        setupCameraOptions()
-        fakeViews()
-
-        // Reachability for checking internet connection
-        NotificationCenter.default.addObserver(self, selector: #selector(reachabilityStatusChanged), name: NSNotification.Name(rawValue: "ReachStatusChanged"), object: nil)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-//        NotificationCenter.default.addObserver(self, selector: #selector(SetupSwiftyCamButton), name: NSNotification.Name(rawValue: "AllUsersLoaded"), object: nil)
-        SetupSwiftyCamButton()
-    }
-    
-    func retrievingCurrentUser() {
-        guard let userEmail = Locksmith.loadDataForUserAccount(userAccount: "currentUserEmail") else { return }
-        guard let userId = Locksmith.loadDataForUserAccount(userAccount: "currentUserId") else { return }
-        guard let userName = Locksmith.loadDataForUserAccount(userAccount: "currentUserName") else { return }
-        guard let userAvatar = Locksmith.loadDataForUserAccount(userAccount: "currentUserAvatar") else { return }
+    func fakeViews() {
+        view.addSubview(fakeView)
+        fakeView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        userDictionary.updateValue((userId as [String : AnyObject])["id"] as! Int?, forKey: "id")
-        userDictionary.updateValue((userName as [String : AnyObject])["name"] as! String?, forKey: "fullname")
-        userDictionary.updateValue((userEmail as [String : AnyObject])["email"] as! String?, forKey: "email")
-        userDictionary.updateValue((userAvatar as [String : AnyObject])["avatar"] as! String?, forKey: "avatar")
-        
-        let user = User(uid: (userId as [String : AnyObject])["id"] as! Int!, dictionary: userDictionary)
-        
-        userSelected = user
+        view.addSubview(fakeButton)
+        fakeButton.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 20, paddingRight: 0, width: 75, height: 75)
+        fakeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
     
     @objc func goToMyProfile() {
@@ -242,16 +250,6 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
         self.customAlertMessage.removeFromSuperview()
         self.view.removeGestureRecognizer(self.tap)
         self.blurView.removeFromSuperview()
-    }
-    
-    @objc func dismissContainerView() {
-        DispatchQueue.main.async {
-            self.userContentOptionsView.removeFromSuperview()
-            self.userContentOptionsView.viewGeneral.removeGestureRecognizer(self.tap)
-            
-            self.swiftyCamButton.isHidden = false
-            self.swiftyCamButton.isUserInteractionEnabled = true
-        }
     }
     
     func setupUserInfoViewsContainers() {
@@ -479,15 +477,6 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
         swiftyCamButton.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 20, paddingRight: 0, width: 75, height: 75)
         swiftyCamButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
-    
-    func fakeViews() {
-        view.addSubview(fakeView)
-        fakeView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-
-        view.addSubview(fakeButton)
-        fakeButton.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 20, paddingRight: 0, width: 75, height: 75)
-        fakeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-    }
 
     func SetupSwiftyCamButton() {
         swiftyCamButton.delegate = self
@@ -587,6 +576,16 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
     func resetTimer() {
         timer?.invalidate()
         counter = 20
+    }
+    
+    @objc func dismissContainerView() {
+        DispatchQueue.main.async {
+            self.userContentOptionsView.removeFromSuperview()
+            self.userContentOptionsView.viewGeneral.removeGestureRecognizer(self.tap)
+            
+            self.swiftyCamButton.isHidden = false
+            self.swiftyCamButton.isUserInteractionEnabled = true
+        }
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didBeginRecordingVideo camera: SwiftyCamViewController.CameraSelection) {
