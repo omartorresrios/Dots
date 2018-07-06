@@ -342,12 +342,12 @@ extension AudioBot {
         do {
             if #available(iOS 10.0, *) {
                 try session.setCategory(
-                    AVAudioSessionCategoryPlayAndRecord,
+                    AVAudioSessionCategoryPlayback,
                     mode: AVAudioSessionModeDefault,
                     options: categoryOptions
                 )
             } else {
-                try session.setCategory(AVAudioSessionCategoryPlayAndRecord)
+                try session.setCategory(AVAudioSessionCategoryPlayback)
             }
             try session.setActive(true)
         } catch let error {
@@ -361,7 +361,9 @@ extension AudioBot {
         } else {
             sharedBot.audioPlayer?.pause()
             do {
-                let audioPlayer = try AVAudioPlayer(contentsOf: fileURL)
+                let fileURL = NSURL(string: String(describing: fileURL))
+                let soundData = NSData(contentsOf: fileURL! as URL)
+                let audioPlayer = try AVAudioPlayer(data: soundData! as Data)
                 sharedBot.audioPlayer = audioPlayer
                 audioPlayer.delegate = sharedBot
                 audioPlayer.prepareToPlay()
