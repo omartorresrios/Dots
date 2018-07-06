@@ -47,7 +47,7 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
     let videoFileOutput = AVCaptureMovieFileOutput()
     let captureSession = AVCaptureSession()
     
-    var timerTest: Timer?
+    var timer: Timer?
     var counter = 20
     var startTime: Double = 0
     var time: Double = 0
@@ -152,6 +152,16 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
         button.addTarget(self, action: #selector(handleSend), for: .touchUpInside)
         return button
     }()
+    
+    let counterLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.numberOfLines = 1
+        label.font = UIFont(name: "SFUIDisplay-Semibold", size: 25)
+        label.textColor = .white
+        return label
+    }()
+    
 //
 //    let flashButton: UIButton = {
 //        let button = UIButton(type: .system)
@@ -394,7 +404,6 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
 //    }
     
     func swiftyButton() {
-
         view.addSubview(swiftyCamButton)
         swiftyCamButton.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 20, paddingRight: 0, width: 75, height: 75)
         swiftyCamButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -428,20 +437,6 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
         swiftyCamButton.isUserInteractionEnabled = true
     }
 
-    @objc func update() {
-        DispatchQueue.main.async {
-            if self.counter > 0 {
-                print("\(self.counter) seconds to the end of the world")
-                self.counter -= 1
-            }
-            self.time = Date().timeIntervalSinceReferenceDate - self.startTime
-
-            let timeString = String(format: "%.11f", self.time)
-
-            self.finalDuration = timeString
-        }
-    }
-
     func setupViews() {
         DispatchQueue.main.async {
             self.userSearchControllerButton.isHidden = true
@@ -464,11 +459,15 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
         }
     }
     
-    @objc func invalidateTimerAndCircleView() {
+    @objc func clearTemporaryDirectory() {
         FileManager.default.clearTmpDirectory()
+    }
+    
+    func addCounterLabel() {
         DispatchQueue.main.async {
-            self.timerTest?.invalidate()
-            self.timerTest = nil
+            self.view.addSubview(self.counterLabel)
+            self.counterLabel.anchor(top: nil, left: nil, bottom: self.swiftyCamButton.topAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 30, paddingRight: 0, width: 0, height: 0)
+            self.counterLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         }
     }
 
@@ -493,31 +492,56 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
             self.cancelButton.removeFromSuperview()
             self.saveButton.removeFromSuperview()
             self.sendView.removeFromSuperview()
+            self.counterLabel.removeFromSuperview()
+            self.counterLabel.text = ""
+            self.counterLabel.textColor = .white
         }
     }
-
+    
+    func runTimer() {
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+    }
+    
+    @objc func updateTimer() {
+        DispatchQueue.main.async {
+            self.counter -= 1
+            self.counterLabel.text = "\(self.counter)"
+            
+            if self.counter <= 5 {
+                self.counterLabel.textColor = .red
+            }
+            
+            self.time = Date().timeIntervalSinceReferenceDate - self.startTime
+            let timeString = String(format: "%.11f", self.time)
+            self.finalDuration = timeString
+        }
+    }
+    
+    func resetTimer() {
+        timer?.invalidate()
+        counter = 20
+    }
+    
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didBeginRecordingVideo camera: SwiftyCamViewController.CameraSelection) {
         print("recording video")
+        addCounterLabel()
+        runTimer()
         
         DispatchQueue.main.async {
             self.swiftyCamButton.layer.borderColor = UIColor.red.cgColor
         }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(invalidateTimerAndCircleView), name: NSNotification.Name(rawValue: "ErrorWhileRecording"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(clearTemporaryDirectory), name: NSNotification.Name(rawValue: "ErrorWhileRecording"), object: nil)
 
         startTime = Date().timeIntervalSinceReferenceDate
-        timerTest = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(update), userInfo: nil, repeats: true)
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFinishRecordingVideo camera: SwiftyCamViewController.CameraSelection) {
+        resetTimer()
         print("finishing recording video")
-        
-        DispatchQueue.main.async {
-            self.timerTest?.invalidate()
-            self.timerTest = nil
-            print("video quality was: ", self.videoQuality)
-        }
+        print("video quality was: ", self.videoQuality)
     }
+    
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFinishProcessVideoAt url: URL, secondaryUrl: URL) {
         videoUrl = url
 
