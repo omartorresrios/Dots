@@ -270,6 +270,22 @@ class UserFeedController: UIViewController, UICollectionViewDelegate, UICollecti
 //        Mixpanel.mainInstance().track(event: "Pressed writeReviewViewContainer")
     }
     
+    @objc func showUserStoriesView() {
+        let storiesController = UserStoriesController(collectionViewLayout: UICollectionViewFlowLayout())
+        
+        if isFrom == true {
+            storiesController.userId = reviewSelected.fromId
+            storiesController.userFullname = reviewSelected.fromFullname
+            storiesController.userImageUrl = reviewSelected.fromAvatarUrl
+        } else {
+            storiesController.userId = reviewSelected.toId
+            storiesController.userFullname = reviewSelected.toFullname
+            storiesController.userImageUrl = reviewSelected.toAvatarUrl
+        }
+        
+        present(storiesController, animated: true, completion: nil)
+    }
+    
     @objc func blockUserView() {
         if isFrom == true {
             userFullnameSelected = reviewSelected.fromFullname
@@ -295,14 +311,14 @@ class UserFeedController: UIViewController, UICollectionViewDelegate, UICollecti
             self.view.addSubview(self.userContentOptionsView)
             self.userContentOptionsView.anchor(top: self.view.topAnchor, left: self.view.leftAnchor, bottom: self.view.bottomAnchor, right: self.view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
             
-            //            let storiesTap = UITapGestureRecognizer(target: self, action: #selector(self.showUserStoriesView))
-            //            self.userContentOptionsView.storiesViewContainer.addGestureRecognizer(storiesTap)
+            self.userContentOptionsView.storiesViewContainer.layoutIfNeeded()
+            self.userContentOptionsView.storiesViewContainer.layer.addBorder(edge: .top, color: .gray, thickness: 1)
+            
+            let storiesTap = UITapGestureRecognizer(target: self, action: #selector(self.showUserStoriesView))
+            self.userContentOptionsView.storiesViewContainer.addGestureRecognizer(storiesTap)
             
             let reviewsTap = UITapGestureRecognizer(target: self, action: #selector(self.showUserReviewsView))
             self.userContentOptionsView.reviewsViewContainer.addGestureRecognizer(reviewsTap)
-            //
-            //            self.userContentOptionsView.reviewsViewContainer.layoutIfNeeded()
-            //            self.userContentOptionsView.reviewsViewContainer.layer.addBorder(edge: .top, color: .gray, thickness: 1)
             
             self.userContentOptionsView.writeReviewViewContainer.layoutIfNeeded()
             self.userContentOptionsView.writeReviewViewContainer.layer.addBorder(edge: .top, color: .gray, thickness: 1)
