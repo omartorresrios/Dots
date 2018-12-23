@@ -9,6 +9,7 @@
 import Foundation
 import Photos
 import Alamofire
+import Locksmith
 
 class DataService {
     
@@ -16,8 +17,6 @@ class DataService {
     
     func savePhoto(image: UIImage, view: UIView) {
         let library = PHPhotoLibrary.shared()
-        
-        
         
         library.performChanges({
             PHAssetChangeRequest.creationRequestForAsset(from: image)
@@ -215,6 +214,29 @@ class DataService {
                 completion(false)
             }
         })
+    }
+    
+    func loadReviews(userId: Int, completion: @escaping (NSArray) -> ()) {
+        if let userToken = Locksmith.loadDataForUserAccount(userAccount: "AuthToken") {
+            
+            let authToken = userToken["authenticationToken"] as! String
+            
+            print("Token: \(userToken)")
+            
+            // Set Authorization header
+            let header = ["Authorization": "Token token=\(authToken)"]
+            Alamofire.request("https://protected-anchorage-18127.herokuapp.com/api/\(userId)/reviews", method: .get, parameters: nil, encoding: URLEncoding.default, headers: header).responseJSON { (response) in
+                switch response.result {
+                case .success(let JSON):
+                    let jsonArray = JSON as! NSDictionary
+                    let reviewsArray = jsonArray["reviews"] as! NSArray
+                    completion(reviewsArray)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+            
+        }
     }
     
 }

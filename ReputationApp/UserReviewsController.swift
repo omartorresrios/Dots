@@ -13,23 +13,7 @@ import AudioBot
 import MediaPlayer
 import Mixpanel
 
-private let cellId = "cellId"
-
 class UserReviewsController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate {
-    
-    var userId: Int?
-    var userFullname: String?
-    var userImageUrl: String?
-    var currentUserDic = [String: Any]()
-    var reviews = [[String: Any]]()
-    var reviewAudios = [Review]()
-    var tap = UITapGestureRecognizer()
-    var connectionTap = UITapGestureRecognizer()
-    var goToListenTap = UITapGestureRecognizer()
-    let customAlertMessage = CustomAlertMessage()
-    let containerView = PreviewAudioContainerView()
-    
-    let viewGeneral = UIView()
     
     let messageLabel: UILabel = {
         let label = UILabel()
@@ -74,6 +58,25 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
         view.backgroundColor = UIColor(white: 0, alpha: 0.8)
         return view
     }()
+    
+    var userId: Int?
+    var userFullname: String?
+    var userImageUrl: String?
+    
+    var currentUserDic = [String: Any]()
+    var reviews = [[String: Any]]()
+    let viewGeneral = UIView()
+    
+    var reviewAudios = [Review]()
+    
+    var tap = UITapGestureRecognizer()
+    var connectionTap = UITapGestureRecognizer()
+    var goToListenTap = UITapGestureRecognizer()
+    
+    let customAlertMessage = CustomAlertMessage()
+    let containerView = PreviewAudioContainerView()
+    
+    let cellId = "cellId"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -137,8 +140,6 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
     }
     
     @objc func dismissContainerView() {
-//        viewGeneral.removeFromSuperview()
-//        containerView.removeFromSuperview()
         containerView.dismiss(animated: true, completion: nil)
         view.removeGestureRecognizer(tap)
         containerView.playing = false
@@ -233,85 +234,28 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
     }
     
     func loadUserReviews(completion: @escaping (Bool) -> ()) {
-        
-//        // Check for internet connection
-//        if (reachability?.isReachable)! {
-        
-            // Retreieve Auth_Token from Keychain
-            if let userToken = Locksmith.loadDataForUserAccount(userAccount: "AuthToken") {
-                
-                let authToken = userToken["authenticationToken"] as! String
-                
-                print("Token: \(userToken)")
-                
-                // Set Authorization header
-                let header = ["Authorization": "Token token=\(authToken)"]
-                
-                print("THE HEADER: \(header)")
-                
-                Alamofire.request("https://protected-anchorage-18127.herokuapp.com/api/\(userId!)/reviews", method: .get, parameters: nil, encoding: URLEncoding.default, headers: header).responseJSON { (response) in
-                    switch response.result {
-                    case .success(let JSON):
-                        
-                        print("THE USER REVIEWS: \(JSON)")
-                        
-                        let jsonArray = JSON as! NSDictionary
-                        let reviewsArray = jsonArray["reviews"] as! NSArray
-                        
-                        if reviewsArray.count == 0 {
-                            self.showMessageOfZeroContent()
-                            completion(true)
-                        }
-                        
-                        reviewsArray.forEach({ (value) in
-                            guard let reviewDictionary = value as? [String: Any] else { return }
-                            print("reviewDictionary: \(reviewDictionary)")
-                            
-                            let duration = self.parseDuration(reviewDictionary["duration"] as! String)
-                            let url = reviewDictionary["audio"] as! String
-                            
-                            let reviewAudio = Review(fileURL: URL(string: reviewDictionary["audio"] as! String)!, duration: duration)
-                            self.reviewAudios.append(reviewAudio)
-                            
-                            //                        let reviewDict = Review1(reviewDictionary: reviewDictionary)
-                            self.reviews.append(reviewDictionary)
-                            
-                            
-                            //                        let review = Review1(fileURL: URL(string: url)!, duration: duration)
-                            //                        self.reviews.append(review)
-                            self.collectionView?.reloadData()
-                            
-                            completion(true)
-                        })
-                        
-                    case .failure(let error):
-                        print(error)
-                        completion(false)
-                    }
-                }
-                
+        DataService.instance.loadReviews(userId: userId!) { (array) in
+            if array.count == 0 {
+                self.showMessageOfZeroContent()
+                completion(true)
             }
-//        } else {
-//            self.loader.stopAnimating()
-//            self.showCustomAlertMessage(image: "😕".image(), message: "¡Revisa tu conexión de internet e intenta de nuevo!", isForLoadUsers: true)
-//        }
-        
+            
+            array.forEach({ (value) in
+                guard let reviewDictionary = value as? [String: Any] else { return }
+                let duration = self.parseDuration(reviewDictionary["duration"] as! String)
+                
+                let reviewAudio = Review(fileURL: URL(string: reviewDictionary["audio"] as! String)!, duration: duration)
+                self.reviewAudios.append(reviewAudio)
+                self.reviews.append(reviewDictionary)
+                self.collectionView?.reloadData()
+                
+                completion(true)
+            })
+        }
     }
     
     func setupReviewInfoViews() {
         present(containerView, animated: false, completion: nil)
-//        view.addSubview(viewGeneral)
-//        viewGeneral.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-//        viewGeneral.backgroundColor = UIColor.grayHigh()
-//
-//        let tapGesture = UIPanGestureRecognizer(target: self, action: #selector(self.panGestureRecognizerHandler(_:)))
-//        containerView.view.addGestureRecognizer(tapGesture)
-        
-//        viewGeneral.addSubview(containerView)
-//        let height: CGFloat = 25 + 44
-//        containerView.anchor(top: nil, left: viewGeneral.leftAnchor, bottom: nil, right: viewGeneral.rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: height)
-//        containerView.layer.cornerRadius = 5
-//        containerView.centerYAnchor.constraint(equalTo: viewGeneral.centerYAnchor).isActive = true
     }
     
     var sheetController = UIAlertController()
@@ -333,29 +277,6 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
         containerView.present(sheetController, animated: true, completion: nil)
         
     }
-    
-//    // define a variable to store initial touch position
-//    var initialTouchPoint: CGPoint = CGPoint(x: 0,y: 0)
-//
-//    func panGestureRecognizerHandler(_ sender: UIPanGestureRecognizer) {
-//        let touchPoint = sender.location(in: containerView.view.window)
-//
-//        if sender.state == UIGestureRecognizerState.began {
-//            initialTouchPoint = touchPoint
-//        } else if sender.state == UIGestureRecognizerState.changed {
-//            if touchPoint.y - initialTouchPoint.y > 0 {
-//                self.containerView.view.frame = CGRect(x: 0, y: touchPoint.y - initialTouchPoint.y, width: self.containerView.view.frame.size.width, height: self.containerView.view.frame.size.height)
-//            }
-//        } else if sender.state == UIGestureRecognizerState.ended || sender.state == UIGestureRecognizerState.cancelled {
-//            if touchPoint.y - initialTouchPoint.y > 100 {
-//                self.dismissContainerView()
-//            } else {
-//                UIView.animate(withDuration: 0.3, animations: {
-//                    self.containerView.view.frame = CGRect(x: 0, y: 0, width: self.containerView.view.frame.size.width, height: self.containerView.view.frame.size.height)
-//                })
-//            }
-//        }
-//    }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -408,8 +329,6 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
         cell.timeLabel.text = date.timeAgoDisplay()
             
         cell.goToListen = {
-            
-//            // Check for internet connection
 //            if (reachability?.isReachable)! {
             
                 UIApplication.shared.isStatusBarHidden = true
