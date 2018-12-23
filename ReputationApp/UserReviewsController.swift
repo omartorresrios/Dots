@@ -38,7 +38,7 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
     }()
     
     let loader: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView.init(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+        let indicator = UIActivityIndicatorView.init(style: UIActivityIndicatorView.Style.gray)
         indicator.alpha = 1.0
         return indicator
     }()
@@ -172,9 +172,9 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
         guard let boldNameFont = UIFont(name: "SFUIDisplay-Semibold", size: 15) else { return }
         guard let normalFont = UIFont(name: "SFUIDisplay-Regular", size: 15) else { return }
         
-        let attributedMessage = NSMutableAttributedString(string: "\(self.userFullname!)", attributes: [kCTFontAttributeName as NSAttributedStringKey: boldNameFont])
+        let attributedMessage = NSMutableAttributedString(string: "\(self.userFullname!)", attributes: [kCTFontAttributeName as NSAttributedString.Key: boldNameFont])
 
-        attributedMessage.append(NSMutableAttributedString(string: " aún no tiene reseñas 😲", attributes: [kCTFontAttributeName as NSAttributedStringKey: normalFont]))
+        attributedMessage.append(NSMutableAttributedString(string: " aún no tiene reseñas 😲", attributes: [kCTFontAttributeName as NSAttributedString.Key: normalFont]))
         
         self.messageLabel.attributedText = attributedMessage
         
@@ -264,9 +264,9 @@ class UserReviewsController: UICollectionViewController, UICollectionViewDelegat
         sheetController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         sheetController.addAction(UIAlertAction(title: "Reportar", style: .destructive, handler: { (_) in
-            let alert = UIAlertController(title: "", message: "Revisaremos tu reporte 🤔", preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: "", message: "Revisaremos tu reporte 🤔", preferredStyle: UIAlertController.Style.alert)
             
-            alert.addAction(UIAlertAction(title: "¡Gracias!", style: UIAlertActionStyle.default, handler: nil))
+            alert.addAction(UIAlertAction(title: "¡Gracias!", style: UIAlertAction.Style.default, handler: nil))
             
             self.containerView.present(alert, animated: true, completion: nil)
         }))

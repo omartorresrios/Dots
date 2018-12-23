@@ -79,7 +79,7 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
     }()
     
     let loader: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView.init(activityIndicatorStyle: UIActivityIndicatorViewStyle.white)
+        let indicator = UIActivityIndicatorView.init(style: UIActivityIndicatorView.Style.white)
         indicator.alpha = 1.0
         indicator.startAnimating()
         return indicator
@@ -622,7 +622,7 @@ class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate
         
         NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: player!.currentItem, queue: nil, using: { (_) in
             DispatchQueue.main.async {
-                self.player!.seek(to: kCMTimeZero)
+                self.player!.seek(to: CMTime.zero)
                 self.player!.play()
             }
         })

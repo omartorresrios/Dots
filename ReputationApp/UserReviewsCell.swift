@@ -31,7 +31,7 @@ class UserReviewsCell: UICollectionViewCell {
     lazy var playButton: UIButton = {
         let button = UIButton(type: .system)
         let image = UIImage(named: "play")
-        button.setImage(image, for: UIControlState())
+        button.setImage(image, for: UIControl.State())
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = .black
         //        button.addTarget(self, action: #selector(handlePause), for: .touchUpInside)
@@ -43,9 +43,9 @@ class UserReviewsCell: UICollectionViewCell {
         willSet {
             if newValue != playing {
                 if newValue {
-                    playButton.setImage(UIImage(named: "pause"), for: UIControlState())
+                    playButton.setImage(UIImage(named: "pause"), for: UIControl.State())
                 } else {
-                    playButton.setImage(UIImage(named: "play"), for: UIControlState())
+                    playButton.setImage(UIImage(named: "play"), for: UIControl.State())
                 }
             }
         }
@@ -61,7 +61,7 @@ class UserReviewsCell: UICollectionViewCell {
         slider.translatesAutoresizingMaskIntoConstraints = false
         slider.minimumTrackTintColor = .red
         slider.maximumTrackTintColor = .gray
-        slider.setThumbImage(UIImage(named: "thumb"), for: UIControlState())
+        slider.setThumbImage(UIImage(named: "thumb"), for: UIControl.State())
         
         //        slider.addTarget(self, action: #selector(handleSliderChange), for: .valueChanged)
         

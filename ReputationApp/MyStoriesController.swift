@@ -51,7 +51,7 @@ class MyStoriesController: UICollectionViewController, UICollectionViewDelegateF
     }()
     
     let loader: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView.init(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+        let indicator = UIActivityIndicatorView.init(style: UIActivityIndicatorView.Style.gray)
         indicator.alpha = 1.0
         return indicator
     }()
@@ -284,13 +284,13 @@ class MyStoriesController: UICollectionViewController, UICollectionViewDelegateF
     @objc func panGestureRecognizerHandler(_ sender: UIPanGestureRecognizer) {
         let touchPoint = sender.location(in: self.previewVideoContainerView.view?.window)
         
-        if sender.state == UIGestureRecognizerState.began {
+        if sender.state == UIGestureRecognizer.State.began {
             initialTouchPoint = touchPoint
-        } else if sender.state == UIGestureRecognizerState.changed {
+        } else if sender.state == UIGestureRecognizer.State.changed {
             if touchPoint.y - initialTouchPoint.y > 0 {
                 self.previewVideoContainerView.view.frame = CGRect(x: 0, y: touchPoint.y - initialTouchPoint.y, width: self.previewVideoContainerView.view.frame.size.width, height: self.previewVideoContainerView.view.frame.size.height)
             }
-        } else if sender.state == UIGestureRecognizerState.ended || sender.state == UIGestureRecognizerState.cancelled {
+        } else if sender.state == UIGestureRecognizer.State.ended || sender.state == UIGestureRecognizer.State.cancelled {
             if touchPoint.y - initialTouchPoint.y > 100 {
                 self.previewVideoContainerView.dismiss(animated: true, completion: nil)
                 self.player.pause()
@@ -311,9 +311,9 @@ class MyStoriesController: UICollectionViewController, UICollectionViewDelegateF
         sheetController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         sheetController.addAction(UIAlertAction(title: "Reportar", style: .destructive, handler: { (_) in
-            let alert = UIAlertController(title: "", message: "Revisaremos tu reporte 🤔", preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: "", message: "Revisaremos tu reporte 🤔", preferredStyle: UIAlertController.Style.alert)
             
-            alert.addAction(UIAlertAction(title: "¡Gracias!", style: UIAlertActionStyle.default, handler: nil))
+            alert.addAction(UIAlertAction(title: "¡Gracias!", style: UIAlertAction.Style.default, handler: nil))
             
             self.previewVideoContainerView.present(alert, animated: true, completion: nil)
         }))
@@ -356,7 +356,7 @@ class MyStoriesController: UICollectionViewController, UICollectionViewDelegateF
             
             assetImgGenerate.appliesPreferredTrackTransform = true
             
-            let time        : CMTime = CMTimeMakeWithSeconds(durationSeconds/3.0, 600)
+            let time        : CMTime = CMTimeMakeWithSeconds(durationSeconds/3.0, preferredTimescale: 600)
             var img         : CGImage
             
             do {

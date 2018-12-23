@@ -37,7 +37,7 @@ class AudioController {
 
     let session = AVAudioSession.sharedInstance()
     do {
-      try session.setCategory(AVAudioSessionCategoryRecord)
+        try session.setCategory(AVAudioSession.Category(rawValue: convertFromAVAudioSessionCategory(AVAudioSession.Category.record)), mode: .default, options: .mixWithOthers)
       try session.setPreferredIOBufferDuration(10)
     } catch {
       return -1
@@ -160,4 +160,9 @@ func recordingCallback(
   }
 
   return noErr
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Category) -> String {
+	return input.rawValue
 }

@@ -71,7 +71,7 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
     }()
     
     let loader: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView.init(activityIndicatorStyle: UIActivityIndicatorViewStyle.white)
+        let indicator = UIActivityIndicatorView.init(style: UIActivityIndicatorView.Style.white)
         indicator.alpha = 1.0
         indicator.startAnimating()
         return indicator
@@ -203,14 +203,14 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
     }
     
     func check_record_permission() {
-        switch AVAudioSession.sharedInstance().recordPermission() {
-        case AVAudioSessionRecordPermission.granted:
+        switch AVAudioSession.sharedInstance().recordPermission {
+        case AVAudioSession.RecordPermission.granted:
             isAudioRecordingGranted = true
             break
-        case AVAudioSessionRecordPermission.denied:
+        case AVAudioSession.RecordPermission.denied:
             isAudioRecordingGranted = false
             break
-        case AVAudioSessionRecordPermission.undetermined:
+        case AVAudioSession.RecordPermission.undetermined:
             AVAudioSession.sharedInstance().requestRecordPermission() { [unowned self] allowed in
                 DispatchQueue.main.async {
                     if allowed {
@@ -242,7 +242,7 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
         if isAudioRecordingGranted {
             let session = AVAudioSession.sharedInstance()
             do {
-                try session.setCategory(AVAudioSessionCategoryPlayAndRecord, with: .defaultToSpeaker)
+                try session.setCategory(AVAudioSession.Category(rawValue: convertFromAVAudioSessionCategory(AVAudioSession.Category.playAndRecord)), mode: .default, options: .mixWithOthers)
                 try session.setActive(true)
                 let settings = [
                     AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
@@ -571,4 +571,9 @@ class WriteReviewController: UIViewController, UITextViewDelegate, AVAudioRecord
         Mixpanel.mainInstance().track(event: "Pressed sendButton")
         
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Category) -> String {
+	return input.rawValue
 }

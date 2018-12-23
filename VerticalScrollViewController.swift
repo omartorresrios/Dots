@@ -54,22 +54,22 @@ class VerticalScrollViewController: UIViewController, SnapContainerViewControlle
             scrollHeight  = view.height
             middleVc.view.frame = CGRect(x: 0, y: 0, width: view.width, height: view.height)
             
-            addChildViewController(middleVc)
+            addChild(middleVc)
             scrollView.addSubview(middleVc.view)
-            middleVc.didMove(toParentViewController: self)
+            middleVc.didMove(toParent: self)
         case (_?, nil):
             scrollHeight  = 2 * view.height
             topVc.view.frame = CGRect(x: 0, y: 0, width: view.width, height: view.height)
             middleVc.view.frame = CGRect(x: 0, y: view.height, width: view.width, height: view.height)
             
-            addChildViewController(topVc)
-            addChildViewController(middleVc)
+            addChild(topVc)
+            addChild(middleVc)
             
             scrollView.addSubview(topVc.view)
             scrollView.addSubview(middleVc.view)
             
-            topVc.didMove(toParentViewController: self)
-            middleVc.didMove(toParentViewController: self)
+            topVc.didMove(toParent: self)
+            middleVc.didMove(toParent: self)
             
             scrollView.contentOffset.y = middleVc.view.frame.origin.y
         case (nil, _?):
@@ -77,14 +77,14 @@ class VerticalScrollViewController: UIViewController, SnapContainerViewControlle
             middleVc.view.frame = CGRect(x: 0, y: 0, width: view.width, height: view.height)
             bottomVc.view.frame = CGRect(x: 0, y: view.height, width: view.width, height: view.height)
             
-            addChildViewController(middleVc)
-            addChildViewController(bottomVc)
+            addChild(middleVc)
+            addChild(bottomVc)
             
             scrollView.addSubview(middleVc.view)
             scrollView.addSubview(bottomVc.view)
             
-            middleVc.didMove(toParentViewController: self)
-            bottomVc.didMove(toParentViewController: self)
+            middleVc.didMove(toParent: self)
+            bottomVc.didMove(toParent: self)
             
             scrollView.contentOffset.y = 0
         default:
@@ -93,17 +93,17 @@ class VerticalScrollViewController: UIViewController, SnapContainerViewControlle
             middleVc.view.frame = CGRect(x: 0, y: view.height, width: view.width, height: view.height)
             bottomVc.view.frame = CGRect(x: 0, y: 2 * view.height, width: view.width, height: view.height)
             
-            addChildViewController(topVc)
-            addChildViewController(middleVc)
-            addChildViewController(bottomVc)
+            addChild(topVc)
+            addChild(middleVc)
+            addChild(bottomVc)
             
             scrollView.addSubview(topVc.view)
             scrollView.addSubview(middleVc.view)
             scrollView.addSubview(bottomVc.view)
             
-            topVc.didMove(toParentViewController: self)
-            middleVc.didMove(toParentViewController: self)
-            bottomVc.didMove(toParentViewController: self)
+            topVc.didMove(toParent: self)
+            middleVc.didMove(toParent: self)
+            bottomVc.didMove(toParent: self)
             
             scrollView.contentOffset.y = middleVc.view.frame.origin.y
         }

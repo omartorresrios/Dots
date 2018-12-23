@@ -37,7 +37,7 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
     var userFullnameSelected: String!
     
     let loader: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView.init(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+        let indicator = UIActivityIndicatorView.init(style: UIActivityIndicatorView.Style.gray)
         indicator.alpha = 1.0
         indicator.startAnimating()
         return indicator
@@ -185,14 +185,14 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
     }
     
     func check_record_permission() {
-        switch AVAudioSession.sharedInstance().recordPermission() {
-        case AVAudioSessionRecordPermission.granted:
+        switch AVAudioSession.sharedInstance().recordPermission {
+        case AVAudioSession.RecordPermission.granted:
             print("vao")
             break
-        case AVAudioSessionRecordPermission.denied:
+        case AVAudioSession.RecordPermission.denied:
             print("no vao")
             break
-        case AVAudioSessionRecordPermission.undetermined:
+        case AVAudioSession.RecordPermission.undetermined:
             AVAudioSession.sharedInstance().requestRecordPermission() { [unowned self] allowed in
                 DispatchQueue.main.async {
                     if allowed {
@@ -482,7 +482,7 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
             self.animateRecordButton()
             let audioSession = AVAudioSession.sharedInstance()
             do {
-                try audioSession.setCategory(AVAudioSessionCategoryRecord)
+                try audioSession.setCategory(AVAudioSession.Category(rawValue: convertFromAVAudioSessionCategory(AVAudioSession.Category.record)), mode: .default, options: .mixWithOthers)
             } catch {
                 
             }
@@ -564,8 +564,8 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
     }
     
     @objc func blockUserView() {
-        let alert = UIAlertController(title: "", message: "Bloqueaste a \(self.userFullnameSelected!)", preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        let alert = UIAlertController(title: "", message: "Bloqueaste a \(self.userFullnameSelected!)", preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
     
@@ -632,3 +632,8 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
 }
 
 
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Category) -> String {
+	return input.rawValue
+}

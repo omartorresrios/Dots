@@ -91,9 +91,9 @@ class UserFeedPreviewAudioContainerView: UIView, UIGestureRecognizerDelegate {
         willSet {
             if newValue != playing {
                 if newValue {
-                    playButton.setImage(UIImage(named: "pause"), for: UIControlState())
+                    playButton.setImage(UIImage(named: "pause"), for: UIControl.State())
                 } else {
-                    playButton.setImage(UIImage(named: "play"), for: UIControlState())
+                    playButton.setImage(UIImage(named: "play"), for: UIControl.State())
                 }
             }
         }

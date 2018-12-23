@@ -70,7 +70,7 @@ class DataService {
         view.addSubview(blurView)
         blurView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        let loader = UIActivityIndicatorView(activityIndicatorStyle: .white)
+        let loader = UIActivityIndicatorView(style: .white)
         loader.alpha = 1.0
         loader.startAnimating()
         

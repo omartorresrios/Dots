@@ -468,7 +468,7 @@
 					A0EF640C1EC40757006609F7 = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = W7KDN9ZT24;
-						LastSwiftMigration = 0940;
+						LastSwiftMigration = 1010;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Keychain = {
@@ -773,8 +773,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.OmarTorres.ReputationApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Selfie-Bridging-Header.h";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -792,8 +791,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.OmarTorres.ReputationApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Selfie-Bridging-Header.h";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};

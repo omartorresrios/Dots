@@ -23,7 +23,7 @@ class CircleView: UIView {
         
         // Setup the CAShapeLayer with the path, colors, and line width
         circleLayer = CAShapeLayer()
-        circleLayer.lineCap = kCALineCapRound
+        circleLayer.lineCap = CAShapeLayerLineCap.round
         circleLayer.path = circlePath.cgPath
         circleLayer.fillColor = UIColor.clear.cgColor
         circleLayer.strokeColor = UIColor.red.cgColor
@@ -61,9 +61,9 @@ class CircleView: UIView {
         animation.toValue = 1
         
         // Do a linear animation (i.e. the speed of the animation stays the same)
-        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
         
-        animation.fillMode = kCAFillModeForwards
+        animation.fillMode = CAMediaTimingFillMode.forwards
         animation.isRemovedOnCompletion = false
         // Set the circleLayer's strokeEnd property to 1.0 now so that it's the
         // right value when the animation ends.

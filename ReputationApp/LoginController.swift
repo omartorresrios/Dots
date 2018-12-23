@@ -47,7 +47,7 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
         let button = UIButton(type: .system)
         button.titleLabel?.numberOfLines = 0
         
-        let attributedTitle = [NSAttributedStringKey.font:  UIFont(name: "SFUIDisplay-Regular", size: 12)!, NSAttributedStringKey.foregroundColor: UIColor.white]
+        let attributedTitle = [NSAttributedString.Key.font:  UIFont(name: "SFUIDisplay-Regular", size: 12)!, NSAttributedString.Key.foregroundColor: UIColor.white]
 
         let attString = NSMutableAttributedString()
         attString.append(NSAttributedString(string: "jaja", attributes: attributedTitle))
@@ -73,7 +73,7 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate,
     }()
     
     let loader: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView.init(activityIndicatorStyle: UIActivityIndicatorViewStyle.white)
+        let indicator = UIActivityIndicatorView.init(style: UIActivityIndicatorView.Style.white)
         indicator.alpha = 1.0
         return indicator
     }()
