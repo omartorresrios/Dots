@@ -18,9 +18,6 @@ import GoogleSignIn
 
 class CameraController: SwiftyCamViewController, SwiftyCamViewControllerDelegate, AVCapturePhotoCaptureDelegate {
     
-    let sendLabel = UILabel()
-    let videoFileOutput = AVCaptureMovieFileOutput()
-    let captureSession = AVCaptureSession()
     let userContentOptionsView = UserProfileView()
     var userSelected: User! = nil
     var userDictionary = [String: Any]()

@@ -11,6 +11,8 @@
 		A024935A20155381006B3199 /* MyReviewsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A024935920155381006B3199 /* MyReviewsController.swift */; };
 		A024935C20155DFB006B3199 /* MyStoriesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A024935B20155DFA006B3199 /* MyStoriesController.swift */; };
 		A025EDBE201FAFEE00594000 /* CustomAlertMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A025EDBD201FAFEB00594000 /* CustomAlertMessage.swift */; };
+		A02B251621CFF2B200819FB7 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02B251521CFF2B200819FB7 /* UserViewModel.swift */; };
+		A02B251821CFF5DA00819FB7 /* ReviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02B251721CFF5DA00819FB7 /* ReviewViewModel.swift */; };
 		A02B3792200BC8990062CF4F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A02B3791200BC8990062CF4F /* GoogleService-Info.plist */; };
 		A030BAA42020CA3900D9BD73 /* UserContentOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A030BAA32020CA3900D9BD73 /* UserContentOptionsView.swift */; };
 		A035D7E21FF925800063706B /* UserReviewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A035D7E11FF925800063706B /* UserReviewsCell.swift */; };
@@ -86,6 +88,8 @@
 		A024935920155381006B3199 /* MyReviewsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyReviewsController.swift; sourceTree = "<group>"; };
 		A024935B20155DFA006B3199 /* MyStoriesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyStoriesController.swift; sourceTree = "<group>"; };
 		A025EDBD201FAFEB00594000 /* CustomAlertMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertMessage.swift; sourceTree = "<group>"; };
+		A02B251521CFF2B200819FB7 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
+		A02B251721CFF5DA00819FB7 /* ReviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewViewModel.swift; sourceTree = "<group>"; };
 		A02B378F200BC1CC0062CF4F /* Signin-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Signin-Bridging-Header.h"; sourceTree = "<group>"; };
 		A02B3791200BC8990062CF4F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A030BAA32020CA3900D9BD73 /* UserContentOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserContentOptionsView.swift; sourceTree = "<group>"; };
@@ -195,6 +199,15 @@
 				6E28B6B66614A10E560EF10A /* Pods-ReputationApp.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		A02B251421CFF29500819FB7 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				A02B251521CFF2B200819FB7 /* UserViewModel.swift */,
+				A02B251721CFF5DA00819FB7 /* ReviewViewModel.swift */,
+			);
+			name = ViewModel;
 			sourceTree = "<group>";
 		};
 		A039853C1F8D1E4C0025A7AB /* Previews */ = {
@@ -381,6 +394,7 @@
 		A0EF640F1EC40757006609F7 /* ReputationApp */ = {
 			isa = PBXGroup;
 			children = (
+				A02B251421CFF29500819FB7 /* ViewModel */,
 				A02B3791200BC8990062CF4F /* GoogleService-Info.plist */,
 				A070FE1B1FA11C1300488431 /* MyProfile */,
 				A0BD0A011F96BB0A009C0CD3 /* UserFeed */,
@@ -610,6 +624,7 @@
 				A09626A720028E8500D2CF06 /* UserStoriesCell.swift in Sources */,
 				A07B3C3E1EDB82FD00F10657 /* UserSearchCell.swift in Sources */,
 				A09EEB721F869BF2009836DC /* SegueFromLeft.swift in Sources */,
+				A02B251621CFF2B200819FB7 /* UserViewModel.swift in Sources */,
 				A07B95901F2E9062008E9EA0 /* HomeReviewCell.swift in Sources */,
 				A0EF64291EC40905006609F7 /* KeyChainAccess.swift in Sources */,
 				A09EEB7F1F86BA29009836DC /* VideoLibraryViewController.swift in Sources */,
@@ -641,6 +656,7 @@
 				A03985391F8BCC000025A7AB /* CameraController.swift in Sources */,
 				A044438C1FDE0F89003DD7A6 /* UserReviewsController.swift in Sources */,
 				A0F254201F8A80B000FC234A /* CustomAnimationPresentor.swift in Sources */,
+				A02B251821CFF5DA00819FB7 /* ReviewViewModel.swift in Sources */,
 				A04A82482056296200A86FE2 /* UserFeedCell.swift in Sources */,
 				A07B3BCC1ED8C66000F10657 /* Extensions.swift in Sources */,
 				A024935A20155381006B3199 /* MyReviewsController.swift in Sources */,

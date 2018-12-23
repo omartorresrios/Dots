@@ -17,13 +17,17 @@ let SAMPLE_RATE = 16000
 
 class UserSearchController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate, AudioControllerDelegate {
     
-    let httpHelper = HTTPHelper()
+    var filteredUsers = [UserViewModel]()
+    var users = [UserViewModel]()
+    var userSelected: UserViewModel!
+    
     let cellId = "cellId"
-    var filteredUsers = [User]()
-    var users = [User]()
+    
+    let httpHelper = HTTPHelper()
+    
     var currentUserDic = [String: Any]()
     var collectionView: UICollectionView!
-    var userSelected: User!
+    
     var audioData: NSMutableData!
     let customAlertMessage = CustomAlertMessage()
     var tap = UITapGestureRecognizer()
@@ -257,8 +261,10 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
                                 self.currentUserDic = userDictionary
                                 return
                             }
-                            let user = User(uid: userDictionary["id"] as! Int, dictionary: userDictionary)
-                            self.users.append(user)
+                            let id = userDictionary["id"] as! Int
+                            let user = User(uid: id, dictionary: userDictionary)
+                            let finalUser = UserViewModel(uid: id, user: user)
+                            self.users.append(finalUser)
                             
                         })
                         
@@ -618,7 +624,7 @@ class UserSearchController: UIViewController, UICollectionViewDelegate, UICollec
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! UserSearchCell
         
-        cell.user = filteredUsers[indexPath.item]
+        cell.userViewModel = filteredUsers[indexPath.item]
         
         return cell
     }
